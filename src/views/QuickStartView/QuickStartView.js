@@ -1,13 +1,20 @@
-import React, { Component } from 'react';
-import { Carousel, Container, Image } from 'react-bootstrap';
-import image from '../../img/byrd_TA.jpg';
+import React from 'react';
+import { Container, Row } from 'react-bootstrap';
+import TimeUnit from '../../components/TimeUnit/TimeUnit';
 
-class QuickStartView extends Component {
+class QuickStartView extends React.Component {
   render() {
     return (
-      <>
-        <Image src={image} fluid roundedCircle />
-      </>
+      <Container>
+        <Row>
+          <h2 className="mx-auto">Next Break 9:00 min</h2>
+        </Row>
+        <Row>
+          <TimeUnit />
+          <TimeUnit />
+          <TimeUnit />
+        </Row>
+      </Container>
     );
   }
 }

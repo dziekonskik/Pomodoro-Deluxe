@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class StatsView extends Component {
+class StatsView extends React.Component {
   render() {
     return <div>niedupa</div>;
   }

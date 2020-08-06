@@ -8,13 +8,13 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <Container>
-        <Row>
-          <Col className="col-xs-12 col-md-3">
-            <StatsView />
-          </Col>
-          <Col className="col-xs-12 col-md-9">
+      <Container className="vh-100 py-5">
+        <Row className="h-100">
+          <Col xs={12} md={{ order: 2 }} className="col-md-9">
             <QuickStartView />
+          </Col>
+          <Col xs={12} className="col-md-3 bg-danger">
+            <StatsView />
           </Col>
         </Row>
       </Container>
