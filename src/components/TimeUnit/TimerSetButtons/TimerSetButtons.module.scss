@@ -1,0 +1,13 @@
+.btnUp {
+  background-color: red;
+  border-radius: 50%;
+  box-shadow: 10px 10px 30px #000;
+  &:hover {
+    background-color: transparent;
+    color: red;
+  }
+}
+
+.bs {
+  box-shadow: 10px 10px 30px #000;
+}

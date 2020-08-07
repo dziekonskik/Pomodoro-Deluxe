@@ -1,7 +1,8 @@
 import React from 'react';
-import { Container, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import TimeDisplay from './TimeDisplay/TimeDisplay';
-import TimeSetButtons from './TimeSetButtons/TimeSetButtons';
+import TimerSetButtons from './TimerSetButtons/TimerSetButtons';
+import styles from './TimeUnit.module.scss';
 
 class TimeUnit extends React.Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class TimeUnit extends React.Component {
     return (
       <Container style={{ width: '130px' }}>
         <TimeDisplay />
-        <TimeSetButtons />
+        <TimerSetButtons secondary />
       </Container>
     );
   }

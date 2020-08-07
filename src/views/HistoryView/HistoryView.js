@@ -2,7 +2,7 @@ import React from 'react';
 
 class StatsView extends React.Component {
   render() {
-    return <div>niedupa</div>;
+    return <div>.</div>;
   }
 }
 

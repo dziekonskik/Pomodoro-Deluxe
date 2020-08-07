@@ -1,18 +1,18 @@
 import React from 'react';
-import { Container, Row } from 'react-bootstrap';
-import TimeUnit from '../../components/TimeUnit/TimeUnit';
+import QuickStartPanel from '../../components/QuickStartPanel/QuickStartPanel';
+import { Container, Row, Jumbotron, Button } from 'react-bootstrap';
 
 class QuickStartView extends React.Component {
   render() {
     return (
       <Container>
         <Row>
-          <h2 className="mx-auto">Next Break 9:00 min</h2>
+          <h1 className="mx-auto text-danger font-weight-bold">
+            Welcome to Pomodoro-Deluxe!
+          </h1>
         </Row>
         <Row>
-          <TimeUnit />
-          <TimeUnit />
-          <TimeUnit />
+          <QuickStartPanel />
         </Row>
       </Container>
     );

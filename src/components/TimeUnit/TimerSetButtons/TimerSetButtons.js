@@ -1,7 +1,8 @@
 import React from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
+import styles from './TimerSetButtons.module.scss';
 
-const TimeSetButtons = () => {
+const TimerSetButtons = () => {
   return (
     <ButtonGroup className="w-100">
       <Button variant="danger">+</Button>
@@ -10,4 +11,4 @@ const TimeSetButtons = () => {
   );
 };
 
-export default TimeSetButtons;
+export default TimerSetButtons;
