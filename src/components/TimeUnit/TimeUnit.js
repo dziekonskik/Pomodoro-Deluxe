@@ -17,20 +17,22 @@ class TimeUnit extends React.Component {
   render() {
     const { hours, minutes, seconds } = this.state;
     return (
-      <Card>
-        <Row className="h-1">
+      <Card className="">
+        <Row className="w-50">
           <Col>
             <TimerDisplay />
           </Col>
-          <Col>
+          <Col className="w-25 d-flex flex-sm-column align-items-sm-center">
             <TimerColon />
           </Col>
           <Col>
             <TimerDisplay />
           </Col>
         </Row>
-        <TimerSetButtons className="xs-col-3" />
-        <TimerSetButtons />
+        <Row>
+          <TimerSetButtons />
+          <TimerSetButtons />
+        </Row>
       </Card>
     );
   }

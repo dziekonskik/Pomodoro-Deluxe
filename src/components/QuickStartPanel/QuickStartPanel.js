@@ -6,7 +6,7 @@ import styles from './QuickStartPanel.module.scss';
 export class QuickStartPanel extends Component {
   render() {
     return (
-      <Jumbotron className={styles.cardGeneralStyles}>
+      <Jumbotron className="col-md-9">
         <h2 className="text-danger">Quick Pomodoro</h2>
         <Row>
           <Col>

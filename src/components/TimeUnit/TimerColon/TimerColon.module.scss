@@ -1,4 +1,15 @@
 .timerColonStyles {
   width: 10px;
   height: 10px;
+  margin: 5px;
+  animation: blink 1s linear infinite;
+}
+
+@keyframes blink {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

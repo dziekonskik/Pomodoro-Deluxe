@@ -4,7 +4,7 @@ import styles from './TimerSetButtons.module.scss';
 
 const TimerSetButtons = () => {
   return (
-    <ButtonGroup className="btn-sm w-100">
+    <ButtonGroup className="btn-sm w-50">
       <Button variant="danger">+</Button>
       <Button variant="outline-danger">-</Button>
     </ButtonGroup>
