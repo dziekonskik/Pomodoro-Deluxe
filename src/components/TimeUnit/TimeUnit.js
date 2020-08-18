@@ -12,17 +12,26 @@ class TimeUnit extends React.Component {
       workMinutes: 0,
       restMinutes: 0,
       seconds: 0,
+      timeUpDown: '',
     };
   }
 
-  setWorkTime() {
+  setWorkTime = () => {
     console.log(this);
     this.setState({ workMinutes: this.state.workMinutes + 5 });
-  }
+  };
 
   setRestTime = () => {
     console.log(this);
     this.setState({ restMinutes: this.state.restMinutes + 2 });
+  };
+
+  TODO: `jak jest + na guziku to + 5 lub + 2 i minus to samo hem hem hem ??`
+
+  getChildrenValue = (value) => {
+    this.setState({ timeUpDown: value });
+    this.setWorkTime();
+    return value;
   };
 
   render() {
@@ -39,7 +48,7 @@ class TimeUnit extends React.Component {
           <Col>
             <TimerDisplay
               secondary
-              workMinutes={
+              minutes={
                 this.props.children === 'WORK' ? workMinutes : restMinutes
               }
             />
@@ -55,10 +64,10 @@ class TimeUnit extends React.Component {
           <TimerSetButtons
             setTime={
               this.props.children === 'WORK'
-                ? this.setWorkTime.bind(this)
+                ? this.setWorkTime
                 : this.setRestTime
             }
-            //setRestTime={this.setRestTime}
+            getChildrenValue={this.getChildrenValue}
           />
         </Row>
       </Card>

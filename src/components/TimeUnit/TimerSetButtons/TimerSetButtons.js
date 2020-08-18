@@ -2,7 +2,7 @@ import React from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
 //import styles from './TimerSetButtons.module.scss';
 
-const TimerSetButtons = ({ setTime }) => {
+const TimerSetButtons = ({ setTime, getChildrenValue }) => {
   return (
     <ButtonGroup className="btn-sm w-50 mx-auto">
       <Button
@@ -11,7 +11,7 @@ const TimerSetButtons = ({ setTime }) => {
         data-placement="bottom"
         title="+5"
         className="shadow"
-        onClick={setTime}
+        onClick={() => getChildrenValue('+')}
       >
         +
       </Button>
@@ -21,6 +21,7 @@ const TimerSetButtons = ({ setTime }) => {
         data-placement="bottom"
         title="-5"
         className="shadow"
+        onClick={() => getChildrenValue('-')}
       >
         -
       </Button>

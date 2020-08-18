@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-const TimeDisplay = ({ workMinutes, restMinutes, seconds, secondary }) => {
+const TimeDisplay = ({ minutes, seconds, secondary }) => {
   const tooTip = ({ target }) => {
     target.dataToggle = 'tooltip';
     target.dataPlacement = 'bottom';
@@ -14,8 +14,7 @@ const TimeDisplay = ({ workMinutes, restMinutes, seconds, secondary }) => {
         onMouseEnter={secondary ? tooTip : null}
         className="d-flex align-items-sm-center justify-content-sm-center text-warning"
       >
-        {workMinutes < 10 ? `0${workMinutes}` : workMinutes}
-        {restMinutes < 10 ? `0${restMinutes}` : restMinutes}
+        {minutes < 10 ? `0${minutes}` : minutes}
         {seconds < 10 ? `0${seconds}` : seconds}
       </Col>
     </Row>

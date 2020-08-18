@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-const UtilityButton = ({ children }) => {
+const UtilityButton = ({ children, timeStartStop }) => {
   return (
     <p>
       <Button
@@ -10,6 +10,7 @@ const UtilityButton = ({ children }) => {
         data-toggle="tooltip"
         data-placement="top"
         title="Start pomodoro"
+        onClick={timeStartStop}
       >
         {children}
       </Button>
