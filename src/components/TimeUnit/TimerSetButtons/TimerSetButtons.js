@@ -1,12 +1,29 @@
 import React from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
-import styles from './TimerSetButtons.module.scss';
+//import styles from './TimerSetButtons.module.scss';
 
-const TimerSetButtons = () => {
+const TimerSetButtons = ({ setTime }) => {
   return (
-    <ButtonGroup className="btn-sm w-50">
-      <Button variant="danger">+</Button>
-      <Button variant="outline-danger">-</Button>
+    <ButtonGroup className="btn-sm w-50 mx-auto">
+      <Button
+        variant="danger"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="+5"
+        className="shadow"
+        onClick={setTime}
+      >
+        +
+      </Button>
+      <Button
+        variant="outline-danger"
+        data-toggle="tooltip"
+        data-placement="bottom"
+        title="-5"
+        className="shadow"
+      >
+        -
+      </Button>
     </ButtonGroup>
   );
 };

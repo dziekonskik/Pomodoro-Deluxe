@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
-import { Jumbotron, Button, Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import TimeUnit from '../TimeUnit/TimeUnit';
+import UtilityButton from '../UtilityButton/UtilityButton';
 import styles from './QuickStartPanel.module.scss';
 
 export class QuickStartPanel extends Component {
   render() {
     return (
-      <Jumbotron className="col-md-9">
-        <h2 className="text-danger">Quick Pomodoro</h2>
+      <Container className={`p-3 col-lg-12 ${styles.cardGeneralStyles}`}>
+        <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
         <Row>
-          <Col>
-            <TimeUnit />
-            <TimeUnit />
+          <Col className="d-flex">
+            <TimeUnit>WORK</TimeUnit>
+            <TimeUnit>BREAK</TimeUnit>
           </Col>
         </Row>
-        <p>
-          <Button className="mt-5" variant="danger">
-            start
-          </Button>
-        </p>
-      </Jumbotron>
+        <UtilityButton>Start Pomodoro</UtilityButton>
+      </Container>
     );
   }
 }

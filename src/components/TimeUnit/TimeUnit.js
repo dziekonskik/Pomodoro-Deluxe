@@ -1,37 +1,65 @@
 import React from 'react';
-import { Container, Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import TimerDisplay from './TimerDisplay/TimerDisplay';
 import TimerColon from './TimerColon/TimerColon';
 import TimerSetButtons from './TimerSetButtons/TimerSetButtons';
-import styles from './TimeUnit.module.scss';
+//import styles from './TimeUnit.module.scss';
 
 class TimeUnit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hours: 0,
-      minutes: 30,
+      workMinutes: 0,
+      restMinutes: 0,
       seconds: 0,
     };
   }
+
+  setWorkTime() {
+    console.log(this);
+    this.setState({ workMinutes: this.state.workMinutes + 5 });
+  }
+
+  setRestTime = () => {
+    console.log(this);
+    this.setState({ restMinutes: this.state.restMinutes + 2 });
+  };
+
   render() {
-    const { hours, minutes, seconds } = this.state;
+    const { workMinutes, restMinutes, seconds } = this.state;
     return (
-      <Card className="">
-        <Row className="w-50">
+      <Card
+        style={{ width: '40%' }}
+        className="p-3 mx-auto bg-light shadow-lg border border-warning rounded-pill"
+      >
+        <Row className="mx-auto text-uppercase text-warning">
+          {this.props.children}
+        </Row>
+        <Row className="mx-auto">
           <Col>
-            <TimerDisplay />
+            <TimerDisplay
+              secondary
+              workMinutes={
+                this.props.children === 'WORK' ? workMinutes : restMinutes
+              }
+            />
           </Col>
           <Col className="w-25 d-flex flex-sm-column align-items-sm-center">
             <TimerColon />
           </Col>
           <Col>
-            <TimerDisplay />
+            <TimerDisplay seconds={seconds} />
           </Col>
         </Row>
         <Row>
-          <TimerSetButtons />
-          <TimerSetButtons />
+          <TimerSetButtons
+            setTime={
+              this.props.children === 'WORK'
+                ? this.setWorkTime.bind(this)
+                : this.setRestTime
+            }
+            //setRestTime={this.setRestTime}
+          />
         </Row>
       </Card>
     );
