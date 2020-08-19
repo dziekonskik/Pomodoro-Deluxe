@@ -12,26 +12,19 @@ class TimeUnit extends React.Component {
       workMinutes: 0,
       restMinutes: 0,
       seconds: 0,
-      timeUpDown: '',
     };
   }
 
-  setWorkTime = () => {
-    console.log(this);
-    this.setState({ workMinutes: this.state.workMinutes + 5 });
+  setWorkTime = ({ target }) => {
+    target.title === '+'
+      ? this.setState({ workMinutes: this.state.workMinutes + 5 })
+      : this.setState({ workMinutes: this.state.workMinutes - 5 });
   };
 
-  setRestTime = () => {
-    console.log(this);
-    this.setState({ restMinutes: this.state.restMinutes + 2 });
-  };
-
-  TODO: `jak jest + na guziku to + 5 lub + 2 i minus to samo hem hem hem ??`
-
-  getChildrenValue = (value) => {
-    this.setState({ timeUpDown: value });
-    this.setWorkTime();
-    return value;
+  setRestTime = ({ target }) => {
+    target.title === '+'
+      ? this.setState({ restMinutes: this.state.restMinutes + 2 })
+      : this.setState({ restMinutes: this.state.restMinutes - 2 });
   };
 
   render() {
@@ -67,7 +60,6 @@ class TimeUnit extends React.Component {
                 ? this.setWorkTime
                 : this.setRestTime
             }
-            getChildrenValue={this.getChildrenValue}
           />
         </Row>
       </Card>

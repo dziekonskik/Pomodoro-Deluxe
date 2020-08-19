@@ -13,11 +13,9 @@ export class QuickStartPanel extends Component {
   }
 
   timeStartStop = () => {
-    this.setState(function (prevState) {
-      return {
-        isTimeRunning: !prevState.isTimeRunning,
-      };
-    });
+    this.setState((prevState) => ({
+      isTimeRunning: !prevState.isTimeRunning,
+    }));
   };
 
   render() {
