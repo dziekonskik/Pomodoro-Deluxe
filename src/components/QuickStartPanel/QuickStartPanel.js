@@ -9,6 +9,8 @@ export class QuickStartPanel extends Component {
     super(props);
     this.state = {
       isTimeRunning: false,
+      isItWorkTime: false,
+      isItBreakTime: false,
     };
   }
 
@@ -20,18 +22,25 @@ export class QuickStartPanel extends Component {
 
   render() {
     const { isTimeRunning } = this.state;
+    let mediaQueryList = window.matchMedia('(max-width: 767px)');
     return (
-      <Container className={`p-3 col-lg-12 ${styles.cardGeneralStyles}`}>
+      <Container className={`p-3 ${styles.cardGeneralStyles}`}>
         <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
         <Row>
           <Col className="d-flex">
             <TimeUnit isTimeRunning={isTimeRunning}>WORK</TimeUnit>
-            <TimeUnit>BREAK</TimeUnit>
+            {!mediaQueryList.matches && (
+              <TimeUnit isTimeRunning={isTimeRunning}>BREAK</TimeUnit>
+            )}
           </Col>
         </Row>
-        <UtilityButton timeStartStop={this.timeStartStop}>
-          {this.state.isTimeRunning ? 'Stop Pomodoro' : 'Start Pomodoro'}
-        </UtilityButton>
+        <Row>
+          <UtilityButton timeStartStop={this.timeStartStop}>
+            {this.state.isTimeRunning ? 'Stop Pomodoro' : 'Start Pomodoro'}
+          </UtilityButton>
+          <UtilityButton disabled={!isTimeRunning}>Cancel</UtilityButton>
+          {mediaQueryList.matches && <UtilityButton>Set Break</UtilityButton>}
+        </Row>
       </Container>
     );
   }

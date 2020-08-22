@@ -6,7 +6,7 @@ import styles from './MainView.module.scss';
 class MainView extends React.Component {
   render() {
     return (
-      <Container className={`vh-100 ${styles.customBackground}`}>
+      <Container className="vh-100">
         <Row>
           <QuickStartPanel />
         </Row>
