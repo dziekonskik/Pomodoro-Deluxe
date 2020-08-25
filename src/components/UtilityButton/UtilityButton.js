@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 
-const UtilityButton = ({ children, timeStartStop, disabled }) => {
+const UtilityButton = ({ children, timeStartStop, disabled, startTimer }) => {
   return (
     <p>
       <Button
