@@ -5,21 +5,22 @@ import TimerColon from './TimerColon/TimerColon';
 import TimerSetButtons from './TimerSetButtons/TimerSetButtons';
 
 const TimeUnit = ({
-  isTimeRunning,
-  workMinutes,
-  workMinutesLeft,
-  restMinutes,
-  restMinutesLeft,
-  workSecondsLeft,
-  restSecondsLeft,
   children,
   setWorkTime,
   setRestTime,
+  workMinutes,
+  restMinutes,
+  elapsedWorkTimeInSeconds,
+  elapsedRestTimeInSeconds,
 }) => {
-  const minutesProp = {
-    minutes: children === 'WORK' ? workMinutes : restMinutes,
-    minutesLeft: children === 'WORK' ? workMinutesLeft : restMinutesLeft,
-  };
+  const workTimeInSeconds = workMinutes * 60;
+  const restTimeInSeconds = restMinutes * 60;
+  const workTimeLeftInSeconds = workTimeInSeconds - elapsedWorkTimeInSeconds;
+  const workMinutesLeft = Math.floor(workTimeLeftInSeconds / 60);
+  const workSecondsLeft = Math.floor(workTimeLeftInSeconds % 60);
+  const restTimeLeftInSeconds = restTimeInSeconds - elapsedRestTimeInSeconds;
+  const restMinutesLeft = Math.floor(restTimeLeftInSeconds / 60);
+  const restSecondsLeft = Math.floor(restTimeLeftInSeconds % 60);
 
   return (
     <>
@@ -29,7 +30,13 @@ const TimeUnit = ({
           <Col>
             <TimerDisplay
               minutes={
-                isTimeRunning ? minutesProp.minutesLeft : minutesProp.minutes
+                children === 'WORK'
+                  ? workMinutesLeft > 0
+                    ? workMinutesLeft
+                    : 0
+                  : restMinutesLeft > 0
+                  ? restMinutesLeft
+                  : 0
               }
             />
           </Col>
@@ -38,7 +45,15 @@ const TimeUnit = ({
           </Col>
           <Col>
             <TimerDisplay
-              seconds={children === 'WORK' ? workSecondsLeft : restSecondsLeft}
+              seconds={
+                children === 'WORK'
+                  ? workSecondsLeft > 0
+                    ? workSecondsLeft
+                    : 0
+                  : restSecondsLeft > 0
+                  ? restSecondsLeft
+                  : 0
+              }
             />
           </Col>
         </Row>

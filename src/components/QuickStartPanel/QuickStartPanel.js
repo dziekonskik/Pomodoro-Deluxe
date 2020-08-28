@@ -11,6 +11,7 @@ export class QuickStartPanel extends Component {
       isTimeRunning: false,
       isItWorkTime: false,
       isItBreakTime: false,
+      pausesCount: 0,
       workMinutes: 0,
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
@@ -18,20 +19,29 @@ export class QuickStartPanel extends Component {
     };
   }
 
+  activateTheTime = () => {
+    this.setState({ isTimeRunning: true });
+  };
+
+  pauseTimer = () => {
+    this.setState({ isTimeRunning: false });
+    window.clearInterval(this.CustomTimer);
+  };
+
   startTimer = () => {
-    window.setInterval(() => {
+    if (!this.state.isTimeRunning) {
+      this.activateTheTime();
+      this.setState((prevState) => ({
+        pausesCount: prevState.pausesCount + 1,
+      }));
+    }
+    console.log(this.state.pausesCount);
+    this.CustomTimer = window.setInterval(() => {
       this.setState((prevState) => ({
         elapsedWorkTimeInSeconds: prevState.elapsedWorkTimeInSeconds + 1,
       }));
     }, 1000);
-    console.log(this.state.elapsedWorkTimeInSeconds);
-  };
-
-  timeStartStop = () => {
-    this.setState((prevState) => ({
-      isTimeRunning: !prevState.isTimeRunning,
-    }));
-    if (this.state.isTimeRunning) this.startTimer();
+    if (this.state.isTimeRunning) this.pauseTimer();
   };
 
   setWorkTime = ({ target }) => {
@@ -59,34 +69,23 @@ export class QuickStartPanel extends Component {
       elapsedRestTimeInSeconds,
     } = this.state;
     let mediaQueryList = window.matchMedia('(max-width: 767px)');
-    const workTimeInSeconds = workMinutes * 60;
-    const restTimeInSeconds = restMinutes * 60;
-    const workTimeLeftInSeconds = workTimeInSeconds - elapsedWorkTimeInSeconds;
-    const workMinutesLeft = Math.floor(workTimeLeftInSeconds / 60);
-    const workSecondsLeft = Math.floor(workTimeLeftInSeconds % 60);
-    const restTimeLeftInSeconds = restTimeInSeconds - elapsedRestTimeInSeconds;
-    const restMinutesLeft = Math.floor(restTimeLeftInSeconds / 60);
-    const restSecondsLeft = Math.floor(restTimeLeftInSeconds % 60);
+
     return (
       <Container className={`p-3 ${styles.cardGeneralStyles}`}>
         <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
         <Row>
           <Col className="d-flex">
             <TimeUnit
-              isTimeRunning={isTimeRunning}
               workMinutes={workMinutes}
-              workMinutesLeft={workMinutesLeft}
-              workSecondsLeft={workSecondsLeft}
+              elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
               setWorkTime={this.setWorkTime}
             >
               WORK
             </TimeUnit>
             {!mediaQueryList.matches && (
               <TimeUnit
-                isTimeRunning={isTimeRunning}
                 restMinutes={restMinutes}
-                restMinutesLeft={restMinutesLeft}
-                restSecondsLeft={restSecondsLeft}
+                elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
                 setRestTime={this.setRestTime}
               >
                 BREAK
@@ -96,8 +95,10 @@ export class QuickStartPanel extends Component {
         </Row>
         <Row>
           <UtilityButton
-            onClick={this.state.isTimeRunning ? this.startTimer : null}
-            timeStartStop={this.timeStartStop}
+            activateTheTime={this.startTimer}
+            startStopTimer={
+              this.state.isTimeRunning ? this.startTimer : this.pauseTimer
+            }
           >
             {this.state.isTimeRunning ? 'Stop Pomodoro' : 'Start Pomodoro'}
           </UtilityButton>
