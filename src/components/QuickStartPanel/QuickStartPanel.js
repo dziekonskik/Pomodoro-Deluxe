@@ -23,25 +23,28 @@ export class QuickStartPanel extends Component {
     this.setState({ isTimeRunning: true });
   };
 
-  pauseTimer = () => {
-    this.setState({ isTimeRunning: false });
-    window.clearInterval(this.CustomTimer);
+  handleCancelTimer = () => {
+    this.setState({
+      workMinutes: 0,
+      restMinutes: 0,
+      elapsedWorkTimeInSeconds: 0,
+      elapsedRestTimeInSeconds: 0,
+    });
   };
 
-  startTimer = () => {
-    if (!this.state.isTimeRunning) {
-      this.activateTheTime();
-      this.setState((prevState) => ({
-        pausesCount: prevState.pausesCount + 1,
-      }));
-    }
-    console.log(this.state.pausesCount);
-    this.CustomTimer = window.setInterval(() => {
+  handlePauseTimer = () => {
+    this.setState({ isTimeRunning: false });
+    window.clearInterval(this.customTimer);
+  };
+
+  handleStartTimer = () => {
+    this.activateTheTime();
+
+    this.customTimer = window.setInterval(() => {
       this.setState((prevState) => ({
         elapsedWorkTimeInSeconds: prevState.elapsedWorkTimeInSeconds + 1,
       }));
     }, 1000);
-    if (this.state.isTimeRunning) this.pauseTimer();
   };
 
   setWorkTime = ({ target }) => {
@@ -95,14 +98,18 @@ export class QuickStartPanel extends Component {
         </Row>
         <Row>
           <UtilityButton
-            activateTheTime={this.startTimer}
-            startStopTimer={
-              this.state.isTimeRunning ? this.startTimer : this.pauseTimer
-            }
+            onStart={this.handleStartTimer}
+            onPause={this.handlePauseTimer}
+            isTimeRunning={isTimeRunning}
           >
             {this.state.isTimeRunning ? 'Stop Pomodoro' : 'Start Pomodoro'}
           </UtilityButton>
-          <UtilityButton disabled={!isTimeRunning}>Cancel</UtilityButton>
+          <UtilityButton
+            disabled={!isTimeRunning}
+            onCancel={this.handleCancelTimer}
+          >
+            Cancel
+          </UtilityButton>
           {mediaQueryList.matches && <UtilityButton>Set Break</UtilityButton>}
         </Row>
       </Container>
