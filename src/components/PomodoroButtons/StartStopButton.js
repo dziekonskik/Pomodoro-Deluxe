@@ -7,7 +7,6 @@ const UtilityButton = ({
   onStart,
   onPause,
   isTimeRunning,
-  onCancel,
 }) => {
   return (
     <p>
