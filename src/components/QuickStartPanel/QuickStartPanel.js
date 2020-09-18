@@ -1,50 +1,52 @@
 import React, { Component } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
 import TimeUnit from '../TimeUnit/TimeUnit';
-import UtilityButton from '../UtilityButton/UtilityButton';
+import StartStopButton from '../PomodoroButtons/StartStopButton';
+import CancelButton from '../PomodoroButtons/CancelButton';
+import ToggleUnit from '../PomodoroButtons/ToggleUnit';
 import styles from './QuickStartPanel.module.scss';
 
 export class QuickStartPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isAppReady: false,
       isTimeRunning: false,
-      isItWorkTime: false,
-      isItBreakTime: false,
-      pausesCount: 0,
       workMinutes: 0,
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
     };
+    this.customTimer = null;
   }
-
-  activateTheTime = () => {
-    this.setState({ isTimeRunning: true });
-  };
 
   handleCancelTimer = () => {
     this.setState({
+      isAppReady: false,
+      isTimeRunning: false,
       workMinutes: 0,
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
     });
+    this.customTimer = null;
   };
 
   handlePauseTimer = () => {
     this.setState({ isTimeRunning: false });
     window.clearInterval(this.customTimer);
+    this.customTimer = null;
   };
 
   handleStartTimer = () => {
-    this.activateTheTime();
-
-    this.customTimer = window.setInterval(() => {
-      this.setState((prevState) => ({
-        elapsedWorkTimeInSeconds: prevState.elapsedWorkTimeInSeconds + 1,
-      }));
-    }, 1000);
+    this.setState({ isTimeRunning: true });
+    if (this.customTimer === null) {
+      this.customTimer = window.setInterval(() => {
+        this.setState((prevState) => ({
+          elapsedWorkTimeInSeconds: prevState.elapsedWorkTimeInSeconds + 1,
+        }));
+      }, 1000);
+    }
   };
 
   setWorkTime = ({ target }) => {
@@ -63,8 +65,20 @@ export class QuickStartPanel extends Component {
       : this.setState({ restMinutes: 0 });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.workMinutes > 0 &&
+      this.state.restMinutes > 0 &&
+      this.state.isAppReady === false
+    ) {
+      console.count('appReady');
+      this.setState({ isAppReady: true });
+    }
+  }
+
   render() {
     const {
+      isAppReady,
       isTimeRunning,
       workMinutes,
       restMinutes,
@@ -97,20 +111,22 @@ export class QuickStartPanel extends Component {
           </Col>
         </Row>
         <Row>
-          <UtilityButton
-            onStart={this.handleStartTimer}
-            onPause={this.handlePauseTimer}
+          <StartStopButton
+            onStart={isAppReady ? this.handleStartTimer : null}
+            onPause={isAppReady ? this.handlePauseTimer : null}
             isTimeRunning={isTimeRunning}
+            disabled={workMinutes === 0 || restMinutes === 0}
           >
             {this.state.isTimeRunning ? 'Stop Pomodoro' : 'Start Pomodoro'}
-          </UtilityButton>
-          <UtilityButton
-            disabled={!isTimeRunning}
-            onCancel={this.handleCancelTimer}
+          </StartStopButton>
+          <CancelButton
+            disabled={!isAppReady}
+            onCancel={isAppReady ? this.handleCancelTimer : null}
           >
             Cancel
-          </UtilityButton>
-          {mediaQueryList.matches && <UtilityButton>Set Break</UtilityButton>}
+          </CancelButton>
+
+          {mediaQueryList.matches && <ToggleUnit>Set Break</ToggleUnit>}
         </Row>
       </Container>
     );
