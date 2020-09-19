@@ -12,6 +12,8 @@ export class QuickStartPanel extends Component {
     this.state = {
       isAppReady: false,
       isTimeRunning: false,
+      isItWorkTime: false,
+      isItRestTime: false,
       workMinutes: 0,
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
@@ -24,6 +26,7 @@ export class QuickStartPanel extends Component {
     this.setState({
       isAppReady: false,
       isTimeRunning: false,
+      isItWorkTime: false,
       workMinutes: 0,
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
@@ -39,40 +42,69 @@ export class QuickStartPanel extends Component {
   };
 
   handleStartTimer = () => {
-    this.setState({ isTimeRunning: true });
+    this.setState({ isTimeRunning: true, isItWorkTime: true });
     if (this.customTimer === null) {
       this.customTimer = window.setInterval(() => {
-        this.setState((prevState) => ({
-          elapsedWorkTimeInSeconds: prevState.elapsedWorkTimeInSeconds + 1,
-        }));
+        if (this.state.isItWorkTime) {
+          this.setState((prevState) => ({
+            elapsedWorkTimeInSeconds: prevState.elapsedWorkTimeInSeconds + 1,
+          }));
+        }
+        if (!this.state.isItWorkTime && this.state.restMinutes > 0) {
+          this.setState((prevState) => ({
+            elapsedRestTimeInSeconds: prevState.elapsedRestTimeInSeconds + 1,
+          }));
+        }
       }, 1000);
     }
   };
 
   setWorkTime = ({ target }) => {
     target.title === '+'
-      ? this.setState({ workMinutes: this.state.workMinutes + 5 })
+      ? this.setState({ workMinutes: this.state.workMinutes + 0.5 })
       : this.state.workMinutes > 0
-      ? this.setState({ workMinutes: this.state.workMinutes - 5 })
+      ? this.setState({ workMinutes: this.state.workMinutes - 0.5 })
       : this.setState({ workMinutes: 0 });
   };
 
   setRestTime = ({ target }) => {
     target.title === '+'
-      ? this.setState({ restMinutes: this.state.restMinutes + 2 })
+      ? this.setState({ restMinutes: this.state.restMinutes + 0.5 })
       : this.state.restMinutes > 0
-      ? this.setState({ restMinutes: this.state.restMinutes - 2 })
+      ? this.setState({ restMinutes: this.state.restMinutes - 0.5 })
       : this.setState({ restMinutes: 0 });
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
+    const workMinutesInSeconds = this.state.workMinutes * 60;
+    const restMinutesInSeconds = this.state.restMinutes * 60;
     if (
       this.state.workMinutes > 0 &&
       this.state.restMinutes > 0 &&
       this.state.isAppReady === false
     ) {
-      console.count('appReady');
       this.setState({ isAppReady: true });
+    }
+
+    if (
+      workMinutesInSeconds === this.state.elapsedWorkTimeInSeconds &&
+      this.state.isItWorkTime &&
+      this.state.restMinutes > 0
+    ) {
+      this.setState({ isItWorkTime: false, isItRestTime: true });
+    }
+    if (
+      !this.state.isItWorkTime &&
+      this.state.isItRestTime &&
+      restMinutesInSeconds === this.state.elapsedRestTimeInSeconds
+    ) {
+      this.setState({
+        isTimeRunning: false,
+        isItRestTime: false,
+        isAppReady: false,
+        workMinutes: 0,
+        restMinutes: 0,
+      });
     }
   }
 
