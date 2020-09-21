@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
 
 const TimeDisplay = ({ minutes, seconds }) => (
@@ -9,5 +10,10 @@ const TimeDisplay = ({ minutes, seconds }) => (
     </Col>
   </Row>
 );
+
+TimeDisplay.propTypes = {
+  minutes: PropTypes.number.isRequired,
+  seconds: PropTypes.number.isRequired,
+};
 
 export default TimeDisplay;

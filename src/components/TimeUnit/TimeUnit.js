@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, Col, Row } from 'react-bootstrap';
 import TimerDisplay from './TimerDisplay/TimerDisplay';
 import TimerColon from './TimerColon/TimerColon';
@@ -65,6 +66,16 @@ const TimeUnit = ({
       </Card>
     </>
   );
+};
+
+TimeUnit.propTypes = {
+  children: PropTypes.string.isRequired,
+  setWorkTime: PropTypes.func,
+  setRestTime: PropTypes.func,
+  workMinutes: PropTypes.number,
+  restMinutes: PropTypes.number,
+  elapsedWorkTimeInSeconds: PropTypes.number,
+  elapsedRestTimeInSeconds: PropTypes.number,
 };
 
 export default TimeUnit;

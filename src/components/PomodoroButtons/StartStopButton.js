@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
-const UtilityButton = ({
+const StartStopButton = ({
   children,
   disabled,
   onStart,
@@ -16,7 +17,7 @@ const UtilityButton = ({
         data-toggle="tooltip"
         data-placement="top"
         title="Start pomodoro"
-        onClick={isTimeRunning ? onPause : onStart}
+        onClick={isTimeRunning && !disabled ? onPause : onStart}
       >
         {children}
       </Button>
@@ -24,4 +25,12 @@ const UtilityButton = ({
   );
 };
 
-export default UtilityButton;
+StartStopButton.propTypes = {
+  children: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  onStart: PropTypes.func,
+  onPause: PropTypes.func,
+  isTimeRunning: PropTypes.bool.isRequired,
+};
+
+export default StartStopButton;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 const CancelButton = ({ children, disabled, onCancel }) => {
@@ -16,6 +17,12 @@ const CancelButton = ({ children, disabled, onCancel }) => {
       </Button>
     </p>
   );
+};
+
+CancelButton.propTypes = {
+  children: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  onCancel: PropTypes.func,
 };
 
 export default CancelButton;
