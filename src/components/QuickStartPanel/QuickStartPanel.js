@@ -19,6 +19,7 @@ export class QuickStartPanel extends Component {
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
       checkboxChecked: false,
+      isItBigScreen: false,
     };
     this.customTimer = null;
   }
@@ -83,6 +84,15 @@ export class QuickStartPanel extends Component {
       : this.setState({ restMinutes: 0 });
   };
 
+  componentDidMount() {
+    if (!window.matchMedia('(max-width: 767px)')) {
+      this.setState({ isItBigScreen: true });
+    }
+    if (window.matchMedia('(max-width: 767px)')) {
+      this.setState({ isItBigScreen: false });
+    }
+  }
+
   componentDidUpdate() {
     const workMinutesInSeconds = this.state.workMinutes * 60;
     const restMinutesInSeconds = this.state.restMinutes * 60;
@@ -133,6 +143,7 @@ export class QuickStartPanel extends Component {
       elapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
       checkboxChecked,
+      isItBigScreen,
     } = this.state;
     let mediaQueryList = window.matchMedia('(max-width: 767px)');
 
@@ -141,23 +152,45 @@ export class QuickStartPanel extends Component {
         <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
         <Row>
           <Col className="d-flex">
-            {mediaQueryList.matches && !checkboxChecked && (
-              <TimeUnit
-                workMinutes={workMinutes}
-                elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
-                setWorkTime={this.setWorkTime}
-              >
-                WORK
-              </TimeUnit>
-            )}
-            {mediaQueryList.matches && checkboxChecked && (
-              <TimeUnit
-                restMinutes={restMinutes}
-                elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
-                setRestTime={this.setRestTime}
-              >
-                BREAK
-              </TimeUnit>
+            {!mediaQueryList.matches ? (
+              <>
+                <TimeUnit
+                  workMinutes={workMinutes}
+                  elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
+                  setWorkTime={this.setWorkTime}
+                >
+                  WORK
+                </TimeUnit>
+
+                <TimeUnit
+                  restMinutes={restMinutes}
+                  elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
+                  setRestTime={this.setRestTime}
+                >
+                  BREAK
+                </TimeUnit>
+              </>
+            ) : (
+              <>
+                {!checkboxChecked && (
+                  <TimeUnit
+                    workMinutes={workMinutes}
+                    elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
+                    setWorkTime={this.setWorkTime}
+                  >
+                    WORK
+                  </TimeUnit>
+                )}
+                {checkboxChecked && (
+                  <TimeUnit
+                    restMinutes={restMinutes}
+                    elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
+                    setRestTime={this.setRestTime}
+                  >
+                    BREAK
+                  </TimeUnit>
+                )}
+              </>
             )}
           </Col>
         </Row>
@@ -192,3 +225,30 @@ export class QuickStartPanel extends Component {
 }
 
 export default QuickStartPanel;
+
+// const displayOnBigScreens = `${isItBigScreen} && ${!mediaQueryList.matches} `;
+// const workTimeOnMobile = `${!isItBigScreen} && ${
+//   mediaQueryList.matches
+// } && ${!checkboxChecked}`;
+// const restTimeOnMobile = `${!isItBigScreen} && ${
+//   mediaQueryList.matches
+// } && ${checkboxChecked}`;
+
+// {mediaQueryList.matches && !checkboxChecked && (
+//   <TimeUnit
+//     workMinutes={workMinutes}
+//     elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
+//     setWorkTime={this.setWorkTime}
+//   >
+//     WORK
+//   </TimeUnit>
+// )}
+// {mediaQueryList.matches && checkboxChecked && (
+//   <TimeUnit
+//     restMinutes={restMinutes}
+//     elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
+//     setRestTime={this.setRestTime}
+//   >
+//     BREAK
+//   </TimeUnit>
+// )}
