@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "b7569148ae489983a14bce5d8b9db624",
+    "revision": "5ecd0b9a8cef6ee4ac9ff8a994328196",
     "url": "/dziekonskik/Pomodoro-Deluxe/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dziekonskik/Pomodoro-Deluxe/static/css/2.a131f3de.chunk.css"
   },
   {
-    "revision": "aef84a30c43bd1eb5319",
-    "url": "/dziekonskik/Pomodoro-Deluxe/static/css/main.d9283525.chunk.css"
+    "revision": "b8632c5367df417fefa7",
+    "url": "/dziekonskik/Pomodoro-Deluxe/static/css/main.3ff982fa.chunk.css"
   },
   {
     "revision": "f62e0a54404333ff0056",
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/dziekonskik/Pomodoro-Deluxe/static/js/2.e19ac9d1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "aef84a30c43bd1eb5319",
-    "url": "/dziekonskik/Pomodoro-Deluxe/static/js/main.d72fb12c.chunk.js"
+    "revision": "b8632c5367df417fefa7",
+    "url": "/dziekonskik/Pomodoro-Deluxe/static/js/main.fd1a37df.chunk.js"
   },
   {
     "revision": "9c3ba1b60f397280e174",
