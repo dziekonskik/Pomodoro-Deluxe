@@ -3,7 +3,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import TimeUnit from '../TimeUnit/TimeUnit';
 import StartStopButton from '../PomodoroButtons/StartStopButton';
 import CancelButton from '../PomodoroButtons/CancelButton';
-import ToggleUnit from '../PomodoroButtons/ToggleUnit';
+import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import styles from './QuickStartPanel.module.scss';
 
 export class QuickStartPanel extends Component {
@@ -18,15 +18,23 @@ export class QuickStartPanel extends Component {
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
+      checkboxChecked: false,
     };
     this.customTimer = null;
   }
+
+  toggleTimeUnitDisplay = () => {
+    this.setState((prevState) => ({
+      checkboxChecked: !prevState.checkboxChecked,
+    }));
+  };
 
   handleCancelTimer = () => {
     this.setState({
       isAppReady: false,
       isTimeRunning: false,
       isItWorkTime: false,
+      isItRestTime: false,
       workMinutes: 0,
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
@@ -102,9 +110,17 @@ export class QuickStartPanel extends Component {
         isTimeRunning: false,
         isItRestTime: false,
         isAppReady: false,
+        checkboxChecked: false,
         workMinutes: 0,
         restMinutes: 0,
       });
+    }
+
+    if (this.state.isItWorkTime && this.state.checkboxChecked) {
+      this.setState({ checkboxChecked: false });
+    }
+    if (this.state.isItRestTime && !this.state.checkboxChecked) {
+      this.setState({ checkboxChecked: true });
     }
   }
 
@@ -116,6 +132,7 @@ export class QuickStartPanel extends Component {
       restMinutes,
       elapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
+      checkboxChecked,
     } = this.state;
     let mediaQueryList = window.matchMedia('(max-width: 767px)');
 
@@ -124,14 +141,16 @@ export class QuickStartPanel extends Component {
         <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
         <Row>
           <Col className="d-flex">
-            <TimeUnit
-              workMinutes={workMinutes}
-              elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
-              setWorkTime={this.setWorkTime}
-            >
-              WORK
-            </TimeUnit>
-            {!mediaQueryList.matches && (
+            {mediaQueryList.matches && !checkboxChecked && (
+              <TimeUnit
+                workMinutes={workMinutes}
+                elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
+                setWorkTime={this.setWorkTime}
+              >
+                WORK
+              </TimeUnit>
+            )}
+            {mediaQueryList.matches && checkboxChecked && (
               <TimeUnit
                 restMinutes={restMinutes}
                 elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
@@ -158,7 +177,14 @@ export class QuickStartPanel extends Component {
             Cancel
           </CancelButton>
 
-          {mediaQueryList.matches && <ToggleUnit>Set Break</ToggleUnit>}
+          {mediaQueryList.matches && (
+            <ToggleTimeUnit
+              checked={checkboxChecked}
+              checkFn={this.toggleTimeUnitDisplay}
+            >
+              Set Break
+            </ToggleTimeUnit>
+          )}
         </Row>
       </Container>
     );
