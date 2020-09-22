@@ -1,9 +1,9 @@
 import React from 'react';
-import styles from './ToggleUnit.module.scss';
+import styles from './ToggleTimeUnit.module.scss';
 
-const ToggleUnit = ({ checked, children }) => (
+const ToggleUnit = ({ checkFn, children, checked }) => (
   <label className={styles.label}>
-    <input type="checkbox" checked={checked} />
+    <input type="checkbox" checked={checked} onChange={checkFn} />
     <div className={styles.checkboxDiv} />
     {children}
   </label>
