@@ -18,15 +18,14 @@ export class QuickStartPanel extends Component {
       restMinutes: 0,
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
-      checkboxChecked: false,
-      isItBigScreen: false,
+      userSetsRestTime: false,
     };
     this.customTimer = null;
   }
 
   toggleTimeUnitDisplay = () => {
     this.setState((prevState) => ({
-      checkboxChecked: !prevState.checkboxChecked,
+      userSetsRestTime: !prevState.userSetsRestTime,
     }));
   };
 
@@ -84,15 +83,6 @@ export class QuickStartPanel extends Component {
       : this.setState({ restMinutes: 0 });
   };
 
-  componentDidMount() {
-    if (!window.matchMedia('(max-width: 767px)')) {
-      this.setState({ isItBigScreen: true });
-    }
-    if (window.matchMedia('(max-width: 767px)')) {
-      this.setState({ isItBigScreen: false });
-    }
-  }
-
   componentDidUpdate() {
     const workMinutesInSeconds = this.state.workMinutes * 60;
     const restMinutesInSeconds = this.state.restMinutes * 60;
@@ -120,17 +110,17 @@ export class QuickStartPanel extends Component {
         isTimeRunning: false,
         isItRestTime: false,
         isAppReady: false,
-        checkboxChecked: false,
+        userSetsRestTime: false,
         workMinutes: 0,
         restMinutes: 0,
       });
     }
 
-    if (this.state.isItWorkTime && this.state.checkboxChecked) {
-      this.setState({ checkboxChecked: false });
+    if (this.state.isItWorkTime && this.state.userSetsRestTime) {
+      this.setState({ userSetsRestTime: false });
     }
-    if (this.state.isItRestTime && !this.state.checkboxChecked) {
-      this.setState({ checkboxChecked: true });
+    if (this.state.isItRestTime && !this.state.userSetsRestTime) {
+      this.setState({ userSetsRestTime: true });
     }
   }
 
@@ -142,37 +132,25 @@ export class QuickStartPanel extends Component {
       restMinutes,
       elapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
-      checkboxChecked,
-      isItBigScreen,
+      userSetsRestTime,
     } = this.state;
-    let mediaQueryList = window.matchMedia('(max-width: 767px)');
+    const mediaQueryList = window.matchMedia('(max-width: 767px)');
+    const screenIsWideEnough = !mediaQueryList.matches;
+    const userWantsToDisplayWorkTime = !userSetsRestTime;
+
+    const shouldDisplayWorkTimeUnit =
+      screenIsWideEnough || userWantsToDisplayWorkTime;
+    const shouldDisplayRestTimeUnit =
+      screenIsWideEnough || !userWantsToDisplayWorkTime;
 
     return (
       <Container className={`p-3 ${styles.cardGeneralStyles}`}>
         <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
         <Row>
           <Col className="d-flex">
-            {!mediaQueryList.matches ? (
+            {
               <>
-                <TimeUnit
-                  workMinutes={workMinutes}
-                  elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
-                  setWorkTime={this.setWorkTime}
-                >
-                  WORK
-                </TimeUnit>
-
-                <TimeUnit
-                  restMinutes={restMinutes}
-                  elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
-                  setRestTime={this.setRestTime}
-                >
-                  BREAK
-                </TimeUnit>
-              </>
-            ) : (
-              <>
-                {!checkboxChecked && (
+                {shouldDisplayWorkTimeUnit && (
                   <TimeUnit
                     workMinutes={workMinutes}
                     elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
@@ -181,7 +159,7 @@ export class QuickStartPanel extends Component {
                     WORK
                   </TimeUnit>
                 )}
-                {checkboxChecked && (
+                {shouldDisplayRestTimeUnit && (
                   <TimeUnit
                     restMinutes={restMinutes}
                     elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
@@ -191,7 +169,7 @@ export class QuickStartPanel extends Component {
                   </TimeUnit>
                 )}
               </>
-            )}
+            }
           </Col>
         </Row>
         <Row>
@@ -210,9 +188,9 @@ export class QuickStartPanel extends Component {
             Cancel
           </CancelButton>
 
-          {mediaQueryList.matches && (
+          {screenIsWideEnough && (
             <ToggleTimeUnit
-              checked={checkboxChecked}
+              checked={userSetsRestTime}
               checkFn={this.toggleTimeUnitDisplay}
             >
               Set Break
@@ -225,30 +203,3 @@ export class QuickStartPanel extends Component {
 }
 
 export default QuickStartPanel;
-
-// const displayOnBigScreens = `${isItBigScreen} && ${!mediaQueryList.matches} `;
-// const workTimeOnMobile = `${!isItBigScreen} && ${
-//   mediaQueryList.matches
-// } && ${!checkboxChecked}`;
-// const restTimeOnMobile = `${!isItBigScreen} && ${
-//   mediaQueryList.matches
-// } && ${checkboxChecked}`;
-
-// {mediaQueryList.matches && !checkboxChecked && (
-//   <TimeUnit
-//     workMinutes={workMinutes}
-//     elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
-//     setWorkTime={this.setWorkTime}
-//   >
-//     WORK
-//   </TimeUnit>
-// )}
-// {mediaQueryList.matches && checkboxChecked && (
-//   <TimeUnit
-//     restMinutes={restMinutes}
-//     elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
-//     setRestTime={this.setRestTime}
-//   >
-//     BREAK
-//   </TimeUnit>
-// )}

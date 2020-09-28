@@ -1,5 +1,6 @@
 import React from 'react';
 import { ButtonGroup, Button } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 //import styles from './TimerSetButtons.module.scss';
 
 const TimerSetButtons = ({ setTime }) => {
@@ -27,6 +28,10 @@ const TimerSetButtons = ({ setTime }) => {
       </Button>
     </ButtonGroup>
   );
+};
+
+TimerSetButtons.propTypes = {
+  setTime: PropTypes.func.isRequired,
 };
 
 export default TimerSetButtons;

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ToggleTimeUnit.module.scss';
+import PropTypes from 'prop-types';
 
 const ToggleUnit = ({ checkFn, children, checked }) => (
   <label className={styles.label}>
@@ -8,5 +9,11 @@ const ToggleUnit = ({ checkFn, children, checked }) => (
     {children}
   </label>
 );
+
+ToggleUnit.propTypes = {
+  checkFn: PropTypes.func.isRequired,
+  children: PropTypes.string.isRequired,
+  checked: PropTypes.string.isRequired,
+};
 
 export default ToggleUnit;
