@@ -152,18 +152,18 @@ export class QuickStartPanel extends Component {
               <>
                 {shouldDisplayWorkTimeUnit && (
                   <TimeUnit
-                    workMinutes={workMinutes}
-                    elapsedWorkTimeInSeconds={elapsedWorkTimeInSeconds}
-                    setWorkTime={this.setWorkTime}
+                    minutesSet={workMinutes}
+                    elapsedTimeInSeconds={elapsedWorkTimeInSeconds}
+                    setTime={this.setWorkTime}
                   >
                     WORK
                   </TimeUnit>
                 )}
                 {shouldDisplayRestTimeUnit && (
                   <TimeUnit
-                    restMinutes={restMinutes}
-                    elapsedRestTimeInSeconds={elapsedRestTimeInSeconds}
-                    setRestTime={this.setRestTime}
+                    minutesSet={restMinutes}
+                    elapsedTimeInSeconds={elapsedRestTimeInSeconds}
+                    setTime={this.setRestTime}
                   >
                     BREAK
                   </TimeUnit>
@@ -188,7 +188,7 @@ export class QuickStartPanel extends Component {
             Cancel
           </CancelButton>
 
-          {screenIsWideEnough && (
+          {!screenIsWideEnough && (
             <ToggleTimeUnit
               checked={userSetsRestTime}
               checkFn={this.toggleTimeUnitDisplay}
