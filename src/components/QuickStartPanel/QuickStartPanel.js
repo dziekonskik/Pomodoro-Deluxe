@@ -5,7 +5,8 @@ import StartStopButton from '../PomodoroButtons/StartStopButton';
 import CancelButton from '../PomodoroButtons/CancelButton';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import styles from './QuickStartPanel.module.scss';
-class QuickStartPanel extends Component {
+
+export class QuickStartPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,6 +16,7 @@ class QuickStartPanel extends Component {
       isItRestTime: false,
       workMinutes: 0,
       restMinutes: 0,
+      pausesCount: 0,
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
       userSetsRestTime: false,
@@ -36,6 +38,7 @@ class QuickStartPanel extends Component {
       isItRestTime: false,
       workMinutes: 0,
       restMinutes: 0,
+      pausesCount: 0,
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
     });
@@ -43,7 +46,10 @@ class QuickStartPanel extends Component {
   };
 
   handlePauseTimer = () => {
-    this.setState({ isTimeRunning: false });
+    this.setState((prevState) => ({
+      isTimeRunning: false,
+      pausesCount: prevState.pausesCount++,
+    }));
     window.clearInterval(this.customTimer);
     this.customTimer = null;
   };
@@ -112,6 +118,7 @@ class QuickStartPanel extends Component {
         userSetsRestTime: false,
         workMinutes: 0,
         restMinutes: 0,
+        pausesCount: 0,
       });
     }
 
