@@ -5,8 +5,7 @@ import StartStopButton from '../PomodoroButtons/StartStopButton';
 import CancelButton from '../PomodoroButtons/CancelButton';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import styles from './QuickStartPanel.module.scss';
-
-export class QuickStartPanel extends Component {
+class QuickStartPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
