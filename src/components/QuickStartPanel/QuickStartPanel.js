@@ -139,6 +139,7 @@ export class QuickStartPanel extends Component {
       elapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
       userSetsRestTime,
+      pausesCount,
     } = this.state;
     const mediaQueryList = window.matchMedia('(max-width: 767px)');
     const screenIsWideEnough = !mediaQueryList.matches;
@@ -182,6 +183,7 @@ export class QuickStartPanel extends Component {
           <StartStopButton
             onStart={isAppReady ? this.handleStartTimer : null}
             onPause={isAppReady ? this.handlePauseTimer : null}
+            pausesCount={pausesCount}
             isTimeRunning={isTimeRunning}
             disabled={workMinutes === 0 || restMinutes === 0}
           >

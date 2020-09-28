@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button, Badge } from 'react-bootstrap';
 
 const StartStopButton = ({
   children,
@@ -8,6 +8,7 @@ const StartStopButton = ({
   onStart,
   onPause,
   isTimeRunning,
+  pausesCount,
 }) => {
   return (
     <p>
@@ -20,6 +21,9 @@ const StartStopButton = ({
         onClick={isTimeRunning && !disabled ? onPause : onStart}
       >
         {children}
+        <Badge className="ml-2" variant="light">
+          {pausesCount}
+        </Badge>
       </Button>
     </p>
   );
