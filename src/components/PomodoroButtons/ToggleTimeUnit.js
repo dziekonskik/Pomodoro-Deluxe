@@ -13,7 +13,7 @@ const ToggleUnit = ({ checkFn, children, checked }) => (
 ToggleUnit.propTypes = {
   checkFn: PropTypes.func.isRequired,
   children: PropTypes.string.isRequired,
-  checked: PropTypes.string.isRequired,
+  checked: PropTypes.bool.isRequired,
 };
 
 export default ToggleUnit;

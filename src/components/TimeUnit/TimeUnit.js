@@ -36,12 +36,9 @@ const TimeUnit = ({ children, setTime, minutesSet, elapsedTimeInSeconds }) => {
 
 TimeUnit.propTypes = {
   children: PropTypes.string.isRequired,
-  setWorkTime: PropTypes.func,
-  setRestTime: PropTypes.func,
-  workMinutes: PropTypes.number,
-  restMinutes: PropTypes.number,
-  elapsedWorkTimeInSeconds: PropTypes.number,
-  elapsedRestTimeInSeconds: PropTypes.number,
+  setTime: PropTypes.func.isRequired,
+  minutesSet: PropTypes.number.isRequired,
+  elapsedTimeInSeconds: PropTypes.number.isRequired,
 };
 
 export default TimeUnit;
