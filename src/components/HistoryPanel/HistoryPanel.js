@@ -5,7 +5,7 @@ export class HistoryPanel extends Component {
   state = {
     itemArrived: false,
     storageID: 0,
-    historyItemsFromStorag: [],
+    historyItemsFromStorage: [],
   };
 
   moveDataFromStorageToState() {}
@@ -28,9 +28,20 @@ export class HistoryPanel extends Component {
       this.setState({ itemArrived: false });
     }
     console.count('HistoryPanel update');
+    console.log(this.state.storageID, this.state.historyItemsFromStorage);
   }
 
   componentDidMount() {
+    const localStoragePomodoros = Object.entries(localStorage)
+      .map((item) => {
+        return item[0].includes('Pomodoro') ? item[1] : null;
+      })
+      .filter((item) => JSON.parse(item));
+    this.setState(() => {
+      const historyItemsFromStorage = localStoragePomodoros;
+      const storageID = localStoragePomodoros.length;
+      return { historyItemsFromStorage, storageID };
+    });
     console.count('HistoryPanel mount');
   }
 
@@ -40,7 +51,9 @@ export class HistoryPanel extends Component {
   render() {
     return (
       <div className="overflow-hidden">
-        <HistoryItem {...this.props} />
+        {this.state.historyItemsFromStorage.map((historyItem) => {
+          return <HistoryItem {...this.props} />;
+        })}
       </div>
     );
   }
