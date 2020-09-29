@@ -10,10 +10,11 @@ const HistoryItem = ({
   pausesCount,
 }) => {
   return (
-    <div>
+    <div className="my-2">
       <Toast>
         <Toast.Header>
           <strong className="mr-auto">{title}</strong>
+          <strong>{date.toLocaleDateString()}</strong>
           <small>{date.toLocaleTimeString()}</small>
         </Toast.Header>
         <Toast.Body>
