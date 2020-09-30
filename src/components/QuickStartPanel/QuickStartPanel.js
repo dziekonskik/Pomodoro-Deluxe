@@ -33,6 +33,7 @@ export class QuickStartPanel extends Component {
   handleCancelTimer = () => {
     const { workMinutes, restMinutes, pausesCount } = this.state;
     this.props.fetchFn(workMinutes, restMinutes, pausesCount);
+    this.customTimer = null;
     this.setState({
       isAppReady: false,
       isTimeRunning: false,
@@ -44,7 +45,6 @@ export class QuickStartPanel extends Component {
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
     });
-    this.customTimer = null;
   };
 
   handlePauseTimer = () => {
