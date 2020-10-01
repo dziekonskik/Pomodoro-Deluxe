@@ -57,8 +57,8 @@ export class QuickStartPanel extends Component {
   };
 
   handleStartTimer = () => {
-    this.setState({ isTimeRunning: true, isItWorkTime: true });
     if (this.customTimer === null) {
+      this.setState({ isTimeRunning: true, isItWorkTime: true });
       this.customTimer = window.setInterval(() => {
         if (this.state.isItWorkTime) {
           this.setState((prevState) => ({
@@ -130,6 +130,10 @@ export class QuickStartPanel extends Component {
     if (this.state.isItRestTime && !this.state.userSetsRestTime) {
       this.setState({ userSetsRestTime: true });
     }
+  }
+
+  componentWillUnmount() {
+    this.handleCancelTimer();
   }
 
   render() {
