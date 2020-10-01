@@ -9,7 +9,17 @@ export class HistoryPanel extends Component {
     historyItemsFromStorage: [],
   };
 
-  moveDataFromStorageToState() {
+  deleteItem = (itemToRemove) => {
+    localStorage.removeItem(itemToRemove);
+    this.setState((prevState) => {
+      const historyItemsFromStorage = prevState.historyItemsFromStorage.filter(
+        (item) => item.id !== itemToRemove
+      );
+      return { historyItemsFromStorage };
+    });
+  };
+
+  moveDataFromStorageToState = () => {
     const localStoragePomodoros = Object.entries(localStorage)
       .map((item) => {
         return item[0].includes('Pomodoro') ? item : null;
@@ -17,12 +27,15 @@ export class HistoryPanel extends Component {
       .filter((item) => item);
     this.setState(() => {
       const historyItemsFromStorage = localStoragePomodoros;
-      const storageID = localStoragePomodoros.length;
+      const storageID =
+        this.state.storageID < localStoragePomodoros.length
+          ? localStoragePomodoros.length + 1
+          : this.state.storageID;
       return { historyItemsFromStorage, storageID };
     });
-  }
+  };
 
-  prepareDataForHistoryItem() {
+  prepareDataForHistoryItem = () => {
     this.setState((prevState) => {
       const historyItemsFromStorage = prevState.historyItemsFromStorage.map(
         (item) => {
@@ -37,7 +50,7 @@ export class HistoryPanel extends Component {
       );
       return { historyItemsFromStorage };
     });
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     const propsHasChanged = prevProps !== this.props;
@@ -66,7 +79,6 @@ export class HistoryPanel extends Component {
   componentDidMount() {
     this.moveDataFromStorageToState();
     this.prepareDataForHistoryItem();
-
     console.count('HistoryPanel mount');
   }
 
@@ -81,7 +93,13 @@ export class HistoryPanel extends Component {
           <div className="mx-auto">
             {ItemsToDisplay.length
               ? ItemsToDisplay.map((historyItem) => {
-                  return <HistoryItem key={historyItem.id} {...historyItem} />;
+                  return (
+                    <HistoryItem
+                      handleClick={this.deleteItem}
+                      key={historyItem.id}
+                      {...historyItem}
+                    />
+                  );
                 })
               : null}
           </div>

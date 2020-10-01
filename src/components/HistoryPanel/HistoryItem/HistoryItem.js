@@ -2,16 +2,18 @@ import React from 'react';
 import { Toast } from 'react-bootstrap';
 
 const HistoryItem = ({
+  id,
   title,
   date,
   workTime,
   restTime,
   sessions,
   pausesCount,
+  handleClick,
 }) => {
   return (
     <div className="my-2">
-      <Toast>
+      <Toast onClose={() => handleClick(id)}>
         <Toast.Header>
           <strong className="mr-auto">{title}</strong>
           <strong>{date.toLocaleDateString()}</strong>
