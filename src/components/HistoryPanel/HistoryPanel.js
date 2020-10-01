@@ -8,11 +8,40 @@ export class HistoryPanel extends Component {
     historyItemsFromStorage: [],
   };
 
-  moveDataFromStorageToState() {}
+  moveDataFromStorageToState() {
+    const localStoragePomodoros = Object.entries(localStorage)
+      .map((item) => {
+        return item[0].includes('Pomodoro') ? item : null;
+      })
+      .filter((item) => item);
+    this.setState(() => {
+      const historyItemsFromStorage = localStoragePomodoros;
+      const storageID = localStoragePomodoros.length;
+      return { historyItemsFromStorage, storageID };
+    });
+  }
+
+  prepareDataForHistoryItem() {
+    this.setState((prevState) => {
+      const historyItemsFromStorage = prevState.historyItemsFromStorage.map(
+        (item) => {
+          const preparedItem = JSON.parse(item[1]);
+          let dateToParse = preparedItem.date;
+          dateToParse = new Date(dateToParse);
+          delete preparedItem.date;
+          preparedItem.date = dateToParse;
+          preparedItem.id = item[0];
+          return preparedItem;
+        }
+      );
+      return { historyItemsFromStorage };
+    });
+  }
 
   componentDidUpdate(prevProps, prevState) {
     const propsHasChanged = prevProps !== this.props;
     const newItemArived = this.state.itemArrived;
+
     if (propsHasChanged) {
       this.setState((prevState) => {
         const itemArrived = true;
@@ -20,28 +49,23 @@ export class HistoryPanel extends Component {
         return { itemArrived, storageID };
       });
     }
+
     if (newItemArived) {
       localStorage.setItem(
         `Pomodoro-${this.state.storageID}`,
         JSON.stringify(this.props)
       );
       this.setState({ itemArrived: false });
+      this.moveDataFromStorageToState();
+      this.prepareDataForHistoryItem();
     }
     console.count('HistoryPanel update');
-    console.log(this.state.storageID, this.state.historyItemsFromStorage);
   }
 
   componentDidMount() {
-    const localStoragePomodoros = Object.entries(localStorage)
-      .map((item) => {
-        return item[0].includes('Pomodoro') ? item[1] : null;
-      })
-      .filter((item) => JSON.parse(item));
-    this.setState(() => {
-      const historyItemsFromStorage = localStoragePomodoros;
-      const storageID = localStoragePomodoros.length;
-      return { historyItemsFromStorage, storageID };
-    });
+    this.moveDataFromStorageToState();
+    this.prepareDataForHistoryItem();
+
     console.count('HistoryPanel mount');
   }
 
@@ -49,11 +73,14 @@ export class HistoryPanel extends Component {
     console.count('HistoryPanel unmount');
   }
   render() {
+    const ItemsToDisplay = this.state.historyItemsFromStorage;
     return (
-      <div className="overflow-hidden">
-        {this.state.historyItemsFromStorage.map((historyItem) => {
-          return <HistoryItem {...this.props} />;
-        })}
+      <div className="overflow-scroll">
+        {ItemsToDisplay.length
+          ? ItemsToDisplay.map((historyItem) => {
+              return <HistoryItem key={historyItem.id} {...historyItem} />;
+            })
+          : null}
       </div>
     );
   }
