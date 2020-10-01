@@ -1,6 +1,7 @@
 import React from 'react';
 import HistoryPanel from '../../components/HistoryPanel/HistoryPanel';
 import QuickStartPanel from '../../components/QuickStartPanel/QuickStartPanel';
+import ErrorBoundry from '../../components/ErrorBoundry/ErrorBoundry';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from './App.module.scss';
@@ -15,6 +16,18 @@ class App extends React.Component {
     pausesCount: 0,
   };
 
+  componentDidMount() {
+    console.count('App mount');
+  }
+
+  componentDidUpdate() {
+    console.count('App update');
+  }
+
+  componentWillUnmount() {
+    console.count('App mount');
+  }
+
   fetchSessionData = (workTime, restTime, pausesCount) => {
     this.setState({
       workTime,
@@ -26,17 +39,21 @@ class App extends React.Component {
   render() {
     return (
       <React.StrictMode>
-        <div className={`App ${styles.bgColor} vh-100`}>
+        <div className={`App ${styles.bgColor} container-fluid min-vh-100 `}>
           <Container className="py-5">
             <Row className="h-100">
               <Col sm={12} md={{ order: 2 }} className="col-md-9 shadow">
-                <QuickStartPanel fetchFn={this.fetchSessionData} />
+                <ErrorBoundry message="Błąd w QuickstartPanel">
+                  <QuickStartPanel fetchFn={this.fetchSessionData} />
+                </ErrorBoundry>
               </Col>
               <Col
                 sm={12}
                 className="col-md-3 border border-danger rounded shadow"
               >
-                <HistoryPanel {...this.state} />
+                <ErrorBoundry message="Błąd w HistoryPanel">
+                  <HistoryPanel {...this.state} />
+                </ErrorBoundry>
               </Col>
             </Row>
           </Container>
