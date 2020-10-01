@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Row, Col, Button } from 'react-bootstrap';
 import HistoryItem from './HistoryItem/HistoryItem';
 
 export class HistoryPanel extends Component {
@@ -75,13 +76,17 @@ export class HistoryPanel extends Component {
   render() {
     const ItemsToDisplay = this.state.historyItemsFromStorage;
     return (
-      <div className="overflow-scroll">
-        {ItemsToDisplay.length
-          ? ItemsToDisplay.map((historyItem) => {
-              return <HistoryItem key={historyItem.id} {...historyItem} />;
-            })
-          : null}
-      </div>
+      <>
+        <Row>
+          <div className="mx-auto">
+            {ItemsToDisplay.length
+              ? ItemsToDisplay.map((historyItem) => {
+                  return <HistoryItem key={historyItem.id} {...historyItem} />;
+                })
+              : null}
+          </div>
+        </Row>
+      </>
     );
   }
 }

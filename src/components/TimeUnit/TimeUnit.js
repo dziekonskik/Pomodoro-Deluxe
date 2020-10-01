@@ -19,7 +19,7 @@ const TimeUnit = ({ children, setTime, minutesSet, elapsedTimeInSeconds }) => {
           <Col>
             <TimerDisplay time={minutesLeft > 0 ? minutesLeft : 0} />
           </Col>
-          <Col className="w-25 d-flex flex-sm-column align-items-sm-center">
+          <Col className="w-25">
             <TimerColon />
           </Col>
           <Col>

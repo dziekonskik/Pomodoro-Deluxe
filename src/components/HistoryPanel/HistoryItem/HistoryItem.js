@@ -17,7 +17,7 @@ const HistoryItem = ({
           <strong>{date.toLocaleDateString()}</strong>
           <small>{date.toLocaleTimeString()}</small>
         </Toast.Header>
-        <Toast.Body>
+        <Toast.Body className="text-center">
           Work Time: <strong>{workTime} min</strong> <br />
           Rest Time: <strong>{restTime} min</strong> <br />
           Total Pauses: <strong style={{ color: 'red' }}>{pausesCount}</strong>

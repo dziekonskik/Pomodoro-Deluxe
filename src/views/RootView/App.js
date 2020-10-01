@@ -39,8 +39,8 @@ class App extends React.Component {
   render() {
     return (
       <React.StrictMode>
-        <Container fluid className={`App ${styles.bgColor} min-vh-100 p-5`}>
-          <Row className="h-100">
+        <Container fluid className={`App ${styles.bgColor} p-5`}>
+          <Row>
             <Col sm={12} md={{ order: 2 }} className="col-md-6 col-lg-9 shadow">
               <ErrorBoundry message="Błąd w QuickstartPanel">
                 <QuickStartPanel fetchFn={this.fetchSessionData} />
