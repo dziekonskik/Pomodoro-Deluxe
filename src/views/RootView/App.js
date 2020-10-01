@@ -39,25 +39,23 @@ class App extends React.Component {
   render() {
     return (
       <React.StrictMode>
-        <div className={`App ${styles.bgColor} container-fluid min-vh-100 `}>
-          <Container className="py-5">
-            <Row className="h-100">
-              <Col sm={12} md={{ order: 2 }} className="col-md-9 shadow">
-                <ErrorBoundry message="Błąd w QuickstartPanel">
-                  <QuickStartPanel fetchFn={this.fetchSessionData} />
-                </ErrorBoundry>
-              </Col>
-              <Col
-                sm={12}
-                className="col-md-3 border border-danger rounded shadow"
-              >
-                <ErrorBoundry message="Błąd w HistoryPanel">
-                  <HistoryPanel {...this.state} />
-                </ErrorBoundry>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+        <Container fluid className={`App ${styles.bgColor} min-vh-100 p-5`}>
+          <Row className="h-100">
+            <Col sm={12} md={{ order: 2 }} className="col-md-6 col-lg-9 shadow">
+              <ErrorBoundry message="Błąd w QuickstartPanel">
+                <QuickStartPanel fetchFn={this.fetchSessionData} />
+              </ErrorBoundry>
+            </Col>
+            <Col
+              sm={12}
+              className="col-md-6 col-lg-3 border border-danger rounded shadow"
+            >
+              <ErrorBoundry message="Błąd w HistoryPanel">
+                <HistoryPanel {...this.state} />
+              </ErrorBoundry>
+            </Col>
+          </Row>
+        </Container>
       </React.StrictMode>
     );
   }

@@ -143,7 +143,7 @@ export class QuickStartPanel extends Component {
       userSetsRestTime,
       pausesCount,
     } = this.state;
-    const mediaQueryList = window.matchMedia('(max-width: 767px)');
+    const mediaQueryList = window.matchMedia('(max-width: 992px)');
     const screenIsWideEnough = !mediaQueryList.matches;
     const userWantsToDisplayWorkTime = !userSetsRestTime;
 
