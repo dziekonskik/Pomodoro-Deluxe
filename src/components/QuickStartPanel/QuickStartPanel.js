@@ -93,26 +93,31 @@ export class QuickStartPanel extends Component {
   componentDidUpdate() {
     const workMinutesInSeconds = this.state.workMinutes * 60;
     const restMinutesInSeconds = this.state.restMinutes * 60;
-    if (
+    const timesAreSetAndAppIsReadyToLaunch =
       this.state.workMinutes > 0 &&
       this.state.restMinutes > 0 &&
-      this.state.isAppReady === false
-    ) {
+      this.state.isAppReady === false;
+    const workTImeHasFinishedNowRestTimeBegins =
+      workMinutesInSeconds === this.state.elapsedWorkTimeInSeconds &&
+      this.state.isItWorkTime &&
+      this.state.restMinutes > 0;
+    const restTimeHasFinishedAndSessionIsOver =
+      !this.state.isItWorkTime &&
+      this.state.isItRestTime &&
+      restMinutesInSeconds === this.state.elapsedRestTimeInSeconds;
+    const itIsWorkTimeAndWorkTimeIsOnDisplay =
+      this.state.isItWorkTime && this.state.userSetsRestTime;
+    const itIsRestTimeAndRestTimeIsOnDisplay =
+      this.state.isItRestTime && !this.state.userSetsRestTime;
+
+    if (timesAreSetAndAppIsReadyToLaunch) {
       this.setState({ isAppReady: true });
     }
 
-    if (
-      workMinutesInSeconds === this.state.elapsedWorkTimeInSeconds &&
-      this.state.isItWorkTime &&
-      this.state.restMinutes > 0
-    ) {
+    if (workTImeHasFinishedNowRestTimeBegins) {
       this.setState({ isItWorkTime: false, isItRestTime: true });
     }
-    if (
-      !this.state.isItWorkTime &&
-      this.state.isItRestTime &&
-      restMinutesInSeconds === this.state.elapsedRestTimeInSeconds
-    ) {
+    if (restTimeHasFinishedAndSessionIsOver) {
       this.setState({
         isTimeRunning: false,
         isItRestTime: false,
@@ -124,16 +129,12 @@ export class QuickStartPanel extends Component {
       });
     }
 
-    if (this.state.isItWorkTime && this.state.userSetsRestTime) {
+    if (itIsWorkTimeAndWorkTimeIsOnDisplay) {
       this.setState({ userSetsRestTime: false });
     }
-    if (this.state.isItRestTime && !this.state.userSetsRestTime) {
+    if (itIsRestTimeAndRestTimeIsOnDisplay) {
       this.setState({ userSetsRestTime: true });
     }
-  }
-
-  componentWillUnmount() {
-    this.handleCancelTimer();
   }
 
   render() {
