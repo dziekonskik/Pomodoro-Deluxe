@@ -21,8 +21,13 @@ export class QuickStartPanel extends Component {
       elapsedRestTimeInSeconds: 0,
       userSetsRestTime: false,
     };
-    this.customTimer = null;
+    this.customTimerID = null;
   }
+
+  resetInterval = () => {
+    window.clearInterval(this.customTimerID);
+    this.customTimerID = null;
+  };
 
   toggleTimeUnitDisplay = () => {
     this.setState((prevState) => ({
@@ -33,7 +38,7 @@ export class QuickStartPanel extends Component {
   handleCancelTimer = () => {
     const { workMinutes, restMinutes, pausesCount } = this.state;
     this.props.fetchFn(workMinutes, restMinutes, pausesCount);
-    this.customTimer = null;
+
     this.setState({
       isAppReady: false,
       isTimeRunning: false,
@@ -45,6 +50,7 @@ export class QuickStartPanel extends Component {
       elapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
     });
+    this.resetInterval();
   };
 
   handlePauseTimer = () => {
@@ -52,20 +58,19 @@ export class QuickStartPanel extends Component {
       isTimeRunning: false,
       pausesCount: prevState.pausesCount++,
     }));
-    window.clearInterval(this.customTimer);
-    this.customTimer = null;
+    this.resetInterval();
   };
 
   handleStartTimer = () => {
-    if (this.customTimer === null) {
+    if (this.customTimerID === null) {
       this.setState({ isTimeRunning: true, isItWorkTime: true });
-      this.customTimer = window.setInterval(() => {
+      this.customTimerID = window.setInterval(() => {
         if (this.state.isItWorkTime) {
           this.setState((prevState) => ({
             elapsedWorkTimeInSeconds: prevState.elapsedWorkTimeInSeconds + 1,
           }));
         }
-        if (!this.state.isItWorkTime && this.state.restMinutes > 0) {
+        if (this.state.isItRestTime && this.state.restMinutes > 0) {
           this.setState((prevState) => ({
             elapsedRestTimeInSeconds: prevState.elapsedRestTimeInSeconds + 1,
           }));
@@ -119,14 +124,17 @@ export class QuickStartPanel extends Component {
     }
     if (restTimeHasFinishedAndSessionIsOver) {
       this.setState({
-        isTimeRunning: false,
-        isItRestTime: false,
         isAppReady: false,
-        userSetsRestTime: false,
+        isTimeRunning: false,
+        isItWorkTime: false,
+        isItRestTime: false,
         workMinutes: 0,
         restMinutes: 0,
         pausesCount: 0,
+        elapsedWorkTimeInSeconds: 0,
+        elapsedRestTimeInSeconds: 0,
       });
+      this.resetInterval();
     }
 
     if (itIsWorkTimeAndWorkTimeIsOnDisplay) {
@@ -188,8 +196,11 @@ export class QuickStartPanel extends Component {
         </Row>
         <Row>
           <StartStopButton
-            onStart={isAppReady ? this.handleStartTimer : null}
-            onPause={isAppReady ? this.handlePauseTimer : null}
+            handleStartStop={
+              isAppReady && !isTimeRunning
+                ? this.handleStartTimer
+                : this.handlePauseTimer
+            }
             pausesCount={pausesCount}
             isTimeRunning={isTimeRunning}
             disabled={workMinutes === 0 || restMinutes === 0}

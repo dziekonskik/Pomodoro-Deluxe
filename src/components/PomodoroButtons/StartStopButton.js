@@ -5,9 +5,7 @@ import { Button, Badge } from 'react-bootstrap';
 const StartStopButton = ({
   children,
   disabled,
-  onStart,
-  onPause,
-  isTimeRunning,
+  handleStartStop,
   pausesCount,
 }) => {
   return (
@@ -18,7 +16,7 @@ const StartStopButton = ({
         data-toggle="tooltip"
         data-placement="top"
         title="Start pomodoro"
-        onClick={isTimeRunning && !disabled ? onPause : onStart}
+        onClick={handleStartStop}
       >
         {children}
         <Badge className="ml-2" variant="light">
