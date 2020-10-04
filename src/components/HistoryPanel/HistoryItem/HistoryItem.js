@@ -1,20 +1,25 @@
 import React from 'react';
 import { Toast } from 'react-bootstrap';
+import styles from './HistoryItem.module.scss';
 
 const HistoryItem = ({
-  id,
   title,
   date,
   workTime,
   restTime,
   sessions,
   pausesCount,
-  handleClick,
+  handleClose,
+  animateItem,
 }) => {
   return (
-    <div className="my-2">
-      <Toast onClose={() => handleClick(id)}>
-        <Toast.Header>
+    <div
+      className={`my-2 ${styles.initial} ${
+        animateItem ? styles.hide : styles.show
+      }`}
+    >
+      <Toast onClose={handleClose}>
+        <Toast.Header closeLabel={'Close'}>
           <strong className="mr-auto">{title}</strong>
           <strong>{date.toLocaleDateString()}</strong>
           <small>{date.toLocaleTimeString()}</small>

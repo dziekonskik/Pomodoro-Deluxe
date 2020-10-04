@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Button } from 'react-bootstrap';
 import HistoryItem from './HistoryItem/HistoryItem';
 
 export class HistoryPanel extends Component {
@@ -7,16 +7,46 @@ export class HistoryPanel extends Component {
     itemArrived: false,
     storageID: 0,
     historyItemsFromStorage: [],
+    animateItem: false,
+    animatedItemID: '',
+    sorted: false,
+  };
+  sendId = (id) => {
+    this.setState({ animatedItemID: id });
+  };
+
+  animationFn = (bool) => {
+    setTimeout(() => {
+      this.setState({ animateItem: bool });
+    }, 10);
+  };
+
+  sortByDate = () => {
+    this.setState((prevState) => {
+      const sorted = !prevState.sorted;
+      const historyItemsFromStorage = prevState.historyItemsFromStorage.sort(
+        (itemOne, ItemTwo) => {
+          const dateOne = new Date(itemOne.date);
+          const dateTwo = new Date(ItemTwo.date);
+          return sorted
+            ? parseInt(dateOne.getTime()) - parseInt(dateTwo.getTime())
+            : parseInt(dateTwo.getTime()) - parseInt(dateOne.getTime());
+        }
+      );
+      return { historyItemsFromStorage, sorted };
+    });
   };
 
   deleteItem = (itemToRemove) => {
-    localStorage.removeItem(itemToRemove);
-    this.setState((prevState) => {
-      const historyItemsFromStorage = prevState.historyItemsFromStorage.filter(
-        (item) => item.id !== itemToRemove
-      );
-      return { historyItemsFromStorage };
-    });
+    window.setTimeout(() => {
+      localStorage.removeItem(itemToRemove);
+      this.setState((prevState) => {
+        const historyItemsFromStorage = prevState.historyItemsFromStorage.filter(
+          (item) => item.id !== itemToRemove
+        );
+        return { historyItemsFromStorage };
+      });
+    }, 1000);
   };
 
   moveDataFromStorageToState = () => {
@@ -79,6 +109,7 @@ export class HistoryPanel extends Component {
   componentDidMount() {
     this.moveDataFromStorageToState();
     this.prepareDataForHistoryItem();
+    this.sortByDate();
     console.count('HistoryPanel mount');
   }
 
@@ -86,16 +117,38 @@ export class HistoryPanel extends Component {
     console.count('HistoryPanel unmount');
   }
   render() {
+    const { animatedItemID } = this.state;
     const ItemsToDisplay = this.state.historyItemsFromStorage;
     return (
       <>
         <Row>
-          <div className="mx-auto">
+          <Button
+            onClick={this.sortByDate}
+            block
+            size="lg"
+            variant="outline-light"
+          >
+            {this.state.sorted ? 'Newest First' : 'Oldest First'}
+          </Button>
+        </Row>
+        <Row>
+          <div
+            className={`mx-auto`}
+            styles={{
+              transition: 'all 0.4s ease-out',
+              perspective: '100px',
+              height: '126px',
+            }}
+          >
             {ItemsToDisplay.length
               ? ItemsToDisplay.map((historyItem) => {
                   return (
                     <HistoryItem
-                      handleClick={this.deleteItem}
+                      animateItem={animatedItemID === historyItem.id}
+                      handleClose={() => {
+                        this.deleteItem(historyItem.id);
+                        this.sendId(historyItem.id);
+                      }}
                       key={historyItem.id}
                       {...historyItem}
                     />
