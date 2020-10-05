@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
 import { Row, Button } from 'react-bootstrap';
 import HistoryItem from './HistoryItem/HistoryItem';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import styles from './HistoryPanel.module.scss';
+import './HistoryPanel.css';
 
 export class HistoryPanel extends Component {
-  state = {
-    itemArrived: false,
-    storageID: 0,
-    historyItemsFromStorage: [],
-    animateItem: false,
-    animatedItemID: '',
-    sorted: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      itemArrived: false,
+      storageID: 0,
+      historyItemsFromStorage: [],
+      animateItem: false,
+      animatedItemID: '',
+      sorted: false,
+    };
+    this.reference = React.createRef();
+  }
   sendId = (id) => {
     this.setState({ animatedItemID: id });
   };
@@ -38,15 +45,13 @@ export class HistoryPanel extends Component {
   };
 
   deleteItem = (itemToRemove) => {
-    window.setTimeout(() => {
-      localStorage.removeItem(itemToRemove);
-      this.setState((prevState) => {
-        const historyItemsFromStorage = prevState.historyItemsFromStorage.filter(
-          (item) => item.id !== itemToRemove
-        );
-        return { historyItemsFromStorage };
-      });
-    }, 1000);
+    localStorage.removeItem(itemToRemove);
+    this.setState((prevState) => {
+      const historyItemsFromStorage = prevState.historyItemsFromStorage.filter(
+        (item) => item.id !== itemToRemove
+      );
+      return { historyItemsFromStorage };
+    });
   };
 
   moveDataFromStorageToState = () => {
@@ -59,10 +64,11 @@ export class HistoryPanel extends Component {
       const historyItemsFromStorage = localStoragePomodoros;
       const storageID =
         this.state.storageID < localStoragePomodoros.length
-          ? localStoragePomodoros.length + 1
+          ? localStoragePomodoros.length
           : this.state.storageID;
       return { historyItemsFromStorage, storageID };
     });
+    console.log(this.state.storageID);
   };
 
   prepareDataForHistoryItem = () => {
@@ -92,6 +98,7 @@ export class HistoryPanel extends Component {
         const storageID = prevState.storageID++;
         return { itemArrived, storageID };
       });
+      console.log(this.state.storageID);
     }
 
     if (newItemArived) {
@@ -117,7 +124,7 @@ export class HistoryPanel extends Component {
     console.count('HistoryPanel unmount');
   }
   render() {
-    const { animatedItemID } = this.state;
+    const { animatedItemID, itemArrived } = this.state;
     const ItemsToDisplay = this.state.historyItemsFromStorage;
     return (
       <>
@@ -132,29 +139,31 @@ export class HistoryPanel extends Component {
           </Button>
         </Row>
         <Row>
-          <div
-            className={`mx-auto`}
-            styles={{
-              transition: 'all 0.4s ease-out',
-              perspective: '100px',
-              height: '126px',
-            }}
-          >
-            {ItemsToDisplay.length
-              ? ItemsToDisplay.map((historyItem) => {
-                  return (
-                    <HistoryItem
-                      animateItem={animatedItemID === historyItem.id}
-                      handleClose={() => {
-                        this.deleteItem(historyItem.id);
-                        this.sendId(historyItem.id);
-                      }}
-                      key={historyItem.id}
-                      {...historyItem}
-                    />
-                  );
-                })
-              : null}
+          <div className={`mx-auto`}>
+            <TransitionGroup>
+              {ItemsToDisplay.length
+                ? ItemsToDisplay.map((historyItem) => {
+                    return (
+                      <CSSTransition
+                        in={itemArrived || animatedItemID}
+                        key={historyItem.id}
+                        timeout={300}
+                        classNames={'historyItem'}
+                        appear={true}
+                      >
+                        <HistoryItem
+                          handleClose={() => {
+                            this.deleteItem(historyItem.id);
+                            this.sendId(historyItem.id);
+                          }}
+                          key={historyItem.id}
+                          {...historyItem}
+                        />
+                      </CSSTransition>
+                    );
+                  })
+                : null}
+            </TransitionGroup>
           </div>
         </Row>
       </>

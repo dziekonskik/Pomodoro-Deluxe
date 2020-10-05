@@ -10,14 +10,9 @@ const HistoryItem = ({
   sessions,
   pausesCount,
   handleClose,
-  animateItem,
 }) => {
   return (
-    <div
-      className={`my-2 ${styles.initial} ${
-        animateItem ? styles.hide : styles.show
-      }`}
-    >
+    <div className={`my-2 `}>
       <Toast onClose={handleClose}>
         <Toast.Header closeLabel={'Close'}>
           <strong className="mr-auto">{title}</strong>

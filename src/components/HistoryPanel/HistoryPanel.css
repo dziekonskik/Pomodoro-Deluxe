@@ -1,0 +1,47 @@
+.historyItem-enter {
+  opacity: 0.01;
+  transform: translate(-10px, 0);
+}
+
+.historyItem-enter-active {
+  opacity: 1;
+  transform: translate(0);
+  transition: all 300ms ease-in;
+}
+
+.historyItem-enter-done {
+  opacity: 1;
+  transform: translate(0);
+}
+
+.historyItem-appear {
+  opacity: 0.01;
+  transform: scale(0.1);
+}
+
+.historyItem-appear-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 300ms ease-in;
+}
+
+.historyItem-appear-done {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.historyItem-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.historyItem-exit-active {
+  opacity: 0.01;
+  transform: scale(0.1);
+  transition: all 300ms ease-in;
+}
+
+.historyItem-exit-done {
+  opacity: 0;
+  transform: scale(0);
+}
