@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Row, Button } from 'react-bootstrap';
 import HistoryItem from './HistoryItem/HistoryItem';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import styles from './HistoryPanel.module.scss';
+import { v4 as uuidv4 } from 'uuid';
 import './HistoryPanel.css';
 
 export class HistoryPanel extends Component {
@@ -16,7 +16,6 @@ export class HistoryPanel extends Component {
       animatedItemID: '',
       sorted: false,
     };
-    this.reference = React.createRef();
   }
   sendId = (id) => {
     this.setState({ animatedItemID: id });
@@ -60,15 +59,7 @@ export class HistoryPanel extends Component {
         return item[0].includes('Pomodoro') ? item : null;
       })
       .filter((item) => item);
-    this.setState(() => {
-      const historyItemsFromStorage = localStoragePomodoros;
-      const storageID =
-        this.state.storageID < localStoragePomodoros.length
-          ? localStoragePomodoros.length
-          : this.state.storageID;
-      return { historyItemsFromStorage, storageID };
-    });
-    console.log(this.state.storageID);
+    this.setState({ historyItemsFromStorage: localStoragePomodoros });
   };
 
   prepareDataForHistoryItem = () => {
@@ -93,17 +84,12 @@ export class HistoryPanel extends Component {
     const newItemArived = this.state.itemArrived;
 
     if (propsHasChanged) {
-      this.setState((prevState) => {
-        const itemArrived = true;
-        const storageID = prevState.storageID++;
-        return { itemArrived, storageID };
-      });
-      console.log(this.state.storageID);
+      this.setState({ itemArrived: true });
     }
 
     if (newItemArived) {
       localStorage.setItem(
-        `Pomodoro-${this.state.storageID}`,
+        `Pomodoro-Deluxe-${uuidv4()}`,
         JSON.stringify(this.props)
       );
       this.setState({ itemArrived: false });
@@ -124,7 +110,6 @@ export class HistoryPanel extends Component {
     console.count('HistoryPanel unmount');
   }
   render() {
-    const { animatedItemID, itemArrived } = this.state;
     const ItemsToDisplay = this.state.historyItemsFromStorage;
     return (
       <>
@@ -145,7 +130,6 @@ export class HistoryPanel extends Component {
                 ? ItemsToDisplay.map((historyItem) => {
                     return (
                       <CSSTransition
-                        in={itemArrived || animatedItemID}
                         key={historyItem.id}
                         timeout={300}
                         classNames={'historyItem'}
