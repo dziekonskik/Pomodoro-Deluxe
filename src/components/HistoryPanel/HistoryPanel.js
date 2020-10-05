@@ -81,16 +81,13 @@ export class HistoryPanel extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const propsHasChanged = prevProps !== this.props;
-    const newItemArived = this.state.itemArrived;
-
     if (propsHasChanged) {
-      this.setState({ itemArrived: true });
-    }
+      const extensiblePropObj = { ...this.props };
+      extensiblePropObj.date = new Date();
 
-    if (newItemArived) {
       localStorage.setItem(
         `Pomodoro-Deluxe-${uuidv4()}`,
-        JSON.stringify(this.props)
+        JSON.stringify(extensiblePropObj)
       );
       this.setState({ itemArrived: false });
       this.moveDataFromStorageToState();
