@@ -1,6 +1,5 @@
 import React from 'react';
 import { Toast } from 'react-bootstrap';
-import styles from './HistoryItem.module.scss';
 
 const HistoryItem = ({
   title,
@@ -12,7 +11,7 @@ const HistoryItem = ({
   handleClose,
 }) => {
   return (
-    <div className={`my-2 `}>
+    <div className="my-3">
       <Toast onClose={handleClose}>
         <Toast.Header closeLabel={'Close'}>
           <strong className="mr-auto">{title}</strong>

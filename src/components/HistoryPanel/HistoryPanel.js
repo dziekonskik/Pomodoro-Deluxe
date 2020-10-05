@@ -12,34 +12,19 @@ export class HistoryPanel extends Component {
       itemArrived: false,
       storageID: 0,
       historyItemsFromStorage: [],
-      animateItem: false,
-      animatedItemID: '',
-      sorted: false,
     };
   }
-  sendId = (id) => {
-    this.setState({ animatedItemID: id });
-  };
-
-  animationFn = (bool) => {
-    setTimeout(() => {
-      this.setState({ animateItem: bool });
-    }, 10);
-  };
 
   sortByDate = () => {
     this.setState((prevState) => {
-      const sorted = !prevState.sorted;
       const historyItemsFromStorage = prevState.historyItemsFromStorage.sort(
         (itemOne, ItemTwo) => {
           const dateOne = new Date(itemOne.date);
           const dateTwo = new Date(ItemTwo.date);
-          return sorted
-            ? parseInt(dateOne.getTime()) - parseInt(dateTwo.getTime())
-            : parseInt(dateTwo.getTime()) - parseInt(dateOne.getTime());
+          return parseInt(dateTwo.getTime()) - parseInt(dateOne.getTime());
         }
       );
-      return { historyItemsFromStorage, sorted };
+      return { historyItemsFromStorage };
     });
   };
 
@@ -92,6 +77,7 @@ export class HistoryPanel extends Component {
       this.setState({ itemArrived: false });
       this.moveDataFromStorageToState();
       this.prepareDataForHistoryItem();
+      this.sortByDate();
     }
     console.count('HistoryPanel update');
   }
@@ -111,16 +97,6 @@ export class HistoryPanel extends Component {
     return (
       <>
         <Row>
-          <Button
-            onClick={this.sortByDate}
-            block
-            size="lg"
-            variant="outline-light"
-          >
-            {this.state.sorted ? 'Newest First' : 'Oldest First'}
-          </Button>
-        </Row>
-        <Row>
           <div className={`mx-auto`}>
             <TransitionGroup>
               {ItemsToDisplay.length
@@ -128,14 +104,12 @@ export class HistoryPanel extends Component {
                     return (
                       <CSSTransition
                         key={historyItem.id}
-                        timeout={300}
+                        timeout={{ enter: 800, exit: 500 }}
                         classNames={'historyItem'}
-                        appear={true}
                       >
                         <HistoryItem
                           handleClose={() => {
                             this.deleteItem(historyItem.id);
-                            this.sendId(historyItem.id);
                           }}
                           key={historyItem.id}
                           {...historyItem}

@@ -45,10 +45,7 @@ class App extends React.Component {
                 <QuickStartPanel fetchFn={this.fetchSessionData} />
               </ErrorBoundry>
             </Col>
-            <Col
-              sm={12}
-              className="col-md-6 col-lg-3 border border-danger rounded shadow"
-            >
+            <Col sm={12} className="col-md-6 col-lg-3 rounded shadow">
               <ErrorBoundry message="Błąd w HistoryPanel">
                 <HistoryPanel {...this.state} />
               </ErrorBoundry>
