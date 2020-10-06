@@ -1,26 +1,26 @@
 {
   "files": {
-    "main.css": "/Pomodoro-Deluxe/static/css/main.3ff982fa.chunk.css",
-    "main.js": "/Pomodoro-Deluxe/static/js/main.bb3b4af9.chunk.js",
-    "main.js.map": "/Pomodoro-Deluxe/static/js/main.bb3b4af9.chunk.js.map",
+    "main.css": "/Pomodoro-Deluxe/static/css/main.31fc42c6.chunk.css",
+    "main.js": "/Pomodoro-Deluxe/static/js/main.53074a95.chunk.js",
+    "main.js.map": "/Pomodoro-Deluxe/static/js/main.53074a95.chunk.js.map",
     "runtime-main.js": "/Pomodoro-Deluxe/static/js/runtime-main.680e8ab8.js",
     "runtime-main.js.map": "/Pomodoro-Deluxe/static/js/runtime-main.680e8ab8.js.map",
     "static/css/2.a131f3de.chunk.css": "/Pomodoro-Deluxe/static/css/2.a131f3de.chunk.css",
-    "static/js/2.e19ac9d1.chunk.js": "/Pomodoro-Deluxe/static/js/2.e19ac9d1.chunk.js",
-    "static/js/2.e19ac9d1.chunk.js.map": "/Pomodoro-Deluxe/static/js/2.e19ac9d1.chunk.js.map",
+    "static/js/2.f3735a9e.chunk.js": "/Pomodoro-Deluxe/static/js/2.f3735a9e.chunk.js",
+    "static/js/2.f3735a9e.chunk.js.map": "/Pomodoro-Deluxe/static/js/2.f3735a9e.chunk.js.map",
     "index.html": "/Pomodoro-Deluxe/index.html",
-    "precache-manifest.96da09e015bea405273484651a148ec2.js": "/Pomodoro-Deluxe/precache-manifest.96da09e015bea405273484651a148ec2.js",
+    "precache-manifest.850815d7353f17aa66a0287a0ee9bed5.js": "/Pomodoro-Deluxe/precache-manifest.850815d7353f17aa66a0287a0ee9bed5.js",
     "service-worker.js": "/Pomodoro-Deluxe/service-worker.js",
     "static/css/2.a131f3de.chunk.css.map": "/Pomodoro-Deluxe/static/css/2.a131f3de.chunk.css.map",
-    "static/css/main.3ff982fa.chunk.css.map": "/Pomodoro-Deluxe/static/css/main.3ff982fa.chunk.css.map",
-    "static/js/2.e19ac9d1.chunk.js.LICENSE.txt": "/Pomodoro-Deluxe/static/js/2.e19ac9d1.chunk.js.LICENSE.txt",
+    "static/css/main.31fc42c6.chunk.css.map": "/Pomodoro-Deluxe/static/css/main.31fc42c6.chunk.css.map",
+    "static/js/2.f3735a9e.chunk.js.LICENSE.txt": "/Pomodoro-Deluxe/static/js/2.f3735a9e.chunk.js.LICENSE.txt",
     "static/media/dot.svg": "/Pomodoro-Deluxe/static/media/dot.dd0f186c.svg"
   },
   "entrypoints": [
     "static/js/runtime-main.680e8ab8.js",
     "static/css/2.a131f3de.chunk.css",
-    "static/js/2.e19ac9d1.chunk.js",
-    "static/css/main.3ff982fa.chunk.css",
-    "static/js/main.bb3b4af9.chunk.js"
+    "static/js/2.f3735a9e.chunk.js",
+    "static/css/main.31fc42c6.chunk.css",
+    "static/js/main.53074a95.chunk.js"
   ]
 }
