@@ -11,7 +11,8 @@ class App extends React.Component {
     title: 'Quick Pomodoro',
     workTime: 0,
     restTime: 0,
-    sessions: 1,
+    elapsedWorkTimeInSeconds: 0,
+    elapsedRestTimeInSeconds: 0,
     pausesCount: 0,
   };
 
@@ -27,12 +28,21 @@ class App extends React.Component {
     console.count('App mount');
   }
 
-  fetchSessionData = (workTime, restTime, pausesCount) => {
+  fetchSessionData = (
+    workTime,
+    restTime,
+    elapsedWorkTimeInSeconds,
+    elapsedRestTimeInSeconds,
+    pausesCount
+  ) => {
     this.setState({
       workTime,
       restTime,
+      elapsedWorkTimeInSeconds,
+      elapsedRestTimeInSeconds,
       pausesCount,
     });
+    console.log(typeof workTime, typeof elapsedRestTimeInSeconds);
   };
 
   render() {
