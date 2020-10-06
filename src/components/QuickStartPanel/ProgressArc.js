@@ -59,7 +59,7 @@ class ProgressBar extends React.Component {
         className="mx-auto shadow-lg rounded-circle"
         ref={this.canvas}
         style={{
-          border: '1px solid tomato',
+          border: '15px solid #E0A800',
           backgroundColor: 'rgba(255,255,255, .7)',
         }}
         width={canvasSize}
