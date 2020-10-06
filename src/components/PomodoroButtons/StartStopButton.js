@@ -16,7 +16,7 @@ const StartStopButton = ({
         data-toggle="tooltip"
         data-placement="top"
         title="Start pomodoro"
-        onClick={handleStartStop}
+        onClick={disabled ? null : handleStartStop}
       >
         {children}
         <Badge className="ml-2" variant="light">
