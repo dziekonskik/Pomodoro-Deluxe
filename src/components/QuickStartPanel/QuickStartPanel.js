@@ -4,6 +4,7 @@ import TimeUnit from '../TimeUnit/TimeUnit';
 import StartStopButton from '../PomodoroButtons/StartStopButton';
 import CancelButton from '../PomodoroButtons/CancelButton';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
+import ProgressArc from './ProgressArc';
 import styles from './QuickStartPanel.module.scss';
 
 export class QuickStartPanel extends Component {
@@ -160,6 +161,11 @@ export class QuickStartPanel extends Component {
     const screenIsWideEnough = !mediaQueryList.matches;
     const userWantsToDisplayWorkTime = !userSetsRestTime;
 
+    const workprogressInPercent =
+      (elapsedWorkTimeInSeconds / (workMinutes * 60)) * 100.0;
+    const restprogressInPercent =
+      (elapsedRestTimeInSeconds / (restMinutes * 60)) * 100.0;
+
     const shouldDisplayWorkTimeUnit =
       screenIsWideEnough || userWantsToDisplayWorkTime;
     const shouldDisplayRestTimeUnit =
@@ -222,6 +228,16 @@ export class QuickStartPanel extends Component {
               Set Break
             </ToggleTimeUnit>
           )}
+        </Row>
+        <Row>
+          <ProgressArc
+            percent={
+              this.state.isItWorkTime
+                ? workprogressInPercent
+                : restprogressInPercent
+            }
+            canvasSize={screenIsWideEnough ? 250 : 150}
+          />
         </Row>
       </Container>
     );
