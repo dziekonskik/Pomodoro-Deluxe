@@ -136,6 +136,20 @@ export class QuickStartPanel extends Component {
       this.setState({ isItWorkTime: false, isItRestTime: true });
     }
     if (restTimeHasFinishedAndSessionIsOver) {
+      const {
+        workMinutes,
+        restMinutes,
+        elapsedWorkTimeInSeconds,
+        elapsedRestTimeInSeconds,
+        pausesCount,
+      } = this.state;
+      this.props.fetchFn(
+        workMinutes,
+        restMinutes,
+        elapsedWorkTimeInSeconds,
+        elapsedRestTimeInSeconds,
+        pausesCount
+      );
       this.setState({
         isAppReady: false,
         isTimeRunning: false,
