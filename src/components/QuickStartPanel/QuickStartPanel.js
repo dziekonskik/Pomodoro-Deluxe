@@ -69,7 +69,7 @@ export class QuickStartPanel extends Component {
   handlePauseTimer = () => {
     this.setState((prevState) => ({
       isTimeRunning: false,
-      pausesCount: prevState.pausesCount++,
+      pausesCount: prevState.pausesCount + 1,
     }));
     this.resetInterval();
   };
@@ -94,17 +94,17 @@ export class QuickStartPanel extends Component {
 
   setWorkTime = ({ target }) => {
     target.title === '+'
-      ? this.setState({ workMinutes: this.state.workMinutes + 0.5 })
+      ? this.setState({ workMinutes: this.state.workMinutes + 5 })
       : this.state.workMinutes > 0
-      ? this.setState({ workMinutes: this.state.workMinutes - 0.5 })
+      ? this.setState({ workMinutes: this.state.workMinutes - 5 })
       : this.setState({ workMinutes: 0 });
   };
 
   setRestTime = ({ target }) => {
     target.title === '+'
-      ? this.setState({ restMinutes: this.state.restMinutes + 0.5 })
+      ? this.setState({ restMinutes: this.state.restMinutes + 2 })
       : this.state.restMinutes > 0
-      ? this.setState({ restMinutes: this.state.restMinutes - 0.5 })
+      ? this.setState({ restMinutes: this.state.restMinutes - 2 })
       : this.setState({ restMinutes: 0 });
   };
 
