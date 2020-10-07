@@ -15,3 +15,8 @@ Your further programming lessons.
 1. Do the full pomodoro session (Work and Break)
 2. Your times and breaks will be saved in local storage
 3. View and delete history 
+
+### Upcoming Changes
+1. Multiple session option with namings
+2. Stats
+3. Bonus!
