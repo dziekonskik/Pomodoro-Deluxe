@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const HydrappView = () => {
-  return (
-    <div>
-      <h2>Hydrapp!</h2>
-    </div>
-  );
-};
+export class HydrappView extends Component {
+  constructor(props) {
+    super(props);
+    this.hydrapp = React.createRef('https://dziekonskik.github.io/HydrApp/');
+    this.state = {};
+  }
+
+  componentDidMount() {}
+
+  render() {
+    return <div ref={this.hydrapp}></div>;
+  }
+}
 
 export default HydrappView;
