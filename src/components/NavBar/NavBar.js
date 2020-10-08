@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Nav } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 export class NavBar extends Component {
   constructor(props) {
@@ -10,18 +11,26 @@ export class NavBar extends Component {
 
   render() {
     return (
-      <Nav className="border-light" variant="tabs" defaultActiveKey="/home">
+      <Nav variant="tabs" defaultActiveKey="/">
         <Nav.Item>
-          <Nav.Link href="/home">Home</Nav.Link>
+          <Nav.Link as={Link} to="/" eventKey="/">
+            Home
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link href="/">Stats</Nav.Link>
+          <Nav.Link as={Link} to="/session" eventKey="/session">
+            Set Sessions
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="link-1">Set Sessions</Nav.Link>
+          <Nav.Link as={Link} to="/stats" eventKey="/stats">
+            Stats
+          </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="disabled">Hydrapp!</Nav.Link>
+          <Nav.Link as={Link} to="/hydrapp" eventKey="/hydrapp">
+            Hydrapp!
+          </Nav.Link>
         </Nav.Item>
       </Nav>
     );

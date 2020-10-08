@@ -56,54 +56,53 @@ class App extends React.Component {
     return (
       <React.StrictMode>
         <>
-          <Container fluid className={`App ${styles.bgColor} vh-100 p-5`}>
-            <Row>
-              <Col
-                sm={12}
-                md={{ order: 2 }}
-                className="col-md-6 col-lg-9 shadow"
-                style={{ maxHeight: '90vh' }}
-              >
-                <BrowserRouter>
-                  <>
-                    <Row>
-                      <NavBar />
-                    </Row>
-                    <Switch>
-                      <Route path="/">
-                        <ErrorBoundry message="Błąd w QuickstartPanel">
-                          <QuickStartPanel fetchFn={this.fetchSessionData} />
-                        </ErrorBoundry>
-                      </Route>
-                      <Route path="/session">
-                        <ErrorBoundry message="Błąd w Sessions">
-                          <SessionsView />
-                        </ErrorBoundry>
-                      </Route>
-                      <Route path="/stats">
-                        <ErrorBoundry message="Błąd w Stats">
-                          <StatsView />
-                        </ErrorBoundry>
-                      </Route>
-                      <Route path="/hydrapp">
-                        <ErrorBoundry message="Błąd w Hydrapp">
-                          <HydrappView />
-                        </ErrorBoundry>
-                      </Route>
-                    </Switch>
-                  </>
-                </BrowserRouter>
-              </Col>
-              <Col
-                sm={12}
-                className="col-md-6 col-lg-3 rounded shadow overflow-auto"
-                style={{ maxHeight: '90vh' }}
-              >
-                <ErrorBoundry message="Błąd w HistoryPanel">
-                  <HistoryPanel {...this.state} />
-                </ErrorBoundry>
-              </Col>
-            </Row>
+          <Container fluid className={`App ${styles.bgColor} vh-100 p-4`}>
+            <BrowserRouter>
+              <>
+                <Row>
+                  <NavBar />
+                </Row>
+                <Row>
+                  <Col
+                    sm={12}
+                    md={{ order: 2 }}
+                    className="col-md-6 col-lg-9 shadow"
+                  >
+                    <Route exact path="/">
+                      <ErrorBoundry message="Błąd w QuickstartPanel">
+                        <QuickStartPanel fetchFn={this.fetchSessionData} />
+                      </ErrorBoundry>
+                    </Route>
+                    <Route path="/session">
+                      <ErrorBoundry message="Błąd w Sessions">
+                        <SessionsView />
+                      </ErrorBoundry>
+                    </Route>
+                    <Route path="/stats">
+                      <ErrorBoundry message="Błąd w Stats">
+                        <StatsView />
+                      </ErrorBoundry>
+                    </Route>
+                    <Route
+                      path="/hydrapp"
+                      render={() =>
+                        (window.location =
+                          'https://dziekonskik.github.io/HydrApp/')
+                      }
+                    ></Route>
+                  </Col>
+                  <Col
+                    sm={12}
+                    className="col-md-6 col-lg-3 rounded shadow overflow-auto"
+                    style={{ maxHeight: '90vh' }}
+                  >
+                    <ErrorBoundry message="Błąd w HistoryPanel">
+                      <HistoryPanel {...this.state} />
+                    </ErrorBoundry>
+                  </Col>
+                </Row>
+              </>
+            </BrowserRouter>
           </Container>
         </>
       </React.StrictMode>
