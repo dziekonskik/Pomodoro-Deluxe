@@ -6,29 +6,31 @@ export class NavBar extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      selectedTab: '',
+    };
   }
 
   render() {
     return (
       <Nav variant="tabs" defaultActiveKey="/">
         <Nav.Item>
-          <Nav.Link as={Link} to="/" eventKey="/">
+          <Nav.Link eventKey="/" as={Link} to="/">
             Home
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to="/session" eventKey="/session">
+          <Nav.Link eventKey="/session" as={Link} to="/session">
             Set Sessions
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to="/stats" eventKey="/stats">
+          <Nav.Link eventKey="/stats" as={Link} to="/stats">
             Stats
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link as={Link} to="/hydrapp" eventKey="/hydrapp">
+          <Nav.Link eventKey="/hydrapp" as={Link} to="/hydrapp">
             Hydrapp!
           </Nav.Link>
         </Nav.Item>
