@@ -1,0 +1,15 @@
+$main-color: #3767ad;
+$water-color: #2196f3;
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.hydrApp {
+  background-color: #3767ad;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+}
