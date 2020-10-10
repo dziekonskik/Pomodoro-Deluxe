@@ -1,10 +1,11 @@
 import React from 'react';
+import SessionForm from '../../components/SessionForm/SessionForm';
 
 const SessionsView = () => {
   return (
-    <div>
-      <h2>Set Session</h2>
-    </div>
+    <>
+      <SessionForm />
+    </>
   );
 };
 
