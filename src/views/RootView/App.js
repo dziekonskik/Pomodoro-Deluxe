@@ -54,11 +54,17 @@ class App extends React.Component {
   };
 
   render() {
+    const mediaQuery = window.matchMedia('(max-width: 992px)');
     return (
       <React.StrictMode>
         <>
-          <Container fluid className={`App ${styles.bgColor} vh-100 p-4`}>
-            <BrowserRouter basename={window.location.pathname}>
+          <Container
+            fluid
+            className={`App ${styles.bgColor} ${
+              !mediaQuery.matches ? 'vh-100' : ''
+            } p-4`}
+          >
+            <BrowserRouter>
               <>
                 <Row>
                   <NavBar />
@@ -110,3 +116,5 @@ class App extends React.Component {
 }
 
 export default App;
+
+//basename={{window.location.pathname}}
