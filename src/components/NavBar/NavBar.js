@@ -7,13 +7,21 @@ export class NavBar extends Component {
     super(props);
 
     this.state = {
-      selectedTab: '',
+      activeTab: '',
     };
   }
 
+  setActiveTab = (selectedTab) => {
+    this.setState({ activeTab: selectedTab });
+  };
+
   render() {
     return (
-      <Nav variant="tabs" defaultActiveKey="/">
+      <Nav
+        onSelect={(eventKey) => this.setActiveTab(eventKey)}
+        variant="tabs"
+        defaultActiveKey="/"
+      >
         <Nav.Item>
           <Nav.Link eventKey="/" as={Link} to="/">
             Home

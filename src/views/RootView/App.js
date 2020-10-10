@@ -7,7 +7,7 @@ import SessionsView from '../SessionsView/SessionsView';
 import StatsView from '../StatsView/StatsView';
 import HydrappView from '../HydrappView/HydrappView';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -25,6 +25,7 @@ class App extends React.Component {
 
   componentDidMount() {
     console.count('App mount');
+    console.log(window.location.pathname);
   }
 
   componentDidUpdate() {
@@ -57,7 +58,7 @@ class App extends React.Component {
       <React.StrictMode>
         <>
           <Container fluid className={`App ${styles.bgColor} vh-100 p-4`}>
-            <BrowserRouter>
+            <BrowserRouter basename={window.location.pathname}>
               <>
                 <Row>
                   <NavBar />
@@ -83,13 +84,11 @@ class App extends React.Component {
                         <StatsView />
                       </ErrorBoundry>
                     </Route>
-                    <Route
-                      path="/hydrapp"
-                      render={() =>
-                        (window.location =
-                          'https://dziekonskik.github.io/HydrApp/')
-                      }
-                    ></Route>
+                    <Route path="/hydrapp">
+                      <ErrorBoundry message="Błąd w Hydrapp">
+                        <HydrappView />
+                      </ErrorBoundry>
+                    </Route>
                   </Col>
                   <Col
                     sm={12}
