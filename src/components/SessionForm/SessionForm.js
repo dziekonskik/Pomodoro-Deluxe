@@ -33,7 +33,12 @@ export class SessionForm extends Component {
   };
 
   render() {
-    const { userSetsRestTime, listOfCycles } = this.state;
+    const {
+      userSetsRestTime,
+      listOfCycles,
+      workMinutes,
+      restMinutes,
+    } = this.state;
     const mediaQuery = window.matchMedia('(max-width: 992px)');
     const screenIsWideEnough = !mediaQuery.matches;
     const userWantsToDisplayWorkTime = !userSetsRestTime;
@@ -56,23 +61,27 @@ export class SessionForm extends Component {
           <TimeSetContext.Consumer>
             {(context) => (
               <>
-                <Col xs={12} className="col-sm-9 col-lg-4">
+                <Col xs={8} className="col-sm-7 col-lg-3">
                   {shouldDisplayWorkTimeUnit && (
                     <TimeUnit
+                      justMinutes
                       setTime={({ target }) =>
                         context.setWorkTime({ target }, this)
                       }
+                      minutesSet={workMinutes}
                     >
                       Work
                     </TimeUnit>
                   )}
                 </Col>
-                <Col xs={12} className="col-sm-9 col-lg-4">
+                <Col xs={8} className="col-sm-7 col-lg-3">
                   {shouldDisplayRestTimeUnit && (
                     <TimeUnit
+                      justMinutes
                       setTime={({ target }) =>
                         context.setRestTime({ target }, this)
                       }
+                      minutesSet={restMinutes}
                     >
                       Break
                     </TimeUnit>
