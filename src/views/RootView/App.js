@@ -40,6 +40,12 @@ class App extends React.Component {
       : that.setState({ restMinutes: 0 });
   };
 
+  toggleTimeUnitDisplay() {
+    this.setState((prevState) => ({
+      userSetsRestTime: !prevState.userSetsRestTime,
+    }));
+  }
+
   componentDidMount() {
     console.count('App mount');
     console.log(window.location.pathname);
@@ -74,6 +80,7 @@ class App extends React.Component {
     const timeSetFunctions = {
       setWorkTime: this.setWorkTime,
       setRestTime: this.setRestTime,
+      toggleTimeUnitDisplay: this.toggleTimeUnitDisplay,
     };
     return (
       <React.StrictMode>

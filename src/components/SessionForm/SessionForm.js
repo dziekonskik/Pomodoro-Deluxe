@@ -26,12 +26,6 @@ export class SessionForm extends Component {
     this.setState({ sessionTitle: target.value });
   };
 
-  toggleTimeUnitDisplay = () => {
-    this.setState((prevState) => ({
-      userSetsRestTime: !prevState.userSetsRestTime,
-    }));
-  };
-
   render() {
     const {
       userSetsRestTime,
@@ -49,18 +43,19 @@ export class SessionForm extends Component {
 
     return (
       <Container className={`p-3 ${styles.font}`}>
-        <Row className="d-flex justify-content-center">
-          <Col md={6}>
-            <input
-              placeholder="Session Name"
-              className={`text-center ${styles.input}`}
-            />
-          </Col>
-        </Row>
-        <Row className="d-flex justify-content-center my-3">
-          <TimeSetContext.Consumer>
-            {(context) => (
-              <>
+        <TimeSetContext.Consumer>
+          {(context) => (
+            <>
+              <Row className="d-flex justify-content-center">
+                <Col md={6}>
+                  <input
+                    placeholder="Session Name"
+                    className={`text-center ${styles.input}`}
+                    onChange={this.setSessionTitle}
+                  />
+                </Col>
+              </Row>
+              <Row className="d-flex justify-content-center my-3">
                 <Col xs={8} className="col-sm-7 col-lg-3">
                   {shouldDisplayWorkTimeUnit && (
                     <TimeUnit
@@ -87,37 +82,40 @@ export class SessionForm extends Component {
                     </TimeUnit>
                   )}
                 </Col>
-              </>
-            )}
-          </TimeSetContext.Consumer>
-        </Row>
-        <Row className="d-flex justify-content-around align-items-center my-3">
-          <UtilityButton size={'lg'} variant={'outline-warning'}>
-            Add Cycle
-          </UtilityButton>
-          {!screenIsWideEnough && (
-            <ToggleTimeUnit
-              checked={userSetsRestTime}
-              checkFn={this.toggleTimeUnitDisplay}
-            >
-              Set Break
-            </ToggleTimeUnit>
+              </Row>
+              <Row className="d-flex justify-content-around align-items-center my-3">
+                <UtilityButton size={'lg'} variant={'outline-warning'}>
+                  Add Cycle
+                </UtilityButton>
+                {!screenIsWideEnough && (
+                  <ToggleTimeUnit
+                    checked={userSetsRestTime}
+                    checkFn={context.toggleTimeUnitDisplay.bind(this)}
+                  >
+                    Set Break
+                  </ToggleTimeUnit>
+                )}
+              </Row>
+              <Row className="d-flex justify-content-center text-center">
+                <Col
+                  className="overflow-auto col-lg-6"
+                  style={{ height: '240px' }}
+                >
+                  <ListGroup style={{ cursor: 'pointer' }}>
+                    {listOfCycles.map((cycle) => (
+                      <SessionListItem />
+                    ))}
+                  </ListGroup>
+                </Col>
+              </Row>
+              <Row className="d-flex justify-content-around align-items-center my-3">
+                <UtilityButton size={'lg'} variant={'outline-warning'}>
+                  Complete Session
+                </UtilityButton>
+              </Row>
+            </>
           )}
-        </Row>
-        <Row className="d-flex justify-content-center text-center">
-          <Col className="overflow-auto col-lg-6" style={{ height: '240px' }}>
-            <ListGroup style={{ cursor: 'pointer' }}>
-              {listOfCycles.map((cycle) => (
-                <SessionListItem />
-              ))}
-            </ListGroup>
-          </Col>
-        </Row>
-        <Row className="d-flex justify-content-around align-items-center my-3">
-          <UtilityButton size={'lg'} variant={'outline-warning'}>
-            Complete Session
-          </UtilityButton>
-        </Row>
+        </TimeSetContext.Consumer>
       </Container>
     );
   }

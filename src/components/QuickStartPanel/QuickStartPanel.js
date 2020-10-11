@@ -32,12 +32,6 @@ export class QuickStartPanel extends Component {
     this.customTimerID = null;
   };
 
-  toggleTimeUnitDisplay = () => {
-    this.setState((prevState) => ({
-      userSetsRestTime: !prevState.userSetsRestTime,
-    }));
-  };
-
   handleCancelTimer = () => {
     const {
       workMinutes,
@@ -185,12 +179,12 @@ export class QuickStartPanel extends Component {
 
     return (
       <Container className={`p-3 ${styles.cardGeneralStyles}`}>
-        <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
-        <Row>
-          <Col className="d-flex">
-            <TimeSetContext.Consumer>
-              {(context) => (
-                <>
+        <TimeSetContext.Consumer>
+          {(context) => (
+            <>
+              <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
+              <Row>
+                <Col className="d-flex">
                   {shouldDisplayWorkTimeUnit && (
                     <TimeUnit
                       minutesSet={workMinutes}
@@ -213,50 +207,52 @@ export class QuickStartPanel extends Component {
                       BREAK
                     </TimeUnit>
                   )}
-                </>
-              )}
-            </TimeSetContext.Consumer>
-          </Col>
-        </Row>
-        <Row>
-          <StartStopButton
-            handleStartStop={
-              isAppReady && !isTimeRunning
-                ? this.handleStartTimer
-                : this.handlePauseTimer
-            }
-            pausesCount={pausesCount}
-            isTimeRunning={isTimeRunning}
-            disabled={workMinutes === 0 || restMinutes === 0}
-          >
-            {this.state.isTimeRunning ? 'Stop Pomodoro' : 'Start Pomodoro'}
-          </StartStopButton>
-          <CancelButton
-            disabled={!isAppReady}
-            onCancel={isAppReady ? this.handleCancelTimer : null}
-          >
-            Cancel
-          </CancelButton>
+                </Col>
+              </Row>
+              <Row>
+                <StartStopButton
+                  handleStartStop={
+                    isAppReady && !isTimeRunning
+                      ? this.handleStartTimer
+                      : this.handlePauseTimer
+                  }
+                  pausesCount={pausesCount}
+                  isTimeRunning={isTimeRunning}
+                  disabled={workMinutes === 0 || restMinutes === 0}
+                >
+                  {this.state.isTimeRunning
+                    ? 'Stop Pomodoro'
+                    : 'Start Pomodoro'}
+                </StartStopButton>
+                <CancelButton
+                  disabled={!isAppReady}
+                  onCancel={isAppReady ? this.handleCancelTimer : null}
+                >
+                  Cancel
+                </CancelButton>
 
-          {!screenIsWideEnough && (
-            <ToggleTimeUnit
-              checked={userSetsRestTime}
-              checkFn={this.toggleTimeUnitDisplay}
-            >
-              Set Break
-            </ToggleTimeUnit>
+                {!screenIsWideEnough && (
+                  <ToggleTimeUnit
+                    checked={userSetsRestTime}
+                    checkFn={context.toggleTimeUnitDisplay.bind(this)}
+                  >
+                    Set Break
+                  </ToggleTimeUnit>
+                )}
+              </Row>
+              <Row>
+                <ProgressArc
+                  percent={
+                    this.state.isItWorkTime
+                      ? workprogressInPercent
+                      : restprogressInPercent
+                  }
+                  canvasSize={screenIsWideEnough ? 250 : 150}
+                />
+              </Row>
+            </>
           )}
-        </Row>
-        <Row>
-          <ProgressArc
-            percent={
-              this.state.isItWorkTime
-                ? workprogressInPercent
-                : restprogressInPercent
-            }
-            canvasSize={screenIsWideEnough ? 250 : 150}
-          />
-        </Row>
+        </TimeSetContext.Consumer>
       </Container>
     );
   }
