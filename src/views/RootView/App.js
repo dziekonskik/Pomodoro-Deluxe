@@ -8,6 +8,7 @@ import StatsView from '../StatsView/StatsView';
 import HydrappView from '../HydrappView/HydrappView';
 
 import { BrowserRouter, Route } from 'react-router-dom';
+import TimeSetContext from '../../TimeSetContext';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
@@ -21,6 +22,22 @@ class App extends React.Component {
     elapsedWorkTimeInSeconds: 0,
     elapsedRestTimeInSeconds: 0,
     pausesCount: 0,
+  };
+
+  setWorkTime = ({ target }, that) => {
+    target.title === '+'
+      ? that.setState({ workMinutes: that.state.workMinutes + 5 })
+      : that.state.workMinutes > 0
+      ? that.setState({ workMinutes: that.state.workMinutes - 5 })
+      : that.setState({ workMinutes: 0 });
+  };
+
+  setRestTime = ({ target }, that) => {
+    target.title === '+'
+      ? that.setState({ restMinutes: that.state.restMinutes + 2 })
+      : that.state.restMinutes > 0
+      ? that.setState({ restMinutes: that.state.restMinutes - 2 })
+      : that.setState({ restMinutes: 0 });
   };
 
   componentDidMount() {
@@ -50,11 +67,14 @@ class App extends React.Component {
       elapsedRestTimeInSeconds,
       pausesCount,
     });
-    console.log(typeof workTime, typeof elapsedRestTimeInSeconds);
   };
 
   render() {
     const mediaQuery = window.matchMedia('(max-width: 992px)');
+    const timeSetFunctions = {
+      setWorkTime: this.setWorkTime,
+      setRestTime: this.setRestTime,
+    };
     return (
       <React.StrictMode>
         <>
@@ -70,41 +90,43 @@ class App extends React.Component {
                   <NavBar />
                 </Row>
                 <Row>
-                  <Col
-                    sm={12}
-                    md={{ order: 2 }}
-                    className="col-md-6 col-lg-9 shadow"
-                  >
-                    <Route exact path="/">
-                      <ErrorBoundry message="Błąd w QuickstartPanel">
-                        <QuickStartPanel fetchFn={this.fetchSessionData} />
+                  <TimeSetContext.Provider value={timeSetFunctions}>
+                    <Col
+                      sm={12}
+                      md={{ order: 2 }}
+                      className="col-md-6 col-lg-9 shadow"
+                    >
+                      <Route exact path="/">
+                        <ErrorBoundry message="Błąd w QuickstartPanel">
+                          <QuickStartPanel fetchFn={this.fetchSessionData} />
+                        </ErrorBoundry>
+                      </Route>
+                      <Route path="/session">
+                        <ErrorBoundry message="Błąd w Sessions">
+                          <SessionsView />
+                        </ErrorBoundry>
+                      </Route>
+                      <Route path="/stats">
+                        <ErrorBoundry message="Błąd w Stats">
+                          <StatsView />
+                        </ErrorBoundry>
+                      </Route>
+                      <Route path="/hydrapp">
+                        <ErrorBoundry message="Błąd w Hydrapp">
+                          <HydrappView />
+                        </ErrorBoundry>
+                      </Route>
+                    </Col>
+                    <Col
+                      sm={12}
+                      className="col-md-6 col-lg-3 rounded shadow overflow-auto"
+                      style={{ maxHeight: '90vh' }}
+                    >
+                      <ErrorBoundry message="Błąd w HistoryPanel">
+                        <HistoryPanel {...this.state} />
                       </ErrorBoundry>
-                    </Route>
-                    <Route path="/session">
-                      <ErrorBoundry message="Błąd w Sessions">
-                        <SessionsView />
-                      </ErrorBoundry>
-                    </Route>
-                    <Route path="/stats">
-                      <ErrorBoundry message="Błąd w Stats">
-                        <StatsView />
-                      </ErrorBoundry>
-                    </Route>
-                    <Route path="/hydrapp">
-                      <ErrorBoundry message="Błąd w Hydrapp">
-                        <HydrappView />
-                      </ErrorBoundry>
-                    </Route>
-                  </Col>
-                  <Col
-                    sm={12}
-                    className="col-md-6 col-lg-3 rounded shadow overflow-auto"
-                    style={{ maxHeight: '90vh' }}
-                  >
-                    <ErrorBoundry message="Błąd w HistoryPanel">
-                      <HistoryPanel {...this.state} />
-                    </ErrorBoundry>
-                  </Col>
+                    </Col>
+                  </TimeSetContext.Provider>
                 </Row>
               </>
             </BrowserRouter>

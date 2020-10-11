@@ -7,6 +7,8 @@ import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import ProgressArc from './ProgressArc';
 import styles from './QuickStartPanel.module.scss';
 
+import TimeSetContext from '../../TimeSetContext';
+
 export class QuickStartPanel extends Component {
   constructor(props) {
     super(props);
@@ -90,22 +92,6 @@ export class QuickStartPanel extends Component {
         }
       }, 1000);
     }
-  };
-
-  setWorkTime = ({ target }) => {
-    target.title === '+'
-      ? this.setState({ workMinutes: this.state.workMinutes + 5 })
-      : this.state.workMinutes > 0
-      ? this.setState({ workMinutes: this.state.workMinutes - 5 })
-      : this.setState({ workMinutes: 0 });
-  };
-
-  setRestTime = ({ target }) => {
-    target.title === '+'
-      ? this.setState({ restMinutes: this.state.restMinutes + 2 })
-      : this.state.restMinutes > 0
-      ? this.setState({ restMinutes: this.state.restMinutes - 2 })
-      : this.setState({ restMinutes: 0 });
   };
 
   componentDidUpdate() {
@@ -202,28 +188,34 @@ export class QuickStartPanel extends Component {
         <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
         <Row>
           <Col className="d-flex">
-            {
-              <>
-                {shouldDisplayWorkTimeUnit && (
-                  <TimeUnit
-                    minutesSet={workMinutes}
-                    elapsedTimeInSeconds={elapsedWorkTimeInSeconds}
-                    setTime={this.setWorkTime}
-                  >
-                    WORK
-                  </TimeUnit>
-                )}
-                {shouldDisplayRestTimeUnit && (
-                  <TimeUnit
-                    minutesSet={restMinutes}
-                    elapsedTimeInSeconds={elapsedRestTimeInSeconds}
-                    setTime={this.setRestTime}
-                  >
-                    BREAK
-                  </TimeUnit>
-                )}
-              </>
-            }
+            <TimeSetContext.Consumer>
+              {(context) => (
+                <>
+                  {shouldDisplayWorkTimeUnit && (
+                    <TimeUnit
+                      minutesSet={workMinutes}
+                      elapsedTimeInSeconds={elapsedWorkTimeInSeconds}
+                      setTime={({ target }) =>
+                        context.setWorkTime({ target }, this)
+                      }
+                    >
+                      WORK
+                    </TimeUnit>
+                  )}
+                  {shouldDisplayRestTimeUnit && (
+                    <TimeUnit
+                      minutesSet={restMinutes}
+                      elapsedTimeInSeconds={elapsedRestTimeInSeconds}
+                      setTime={({ target }) =>
+                        context.setRestTime({ target }, this)
+                      }
+                    >
+                      BREAK
+                    </TimeUnit>
+                  )}
+                </>
+              )}
+            </TimeSetContext.Consumer>
           </Col>
         </Row>
         <Row>

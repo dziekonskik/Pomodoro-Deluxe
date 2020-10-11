@@ -4,6 +4,9 @@ import TimeUnit from '../TimeUnit/TimeUnit';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import UtilityButton from '../PomodoroButtons/UtilityButton';
 import SessionListItem from './SessionListItem';
+
+import TimeSetContext from '../../TimeSetContext';
+
 import styles from './SessionForm.module.scss';
 
 export class SessionForm extends Component {
@@ -11,11 +14,17 @@ export class SessionForm extends Component {
     super(props);
 
     this.state = {
+      sessionTitle: '',
+      listOfCycles: [],
       workMinutes: 0,
       restMinutes: 0,
       userSetsRestTime: false,
     };
   }
+
+  setSessionTitle = ({ target }) => {
+    this.setState({ sessionTitle: target.value });
+  };
 
   toggleTimeUnitDisplay = () => {
     this.setState((prevState) => ({
@@ -24,7 +33,7 @@ export class SessionForm extends Component {
   };
 
   render() {
-    const { userSetsRestTime } = this.state;
+    const { userSetsRestTime, listOfCycles } = this.state;
     const mediaQuery = window.matchMedia('(max-width: 992px)');
     const screenIsWideEnough = !mediaQuery.matches;
     const userWantsToDisplayWorkTime = !userSetsRestTime;
@@ -44,12 +53,34 @@ export class SessionForm extends Component {
           </Col>
         </Row>
         <Row className="d-flex justify-content-center my-3">
-          <Col xs={12} className="col-sm-9 col-lg-4">
-            {shouldDisplayWorkTimeUnit && <TimeUnit>Work</TimeUnit>}
-          </Col>
-          <Col xs={12} className="col-sm-9 col-lg-4">
-            {shouldDisplayRestTimeUnit && <TimeUnit>Break</TimeUnit>}
-          </Col>
+          <TimeSetContext.Consumer>
+            {(context) => (
+              <>
+                <Col xs={12} className="col-sm-9 col-lg-4">
+                  {shouldDisplayWorkTimeUnit && (
+                    <TimeUnit
+                      setTime={({ target }) =>
+                        context.setWorkTime({ target }, this)
+                      }
+                    >
+                      Work
+                    </TimeUnit>
+                  )}
+                </Col>
+                <Col xs={12} className="col-sm-9 col-lg-4">
+                  {shouldDisplayRestTimeUnit && (
+                    <TimeUnit
+                      setTime={({ target }) =>
+                        context.setRestTime({ target }, this)
+                      }
+                    >
+                      Break
+                    </TimeUnit>
+                  )}
+                </Col>
+              </>
+            )}
+          </TimeSetContext.Consumer>
         </Row>
         <Row className="d-flex justify-content-around align-items-center my-3">
           <UtilityButton size={'lg'} variant={'outline-warning'}>
@@ -65,18 +96,11 @@ export class SessionForm extends Component {
           )}
         </Row>
         <Row className="d-flex justify-content-center text-center">
-          <Col
-            className="overflow-auto col-lg-6"
-            style={{ 'max-height': '240px' }}
-          >
+          <Col className="overflow-auto col-lg-6" style={{ height: '240px' }}>
             <ListGroup style={{ cursor: 'pointer' }}>
-              <SessionListItem />
-              <SessionListItem />
-              <SessionListItem />
-              <ListGroup.Item>Cras justo odio</ListGroup.Item>
-              <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-              <ListGroup.Item>Morbi leo risus</ListGroup.Item>
-              <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+              {listOfCycles.map((cycle) => (
+                <SessionListItem />
+              ))}
             </ListGroup>
           </Col>
         </Row>
