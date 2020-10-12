@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, ListGroup } from 'react-bootstrap';
+import { v4 as uuidv4 } from 'uuid';
 import TimeUnit from '../TimeUnit/TimeUnit';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import UtilityButton from '../PomodoroButtons/UtilityButton';
@@ -8,6 +9,47 @@ import SessionListItem from './SessionListItem';
 import TimeSetContext from '../../TimeSetContext';
 
 import styles from './SessionForm.module.scss';
+import {
+  GiBiceps,
+  GiBoatFishing,
+  GiArmorUpgrade,
+  GiAmericanFootballBall,
+  GiBeachBucket,
+  GiCroissant,
+  GiCoins,
+  GiHighKick,
+  GiPodium,
+  GiPush,
+  GiSunglasses,
+  GiAtom,
+  GiTeslaTurret,
+  GiSnail,
+} from 'react-icons/gi';
+
+function randomIconGenerator(arr) {
+  const random = Math.floor(Math.random() * arr.length);
+
+  return arr[random];
+}
+
+const workIcons = [
+  <GiBiceps />,
+  <GiArmorUpgrade />,
+  <GiCoins />,
+  <GiHighKick />,
+  <GiPodium />,
+  <GiPush />,
+  <GiAtom />,
+];
+const breakIcons = [
+  <GiBoatFishing />,
+  <GiAmericanFootballBall />,
+  <GiBeachBucket />,
+  <GiCroissant />,
+  <GiSunglasses />,
+  <GiTeslaTurret />,
+  <GiSnail />,
+];
 
 export class SessionForm extends Component {
   constructor(props) {
@@ -26,6 +68,33 @@ export class SessionForm extends Component {
     this.setState({ sessionTitle: target.value });
   };
 
+  addItem = () => {
+    this.setState((prevState) => {
+      const listOfCycles = [
+        ...prevState.listOfCycles,
+        {
+          id: uuidv4(),
+          work: this.state.workMinutes,
+          rest: this.state.restMinutes,
+          workIcon: randomIconGenerator(workIcons),
+          restIcon: randomIconGenerator(breakIcons),
+        },
+      ];
+      const workMinutes = 0;
+      const restMinutes = 0;
+      return { listOfCycles, workMinutes, restMinutes };
+    });
+  };
+
+  removeItem = (itemToRemove) => {
+    this.setState((prevState) => {
+      const listOfCycles = prevState.listOfCycles.filter(
+        (item) => item.id !== itemToRemove
+      );
+      return { listOfCycles };
+    });
+  };
+
   render() {
     const {
       userSetsRestTime,
@@ -40,6 +109,7 @@ export class SessionForm extends Component {
       screenIsWideEnough || userWantsToDisplayWorkTime;
     const shouldDisplayRestTimeUnit =
       screenIsWideEnough || !userWantsToDisplayWorkTime;
+    const workAndRestTimeIsSet = workMinutes > 0 && restMinutes > 0;
 
     return (
       <Container className={`p-3 ${styles.font}`}>
@@ -84,7 +154,11 @@ export class SessionForm extends Component {
                 </Col>
               </Row>
               <Row className="d-flex justify-content-around align-items-center my-3">
-                <UtilityButton size={'lg'} variant={'outline-warning'}>
+                <UtilityButton
+                  handleClick={workAndRestTimeIsSet ? this.addItem : null}
+                  size={'lg'}
+                  variant={'outline-warning'}
+                >
                   Add Cycle
                 </UtilityButton>
                 {!screenIsWideEnough && (
@@ -102,8 +176,14 @@ export class SessionForm extends Component {
                   style={{ height: '240px' }}
                 >
                   <ListGroup style={{ cursor: 'pointer' }}>
-                    {listOfCycles.map((cycle) => (
-                      <SessionListItem />
+                    {listOfCycles.map((item) => (
+                      <SessionListItem
+                        handleRemove={() => {
+                          this.removeItem(item.id);
+                        }}
+                        key={item.id}
+                        {...item}
+                      />
                     ))}
                   </ListGroup>
                 </Col>
