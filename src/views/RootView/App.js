@@ -7,7 +7,7 @@ import SessionsView from '../SessionsView/SessionsView';
 import StatsView from '../StatsView/StatsView';
 import HydrappView from '../HydrappView/HydrappView';
 
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import TimeSetContext from '../../TimeSetContext';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -22,6 +22,8 @@ class App extends React.Component {
     elapsedWorkTimeInSeconds: 0,
     elapsedRestTimeInSeconds: 0,
     pausesCount: 0,
+    listOfCycles: [],
+    redirect: false,
   };
 
   setWorkTime = ({ target }, that) => {
@@ -48,10 +50,14 @@ class App extends React.Component {
 
   componentDidMount() {
     console.count('App mount');
+
     console.log(window.location.pathname);
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.listOfCycles !== this.state.listOfCycles) {
+      this.setState({ redirect: true });
+    }
     console.count('App update');
   }
 
@@ -59,7 +65,7 @@ class App extends React.Component {
     console.count('App mount');
   }
 
-  fetchSessionData = (
+  fetchFromQuickStartPanel = (
     workTime,
     restTime,
     elapsedWorkTimeInSeconds,
@@ -75,12 +81,17 @@ class App extends React.Component {
     });
   };
 
+  fetchFromSessionForm = (title, listOfCycles) => {
+    this.setState({ title, listOfCycles });
+  };
+
   render() {
     const mediaQuery = window.matchMedia('(max-width: 992px)');
     const timeSetFunctions = {
       setWorkTime: this.setWorkTime,
       setRestTime: this.setRestTime,
       toggleTimeUnitDisplay: this.toggleTimeUnitDisplay,
+      fetchFromSessionForm: this.fetchFromSessionForm,
     };
     return (
       <React.StrictMode>
@@ -93,6 +104,7 @@ class App extends React.Component {
           >
             <BrowserRouter>
               <>
+                <Redirect to={{ pathname: '/', state: { redirect: false } }} />
                 <Row>
                   <NavBar />
                 </Row>
@@ -105,7 +117,9 @@ class App extends React.Component {
                     >
                       <Route exact path="/">
                         <ErrorBoundry message="Błąd w QuickstartPanel">
-                          <QuickStartPanel fetchFn={this.fetchSessionData} />
+                          <QuickStartPanel
+                            fetchFn={this.fetchFromQuickStartPanel}
+                          />
                         </ErrorBoundry>
                       </Route>
                       <Route path="/session">
@@ -147,3 +161,8 @@ class App extends React.Component {
 export default App;
 
 //basename={{window.location.pathname}}
+// {this.state.elapsedWorkTimeInSeconds ? (
+//   <Redirect to="/" />
+// ) : (
+//   <SessionsView />
+// )}

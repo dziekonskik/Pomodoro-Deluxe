@@ -56,7 +56,7 @@ export class SessionForm extends Component {
     super(props);
 
     this.state = {
-      sessionTitle: '',
+      title: '',
       listOfCycles: [],
       workMinutes: 0,
       restMinutes: 0,
@@ -64,8 +64,8 @@ export class SessionForm extends Component {
     };
   }
 
-  setSessionTitle = ({ target }) => {
-    this.setState({ sessionTitle: target.value });
+  setTitle = ({ target }) => {
+    this.setState({ title: target.value });
   };
 
   addItem = () => {
@@ -98,6 +98,7 @@ export class SessionForm extends Component {
   render() {
     const {
       userSetsRestTime,
+      title,
       listOfCycles,
       workMinutes,
       restMinutes,
@@ -121,7 +122,7 @@ export class SessionForm extends Component {
                   <input
                     placeholder="Session Name"
                     className={`text-center ${styles.input}`}
-                    onChange={this.setSessionTitle}
+                    onChange={this.setTitle}
                   />
                 </Col>
               </Row>
@@ -189,7 +190,13 @@ export class SessionForm extends Component {
                 </Col>
               </Row>
               <Row className="d-flex justify-content-around align-items-center my-3">
-                <UtilityButton size={'lg'} variant={'outline-warning'}>
+                <UtilityButton
+                  handleClick={() =>
+                    context.fetchFromSessionForm(title, listOfCycles)
+                  }
+                  size={'lg'}
+                  variant={'outline-warning'}
+                >
                   Complete Session
                 </UtilityButton>
               </Row>
@@ -200,5 +207,5 @@ export class SessionForm extends Component {
     );
   }
 }
-SessionForm.contextType = 'TimeSetContext';
+
 export default SessionForm;
