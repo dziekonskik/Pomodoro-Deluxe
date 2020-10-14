@@ -50,14 +50,9 @@ class App extends React.Component {
 
   componentDidMount() {
     console.count('App mount');
-
-    console.log(window.location.pathname);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.listOfCycles !== this.state.listOfCycles) {
-      this.setState({ redirect: true });
-    }
     console.count('App update');
   }
 
@@ -78,6 +73,7 @@ class App extends React.Component {
       elapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
       pausesCount,
+      listOfCycles: false,
     });
   };
 
@@ -119,12 +115,17 @@ class App extends React.Component {
                         <ErrorBoundry message="Błąd w QuickstartPanel">
                           <QuickStartPanel
                             fetchFn={this.fetchFromQuickStartPanel}
+                            {...this.state}
                           />
                         </ErrorBoundry>
                       </Route>
                       <Route path="/session">
                         <ErrorBoundry message="Błąd w Sessions">
-                          <SessionsView />
+                          {this.state.listOfCycles.length ? (
+                            <Redirect to="/" />
+                          ) : (
+                            <SessionsView />
+                          )}
                         </ErrorBoundry>
                       </Route>
                       <Route path="/stats">
@@ -159,10 +160,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-//basename={{window.location.pathname}}
-// {this.state.elapsedWorkTimeInSeconds ? (
-//   <Redirect to="/" />
-// ) : (
-//   <SessionsView />
-// )}
