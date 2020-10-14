@@ -32,13 +32,13 @@ const HistoryItem = ({
               <small>Rest Time:</small> <strong>{restTime} min</strong> <br />
             </Col>
             <Col sm={6}>
-              <small>Elapsed Work:</small>{' '}
+              <small>Work Done:</small>{' '}
               <strong>
                 {timeRecalc(elapsedWorkTimeInSeconds)[0]}:
                 {timeRecalc(elapsedWorkTimeInSeconds)[1]} min
               </strong>{' '}
               <br />
-              <small>Elapsed Rest:</small>{' '}
+              <small>Rested:</small>{' '}
               <strong>
                 {timeRecalc(elapsedRestTimeInSeconds)[0]}:
                 {timeRecalc(elapsedRestTimeInSeconds)[1]} min
