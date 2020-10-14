@@ -74,8 +74,8 @@ export class SessionForm extends Component {
         ...prevState.listOfCycles,
         {
           id: uuidv4(),
-          work: this.state.workMinutes,
-          rest: this.state.restMinutes,
+          workMinutes: this.state.workMinutes,
+          restMinutes: this.state.restMinutes,
           workIcon: randomIconGenerator(workIcons),
           restIcon: randomIconGenerator(breakIcons),
         },
@@ -118,7 +118,7 @@ export class SessionForm extends Component {
           {(context) => (
             <>
               <Row className="d-flex justify-content-center">
-                <Col md={6}>
+                <Col xs={12} lg={6}>
                   <input
                     placeholder="Session Name"
                     className={`text-center ${styles.input}`}
