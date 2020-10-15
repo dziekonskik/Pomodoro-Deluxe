@@ -4,6 +4,7 @@ import TimeUnit from '../TimeUnit/TimeUnit';
 import StartStopButton from '../PomodoroButtons/StartStopButton';
 import CancelButton from '../PomodoroButtons/CancelButton';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
+import SessionCountCard from './SessionCountCard';
 import ProgressArc from './ProgressArc';
 import styles from './QuickStartPanel.module.scss';
 
@@ -13,6 +14,7 @@ export class QuickStartPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      title: 'Quick Pomodoro',
       isAppReady: false,
       isTimeRunning: false,
       isItWorkTime: false,
@@ -20,34 +22,55 @@ export class QuickStartPanel extends Component {
       workMinutes: 0,
       restMinutes: 0,
       pausesCount: 0,
+      sessionsCount: 0,
       elapsedWorkTimeInSeconds: 0,
+      totalElapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
+      totalElapsedRestTimeInSeconds: 0,
       userSetsRestTime: false,
+      listOfCycles: [],
+      id: '',
     };
     this.customTimerID = null;
   }
+  //==================SESSION FORM DATA AREA =================
+  handleIncommingSession = () => {
+    this.setState({
+      title: this.props.title,
+      listOfCycles: this.props.listOfCycles,
+    });
+  };
 
+  takeFirstSessionObjectAndUseIt = () => {
+    this.setState((prevState) => {
+      const sessionObjects = this.state.listOfCycles.slice();
+      const firstSessionObject = sessionObjects.shift();
+      const {
+        id,
+        workMinutes,
+        restMinutes,
+        workIcon,
+        restIcon,
+      } = firstSessionObject;
+      const sessionsCount = prevState.sessionsCount + 1;
+      return {
+        id,
+        workMinutes,
+        restMinutes,
+        workIcon,
+        restIcon,
+        sessionsCount,
+      };
+    });
+  };
+
+  // ========================== TIMER FUNCTIONS ==========================
   resetInterval = () => {
     window.clearInterval(this.customTimerID);
     this.customTimerID = null;
   };
 
-  handleCancelTimer = () => {
-    const {
-      workMinutes,
-      restMinutes,
-      elapsedWorkTimeInSeconds,
-      elapsedRestTimeInSeconds,
-      pausesCount,
-    } = this.state;
-    this.props.fetchFn(
-      workMinutes,
-      restMinutes,
-      elapsedWorkTimeInSeconds,
-      elapsedRestTimeInSeconds,
-      pausesCount
-    );
-
+  resetState() {
     this.setState({
       isAppReady: false,
       isTimeRunning: false,
@@ -56,9 +79,47 @@ export class QuickStartPanel extends Component {
       workMinutes: 0,
       restMinutes: 0,
       pausesCount: 0,
+      sessionsCount: 0,
+      workIcon: null,
+      restIcon: null,
       elapsedWorkTimeInSeconds: 0,
+      totalElapsedWorkTimeInSeconds: 0,
       elapsedRestTimeInSeconds: 0,
+      totalElapsedRestTimeInSeconds: 0,
+      listOfCycles: [],
     });
+  }
+
+  handleCancelTimer = () => {
+    const {
+      title,
+      workMinutes,
+      restMinutes,
+      elapsedWorkTimeInSeconds,
+      totalElapsedWorkTimeInSeconds,
+      elapsedRestTimeInSeconds,
+      totalElapsedRestTimeInSeconds,
+      pausesCount,
+      sessionsCount,
+    } = this.state;
+    this.setState((prevState) => {
+      const totalElapsedWorkTimeInSeconds =
+        prevState.totalElapsedWorkTimeInSeconds + elapsedWorkTimeInSeconds;
+      const totalElapsedRestTimeInSeconds =
+        prevState.totalElapsedRestTimeInSeconds + elapsedRestTimeInSeconds;
+      return { totalElapsedWorkTimeInSeconds, totalElapsedRestTimeInSeconds };
+    });
+    this.props.fetchFn(
+      title,
+      workMinutes,
+      restMinutes,
+      totalElapsedWorkTimeInSeconds,
+      totalElapsedRestTimeInSeconds,
+      pausesCount,
+      sessionsCount
+    );
+
+    this.resetState();
     this.resetInterval();
   };
 
@@ -88,7 +149,16 @@ export class QuickStartPanel extends Component {
     }
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      title,
+      workMinutes,
+      restMinutes,
+      totalElapsedWorkTimeInSeconds,
+      totalElapsedRestTimeInSeconds,
+      pausesCount,
+      sessionsCount,
+    } = this.state;
     const workMinutesInSeconds = this.state.workMinutes * 60;
     const restMinutesInSeconds = this.state.restMinutes * 60;
     const timesAreSetAndAppIsReadyToLaunch =
@@ -116,19 +186,18 @@ export class QuickStartPanel extends Component {
       this.setState({ isItWorkTime: false, isItRestTime: true });
     }
     if (restTimeHasFinishedAndSessionIsOver) {
-      const {
-        workMinutes,
-        restMinutes,
-        elapsedWorkTimeInSeconds,
-        elapsedRestTimeInSeconds,
-        pausesCount,
-      } = this.state;
-      this.props.fetchFn(
-        workMinutes,
-        restMinutes,
-        elapsedWorkTimeInSeconds,
-        elapsedRestTimeInSeconds,
-        pausesCount
+      const { elapsedWorkTimeInSeconds, elapsedRestTimeInSeconds } = this.state;
+
+      this.setState((prevState) => {
+        const totalElapsedWorkTimeInSeconds =
+          prevState.totalElapsedWorkTimeInSeconds + elapsedWorkTimeInSeconds;
+        const totalElapsedRestTimeInSeconds =
+          prevState.totalElapsedRestTimeInSeconds + elapsedRestTimeInSeconds;
+        return { totalElapsedWorkTimeInSeconds, totalElapsedRestTimeInSeconds };
+      });
+      console.log(
+        this.state.totalElapsedWorkTimeInSeconds,
+        this.state.totalElapsedRestTimeInSeconds
       );
       this.setState({
         isAppReady: false,
@@ -137,7 +206,6 @@ export class QuickStartPanel extends Component {
         isItRestTime: false,
         workMinutes: 0,
         restMinutes: 0,
-        pausesCount: 0,
         elapsedWorkTimeInSeconds: 0,
         elapsedRestTimeInSeconds: 0,
       });
@@ -150,10 +218,51 @@ export class QuickStartPanel extends Component {
     if (itIsRestTimeAndRestTimeIsOnDisplay) {
       this.setState({ userSetsRestTime: true });
     }
+    //==================SESSION FORM DATA PREPARATION AREA =================
+    const readyToStartNewSession =
+      this.state.listOfCycles.length && this.state.workMinutes === 0;
+    const allSessionsHasFinished =
+      this.state.sessionsCount > this.props.listOfCycles.length;
+    const beforeBegin = this.state.sessionsCount === 0;
+
+    if (readyToStartNewSession && beforeBegin) {
+      this.takeFirstSessionObjectAndUseIt();
+    }
+
+    if (readyToStartNewSession && !beforeBegin) {
+      this.takeFirstSessionObjectAndUseIt();
+      this.handleStartTimer();
+    }
+
+    if (allSessionsHasFinished) {
+      this.props.fetchFn(
+        title,
+        workMinutes,
+        restMinutes,
+        totalElapsedWorkTimeInSeconds,
+        totalElapsedRestTimeInSeconds,
+        pausesCount,
+        sessionsCount
+      );
+      this.resetState();
+    }
+
+    console.count(`QuickStartPanel Update`);
+  }
+
+  componentDidMount() {
+    const sessionTitleWasSet = this.state.title !== this.props.title;
+
+    if (sessionTitleWasSet) {
+      this.handleIncommingSession();
+    }
+
+    console.count('QuickStartPanel Mounted');
   }
 
   render() {
     const {
+      title,
       isAppReady,
       isTimeRunning,
       workMinutes,
@@ -162,6 +271,9 @@ export class QuickStartPanel extends Component {
       elapsedRestTimeInSeconds,
       userSetsRestTime,
       pausesCount,
+      isItRestTime,
+      workIcon,
+      restIcon,
     } = this.state;
     const mediaQueryList = window.matchMedia('(max-width: 992px)');
     const screenIsWideEnough = !mediaQueryList.matches;
@@ -182,7 +294,9 @@ export class QuickStartPanel extends Component {
         <TimeSetContext.Consumer>
           {(context) => (
             <>
-              <h2 className="text-warning text-center my-3">Quick Pomodoro</h2>
+              <h2 className="text-warning text-center my-3">
+                {title !== 'Quick Pomodoro' ? title : 'Quick Pomodoro'}
+              </h2>
               <Row>
                 <Col className="d-flex">
                   {shouldDisplayWorkTimeUnit && (
@@ -241,14 +355,25 @@ export class QuickStartPanel extends Component {
                 )}
               </Row>
               <Row>
-                <ProgressArc
-                  percent={
-                    this.state.isItWorkTime
-                      ? workprogressInPercent
-                      : restprogressInPercent
-                  }
-                  canvasSize={screenIsWideEnough ? 250 : 150}
-                />
+                <Col xs={3} lg={4} className="p-3">
+                  {this.props.listOfCycles.length > 0 && (
+                    <SessionCountCard
+                      sessionsTotal={this.props.listOfCycles.length}
+                      currentSession={this.state.sessionsCount}
+                      icon={isItRestTime ? restIcon : workIcon}
+                    />
+                  )}
+                </Col>
+                <Col xs={9} lg={8} className="mx-auto">
+                  <ProgressArc
+                    percent={
+                      this.state.isItWorkTime
+                        ? workprogressInPercent
+                        : restprogressInPercent
+                    }
+                    canvasSize={screenIsWideEnough ? 250 : 150}
+                  />
+                </Col>
               </Row>
             </>
           )}
