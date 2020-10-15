@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
-import styles from './SessionCountCard.module.scss';
 
 const SessionCountCard = ({ sessionsTotal, currentSession, icon }) => {
   return (
