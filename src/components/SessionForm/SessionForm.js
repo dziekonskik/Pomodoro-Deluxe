@@ -191,13 +191,17 @@ export class SessionForm extends Component {
               </Row>
               <Row className="d-flex justify-content-around align-items-center my-3">
                 <UtilityButton
-                  handleClick={() =>
-                    context.fetchFromSessionForm(title, listOfCycles)
+                  handleClick={
+                    title !== '' && listOfCycles.length
+                      ? () => context.fetchFromSessionForm(title, listOfCycles)
+                      : null
                   }
                   size={'lg'}
                   variant={'outline-warning'}
                 >
-                  Complete Session
+                  {title !== '' && listOfCycles.length
+                    ? 'Complete Session'
+                    : 'Set Session Parameters'}
                 </UtilityButton>
               </Row>
             </>
