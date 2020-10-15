@@ -271,6 +271,7 @@ export class QuickStartPanel extends Component {
       elapsedRestTimeInSeconds,
       userSetsRestTime,
       pausesCount,
+      isItWorkTime,
       isItRestTime,
       workIcon,
       restIcon,
@@ -289,6 +290,8 @@ export class QuickStartPanel extends Component {
     const shouldDisplayRestTimeUnit =
       screenIsWideEnough || !userWantsToDisplayWorkTime;
 
+    const clocksAreNotTicking = !isItWorkTime && !isItRestTime;
+
     return (
       <Container className={`p-3 ${styles.cardGeneralStyles}`}>
         <TimeSetContext.Consumer>
@@ -303,8 +306,11 @@ export class QuickStartPanel extends Component {
                     <TimeUnit
                       minutesSet={workMinutes}
                       elapsedTimeInSeconds={elapsedWorkTimeInSeconds}
-                      setTime={({ target }) =>
-                        context.setWorkTime({ target }, this)
+                      setTime={
+                        clocksAreNotTicking
+                          ? ({ target }) =>
+                              context.setWorkTime({ target }, this)
+                          : null
                       }
                     >
                       WORK
@@ -314,8 +320,11 @@ export class QuickStartPanel extends Component {
                     <TimeUnit
                       minutesSet={restMinutes}
                       elapsedTimeInSeconds={elapsedRestTimeInSeconds}
-                      setTime={({ target }) =>
-                        context.setRestTime({ target }, this)
+                      setTime={
+                        clocksAreNotTicking
+                          ? ({ target }) =>
+                              context.setRestTime({ target }, this)
+                          : null
                       }
                     >
                       BREAK
