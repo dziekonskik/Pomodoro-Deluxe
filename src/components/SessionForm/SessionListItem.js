@@ -1,7 +1,13 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 
-const SessionListItem = ({ work, rest, workIcon, restIcon, handleRemove }) => {
+const SessionListItem = ({
+  workMinutes,
+  restMinutes,
+  workIcon,
+  restIcon,
+  handleRemove,
+}) => {
   return (
     <>
       <ListGroup.Item
@@ -10,10 +16,12 @@ const SessionListItem = ({ work, rest, workIcon, restIcon, handleRemove }) => {
         onClick={handleRemove}
       >
         <span>
-          {workIcon} Work Time: <strong>{work}</strong>
+          {workIcon} Work Time:{' '}
+          <strong className="h2 text-danger">{workMinutes}</strong>
         </span>
         <span>
-          {restIcon} Break Time: <strong>{rest}</strong>
+          {restIcon} Break Time:{' '}
+          <strong className="h2 text-danger">{restMinutes}</strong>
         </span>
       </ListGroup.Item>
     </>
