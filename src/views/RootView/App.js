@@ -16,29 +16,30 @@ import styles from './App.module.scss';
 
 class App extends React.Component {
   state = {
-    title: 'Quick Pomodoro',
+    title: '',
     workTime: 0,
     restTime: 0,
     elapsedWorkTimeInSeconds: 0,
     elapsedRestTimeInSeconds: 0,
     pausesCount: 0,
+    sessionsCount: 0,
     listOfCycles: [],
     redirect: false,
   };
 
   setWorkTime = ({ target }, that) => {
     target.title === '+'
-      ? that.setState({ workMinutes: that.state.workMinutes + 5 })
+      ? that.setState({ workMinutes: that.state.workMinutes + 0.2 })
       : that.state.workMinutes > 0
-      ? that.setState({ workMinutes: that.state.workMinutes - 5 })
+      ? that.setState({ workMinutes: that.state.workMinutes - 0.2 })
       : that.setState({ workMinutes: 0 });
   };
 
   setRestTime = ({ target }, that) => {
     target.title === '+'
-      ? that.setState({ restMinutes: that.state.restMinutes + 2 })
+      ? that.setState({ restMinutes: that.state.restMinutes + 0.1 })
       : that.state.restMinutes > 0
-      ? that.setState({ restMinutes: that.state.restMinutes - 2 })
+      ? that.setState({ restMinutes: that.state.restMinutes - 0.1 })
       : that.setState({ restMinutes: 0 });
   };
 
@@ -61,19 +62,18 @@ class App extends React.Component {
   }
 
   fetchFromQuickStartPanel = (
-    workTime,
-    restTime,
+    title,
     elapsedWorkTimeInSeconds,
     elapsedRestTimeInSeconds,
-    pausesCount
+    pausesCount,
+    sessionsCount
   ) => {
     this.setState({
-      workTime,
-      restTime,
+      title,
       elapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
       pausesCount,
-      listOfCycles: false,
+      sessionsCount,
     });
   };
 
@@ -114,8 +114,8 @@ class App extends React.Component {
                       <Route exact path="/">
                         <ErrorBoundry message="Błąd w QuickstartPanel">
                           <QuickStartPanel
-                            fetchFn={this.fetchFromQuickStartPanel}
                             {...this.state}
+                            fetchFn={this.fetchFromQuickStartPanel}
                           />
                         </ErrorBoundry>
                       </Route>

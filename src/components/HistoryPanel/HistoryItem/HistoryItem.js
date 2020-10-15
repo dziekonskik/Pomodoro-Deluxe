@@ -10,11 +10,10 @@ function timeRecalc(timeInSeconds) {
 const HistoryItem = ({
   title,
   date,
-  workTime,
-  restTime,
   elapsedWorkTimeInSeconds,
   elapsedRestTimeInSeconds,
   pausesCount,
+  sessionsCount,
   handleClose,
 }) => {
   return (
@@ -28,16 +27,13 @@ const HistoryItem = ({
         <Toast.Body className="text-center">
           <Row>
             <Col sm={6}>
-              <small>Work Time:</small> <strong>{workTime} min</strong> <br />
-              <small>Rest Time:</small> <strong>{restTime} min</strong> <br />
-            </Col>
-            <Col sm={6}>
               <small>Work Done:</small>{' '}
               <strong>
                 {timeRecalc(elapsedWorkTimeInSeconds)[0]}:
                 {timeRecalc(elapsedWorkTimeInSeconds)[1]} min
               </strong>{' '}
-              <br />
+            </Col>
+            <Col sm={6}>
               <small>Rested:</small>{' '}
               <strong>
                 {timeRecalc(elapsedRestTimeInSeconds)[0]}:
@@ -47,10 +43,18 @@ const HistoryItem = ({
             </Col>
           </Row>
           <Row>
-            <h4 className="mx-auto">
-              Total Pauses:{' '}
-              <strong style={{ color: 'red' }}>{pausesCount}</strong>
-            </h4>
+            <Col sm={6}>
+              <small className="mx-auto">
+                Total Pauses:{' '}
+                <strong style={{ color: 'red' }}>{pausesCount}</strong>
+              </small>
+            </Col>
+            <Col sm={6}>
+              <small className="mx-auto">
+                Total Sessions:{' '}
+                <strong style={{ color: 'red' }}>{sessionsCount}</strong>
+              </small>
+            </Col>
           </Row>
         </Toast.Body>
       </Toast>

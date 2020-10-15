@@ -111,8 +111,6 @@ export class QuickStartPanel extends Component {
     });
     this.props.fetchFn(
       title,
-      workMinutes,
-      restMinutes,
       totalElapsedWorkTimeInSeconds,
       totalElapsedRestTimeInSeconds,
       pausesCount,
@@ -152,8 +150,6 @@ export class QuickStartPanel extends Component {
   componentDidUpdate(prevProps, prevState) {
     const {
       title,
-      workMinutes,
-      restMinutes,
       totalElapsedWorkTimeInSeconds,
       totalElapsedRestTimeInSeconds,
       pausesCount,
@@ -237,14 +233,13 @@ export class QuickStartPanel extends Component {
     if (allSessionsHasFinished) {
       this.props.fetchFn(
         title,
-        workMinutes,
-        restMinutes,
         totalElapsedWorkTimeInSeconds,
         totalElapsedRestTimeInSeconds,
         pausesCount,
         sessionsCount
       );
       this.resetState();
+      this.resetInterval();
     }
 
     console.count(`QuickStartPanel Update`);
@@ -258,6 +253,10 @@ export class QuickStartPanel extends Component {
     }
 
     console.count('QuickStartPanel Mounted');
+  }
+
+  componentWillUnmount() {
+    this.resetInterval();
   }
 
   render() {

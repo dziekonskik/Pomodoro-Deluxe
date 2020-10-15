@@ -68,6 +68,7 @@ export class HistoryPanel extends Component {
     const propsHasChanged =
       prevProps.elapsedWorkTimeInSeconds !==
       this.props.elapsedWorkTimeInSeconds;
+
     if (propsHasChanged) {
       const extensiblePropObj = { ...this.props };
       extensiblePropObj.date = new Date();
