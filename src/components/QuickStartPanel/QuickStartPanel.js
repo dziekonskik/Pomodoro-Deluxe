@@ -29,7 +29,6 @@ export class QuickStartPanel extends Component {
       totalElapsedRestTimeInSeconds: 0,
       userSetsRestTime: false,
       listOfCycles: [],
-      id: '',
     };
     this.customTimerID = null;
   }
@@ -93,8 +92,6 @@ export class QuickStartPanel extends Component {
   handleCancelTimer = () => {
     const {
       title,
-      workMinutes,
-      restMinutes,
       elapsedWorkTimeInSeconds,
       totalElapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
@@ -102,23 +99,21 @@ export class QuickStartPanel extends Component {
       pausesCount,
       sessionsCount,
     } = this.state;
-    this.setState((prevState) => {
-      const totalElapsedWorkTimeInSeconds =
-        prevState.totalElapsedWorkTimeInSeconds + elapsedWorkTimeInSeconds;
-      const totalElapsedRestTimeInSeconds =
-        prevState.totalElapsedRestTimeInSeconds + elapsedRestTimeInSeconds;
-      return { totalElapsedWorkTimeInSeconds, totalElapsedRestTimeInSeconds };
-    });
-    this.props.fetchFn(
-      title,
-      totalElapsedWorkTimeInSeconds,
-      totalElapsedRestTimeInSeconds,
-      pausesCount,
-      sessionsCount
-    );
+
+    const workTime =
+      sessionsCount > 0
+        ? elapsedWorkTimeInSeconds + totalElapsedWorkTimeInSeconds
+        : elapsedWorkTimeInSeconds;
+    const restTime =
+      sessionsCount > 0
+        ? elapsedRestTimeInSeconds + totalElapsedRestTimeInSeconds
+        : elapsedRestTimeInSeconds;
+
+    this.props.fetchFn(title, workTime, restTime, pausesCount, sessionsCount);
 
     this.resetState();
     this.resetInterval();
+    return;
   };
 
   handlePauseTimer = () => {
@@ -191,10 +186,7 @@ export class QuickStartPanel extends Component {
           prevState.totalElapsedRestTimeInSeconds + elapsedRestTimeInSeconds;
         return { totalElapsedWorkTimeInSeconds, totalElapsedRestTimeInSeconds };
       });
-      console.log(
-        this.state.totalElapsedWorkTimeInSeconds,
-        this.state.totalElapsedRestTimeInSeconds
-      );
+
       this.setState({
         isAppReady: false,
         isTimeRunning: false,
@@ -256,6 +248,7 @@ export class QuickStartPanel extends Component {
   }
 
   componentWillUnmount() {
+    this.resetState();
     this.resetInterval();
   }
 
