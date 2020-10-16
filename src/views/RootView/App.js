@@ -12,11 +12,10 @@ import TimeSetContext from '../../TimeSetContext';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
-import styles from './App.module.scss';
 
 class App extends React.Component {
   state = {
-    title: '',
+    title: 'Quick Pomodoro',
     workTime: 0,
     restTime: 0,
     elapsedWorkTimeInSeconds: 0,
@@ -94,9 +93,7 @@ class App extends React.Component {
         <>
           <Container
             fluid
-            className={`App ${styles.bgColor} ${
-              !mediaQuery.matches ? 'vh-100' : ''
-            } p-4`}
+            className={`App ${!mediaQuery.matches ? 'vh-100' : ''} p-4`}
           >
             <BrowserRouter>
               <>
@@ -109,7 +106,8 @@ class App extends React.Component {
                     <Col
                       sm={12}
                       md={{ order: 2 }}
-                      className="col-md-6 col-lg-9 shadow"
+                      className="col-md-6 col-lg-9"
+                      style={{ height: '90vh' }}
                     >
                       <Route exact path="/">
                         <ErrorBoundry message="Błąd w QuickstartPanel">
@@ -141,7 +139,7 @@ class App extends React.Component {
                     </Col>
                     <Col
                       sm={12}
-                      className="col-md-6 col-lg-3 rounded shadow overflow-auto"
+                      className="col-md-6 col-lg-3 rounded overflow-auto"
                       style={{ maxHeight: '90vh' }}
                     >
                       <ErrorBoundry message="Błąd w HistoryPanel">

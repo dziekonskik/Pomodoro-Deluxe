@@ -6,21 +6,19 @@ const TimerSetButtons = ({ setTime }) => {
   return (
     <ButtonGroup className="btn-sm w-50 mx-auto">
       <Button
-        variant="danger"
+        variant="dark"
         data-toggle="tooltip"
         data-placement="bottom"
         title="+"
-        className="shadow"
         onClick={setTime}
       >
         +
       </Button>
       <Button
-        variant="outline-danger"
+        variant="outline-dark"
         data-toggle="tooltip"
         data-placement="bottom"
         title="-"
-        className="shadow"
         onClick={setTime}
       >
         -

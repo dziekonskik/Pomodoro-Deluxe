@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Button } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import HistoryItem from './HistoryItem/HistoryItem';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { v4 as uuidv4 } from 'uuid';

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Toast, Col, Row } from 'react-bootstrap';
+import styles from './HistoryItem.module.scss';
 
 function timeRecalc(timeInSeconds) {
   const minutes = Math.floor(timeInSeconds / 60);
@@ -17,7 +18,7 @@ const HistoryItem = ({
   handleClose,
 }) => {
   return (
-    <div className="my-3" style={{ width: '330px' }}>
+    <div className={`my-3 ${styles.boxShadow}`} style={{ width: '330px' }}>
       <Toast onClose={handleClose}>
         <Toast.Header closeLabel={'Close'}>
           <strong className="mr-auto">{title}</strong>

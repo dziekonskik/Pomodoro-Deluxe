@@ -113,7 +113,6 @@ export class QuickStartPanel extends Component {
 
     this.resetState();
     this.resetInterval();
-    return;
   };
 
   handlePauseTimer = () => {
@@ -150,6 +149,7 @@ export class QuickStartPanel extends Component {
       pausesCount,
       sessionsCount,
     } = this.state;
+
     const workMinutesInSeconds = this.state.workMinutes * 60;
     const restMinutesInSeconds = this.state.restMinutes * 60;
     const timesAreSetAndAppIsReadyToLaunch =
@@ -285,11 +285,11 @@ export class QuickStartPanel extends Component {
     const clocksAreNotTicking = !isItWorkTime && !isItRestTime;
 
     return (
-      <Container className={`p-3 ${styles.cardGeneralStyles}`}>
+      <Container className={`p-3 ${styles.background}`}>
         <TimeSetContext.Consumer>
           {(context) => (
             <>
-              <h2 className="text-warning text-center my-3">
+              <h2 className={`text-dark text-center my-3 ${styles.title}`}>
                 {title !== 'Quick Pomodoro' ? title : 'Quick Pomodoro'}
               </h2>
               <Row>

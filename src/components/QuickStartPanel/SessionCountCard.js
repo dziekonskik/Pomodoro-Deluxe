@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 
 const SessionCountCard = ({ sessionsTotal, currentSession, icon }) => {
   return (
-    <Card bg="warning" text="light" className="shadow-lg">
+    <Card bg="warning" text="light">
       <Card.Body>
         <Card.Text className="d-flex justify-content-around align-items-center">
           <div>

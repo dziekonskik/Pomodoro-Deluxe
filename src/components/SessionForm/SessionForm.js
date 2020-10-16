@@ -113,7 +113,7 @@ export class SessionForm extends Component {
     const workAndRestTimeIsSet = workMinutes > 0 && restMinutes > 0;
 
     return (
-      <Container className={`p-3 ${styles.font}`}>
+      <Container className={`p-3 my-3 ${styles.background}`}>
         <TimeSetContext.Consumer>
           {(context) => (
             <>
@@ -158,7 +158,7 @@ export class SessionForm extends Component {
                 <UtilityButton
                   handleClick={workAndRestTimeIsSet ? this.addItem : null}
                   size={'lg'}
-                  variant={'outline-warning'}
+                  variant={'outline-primary'}
                 >
                   Add Cycle
                 </UtilityButton>
@@ -174,7 +174,7 @@ export class SessionForm extends Component {
               <Row className="d-flex justify-content-center text-center">
                 <Col
                   className="overflow-auto col-lg-6"
-                  style={{ height: '240px' }}
+                  style={{ height: '190px' }}
                 >
                   <ListGroup style={{ cursor: 'pointer' }}>
                     {listOfCycles.map((item) => (
@@ -197,7 +197,7 @@ export class SessionForm extends Component {
                       : null
                   }
                   size={'lg'}
-                  variant={'outline-warning'}
+                  variant={'primary'}
                 >
                   {title !== '' && listOfCycles.length
                     ? 'Complete Session'

@@ -12,7 +12,7 @@ const StartStopButton = ({
     <p>
       <Button
         className={`mt-5 mx-3 ${disabled ? 'disabled' : null}`}
-        variant="warning"
+        variant="primary"
         data-toggle="tooltip"
         data-placement="top"
         title="Start pomodoro"

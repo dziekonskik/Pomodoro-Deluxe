@@ -24,7 +24,7 @@ class ProgressBar extends React.Component {
 
     ctx.clearRect(0, 0, 300, 300);
     ctx.fillStyle = 'red';
-    ctx.strokeStyle = '#E0A800';
+    ctx.strokeStyle = '#23272B';
     ctx.beginPath();
     ctx.arc(
       center,
@@ -56,10 +56,10 @@ class ProgressBar extends React.Component {
     const { canvasSize } = this.props;
     return (
       <canvas
-        className="mx-auto shadow-lg rounded-circle"
+        className="mx-auto rounded-circle"
         ref={this.canvas}
         style={{
-          border: '15px solid #E0A800',
+          border: '15px solid #23272B',
           backgroundColor: 'rgba(255,255,255, .7)',
         }}
         width={canvasSize}

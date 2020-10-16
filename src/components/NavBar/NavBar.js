@@ -16,6 +16,7 @@ export class NavBar extends Component {
   };
 
   render() {
+    const { activeTab } = this.state;
     return (
       <Nav
         onSelect={(eventKey) => this.setActiveTab(eventKey)}

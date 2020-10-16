@@ -4,6 +4,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import TimerDisplay from './TimerDisplay/TimerDisplay';
 import TimerColon from './TimerColon/TimerColon';
 import TimerSetButtons from './TimerSetButtons/TimerSetButtons';
+import styles from './TimeUnit.module.scss';
 
 const TimeUnit = ({
   children,
@@ -19,8 +20,10 @@ const TimeUnit = ({
 
   return (
     <>
-      <Card className="p-3 mx-auto my-auto bg-light shadow-lg border border-warning rounded-pill">
-        <Row className="mx-auto text-uppercase text-warning">{children}</Row>
+      <Card
+        className={`p-3 mx-auto my-auto bg-light border border-dark rounded-pill ${styles.boxShadow}`}
+      >
+        <Row className="mx-auto text-uppercase text-dark">{children}</Row>
         <Row className="mx-auto">
           {justMinutes && (
             <Col>

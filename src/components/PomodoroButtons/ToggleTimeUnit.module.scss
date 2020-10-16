@@ -2,6 +2,7 @@
   position: relative;
   display: inline-flex;
   margin: 51px 20px 0 0;
+  padding: 30px;
 
   input {
     opacity: 0;
@@ -13,21 +14,24 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 3px solid rgba(red, 0.7);
+    border: 3px solid rgba(#23272b, 0.7);
     display: block;
 
     &:before {
       content: '';
       position: absolute;
-      top: -3px;
-      left: 9px;
-      width: 13px;
-      height: 4px;
-      background-color: green;
+      top: 50%;
+      left: 27%;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: #23272b;
+      border: 1px solid;
     }
   }
 
   input:checked + .checkboxDiv {
-    background-color: red;
+    background-color: #23272b;
+    padding: 3px;
   }
 }
