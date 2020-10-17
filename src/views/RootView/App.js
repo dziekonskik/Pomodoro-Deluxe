@@ -23,7 +23,7 @@ class App extends React.Component {
     pausesCount: 0,
     sessionsCount: 0,
     listOfCycles: [],
-    redirect: false,
+    redirect: true,
   };
 
   setWorkTime = ({ target }, that) => {
@@ -67,12 +67,14 @@ class App extends React.Component {
     pausesCount,
     sessionsCount
   ) => {
+    sessionsCount = sessionsCount - 1;
     this.setState({
       title,
       elapsedWorkTimeInSeconds,
       elapsedRestTimeInSeconds,
       pausesCount,
       sessionsCount,
+      listOfCycles: [],
     });
   };
 
@@ -93,11 +95,11 @@ class App extends React.Component {
         <>
           <Container
             fluid
-            className={`App ${!mediaQuery.matches ? 'vh-100' : ''} p-4`}
+            className={`${!mediaQuery.matches ? 'vh-100' : ''} p-4`}
           >
             <BrowserRouter>
               <>
-                <Redirect to={{ pathname: '/', state: { redirect: false } }} />
+                <Redirect to={{ pathname: '/', state: { redirect: true } }} />
                 <Row>
                   <NavBar />
                 </Row>
@@ -140,7 +142,7 @@ class App extends React.Component {
                     <Col
                       sm={12}
                       className="col-md-6 col-lg-3 rounded overflow-auto"
-                      style={{ maxHeight: '90vh' }}
+                      // style={{ maxHeight: '90vh' }}
                     >
                       <ErrorBoundry message="Błąd w HistoryPanel">
                         <HistoryPanel {...this.state} />

@@ -45,7 +45,6 @@ export class QuickStartPanel extends Component {
       const sessionObjects = this.state.listOfCycles.slice();
       const firstSessionObject = sessionObjects.shift();
       const {
-        id,
         workMinutes,
         restMinutes,
         workIcon,
@@ -53,7 +52,6 @@ export class QuickStartPanel extends Component {
       } = firstSessionObject;
       const sessionsCount = prevState.sessionsCount + 1;
       return {
-        id,
         workMinutes,
         restMinutes,
         workIcon,
@@ -228,9 +226,9 @@ export class QuickStartPanel extends Component {
     //==================SESSION FORM DATA PREPARATION AREA =================
     const readyToStartNewSession =
       this.state.listOfCycles.length && this.state.workMinutes === 0;
+    const beforeBegin = this.state.sessionsCount === 0;
     const allSessionsHasFinished =
       this.state.sessionsCount > this.props.listOfCycles.length;
-    const beforeBegin = this.state.sessionsCount === 0;
 
     if (readyToStartNewSession && beforeBegin) {
       this.takeFirstSessionObjectAndUseIt();
