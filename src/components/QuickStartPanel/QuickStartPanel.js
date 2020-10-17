@@ -144,7 +144,9 @@ export class QuickStartPanel extends Component {
   componentDidUpdate(prevProps, prevState) {
     const {
       title,
+      elapsedWorkTimeInSeconds,
       totalElapsedWorkTimeInSeconds,
+      elapsedRestTimeInSeconds,
       totalElapsedRestTimeInSeconds,
       pausesCount,
       sessionsCount,
@@ -168,6 +170,17 @@ export class QuickStartPanel extends Component {
       this.state.isItWorkTime && this.state.userSetsRestTime;
     const itIsRestTimeAndRestTimeIsOnDisplay =
       this.state.isItRestTime && !this.state.userSetsRestTime;
+    const quickPomodoroHasFinished =
+      this.state.isItRestTime &&
+      restMinutesInSeconds === this.state.elapsedRestTimeInSeconds &&
+      title === 'Quick Pomodoro';
+
+    if (itIsWorkTimeAndWorkTimeIsOnDisplay) {
+      this.setState({ userSetsRestTime: false });
+    }
+    if (itIsRestTimeAndRestTimeIsOnDisplay) {
+      this.setState({ userSetsRestTime: true });
+    }
 
     if (timesAreSetAndAppIsReadyToLaunch) {
       this.setState({ isAppReady: true });
@@ -176,6 +189,18 @@ export class QuickStartPanel extends Component {
     if (workTImeHasFinishedNowRestTimeBegins) {
       this.setState({ isItWorkTime: false, isItRestTime: true });
     }
+
+    if (quickPomodoroHasFinished) {
+      this.props.fetchFn(
+        title,
+        elapsedWorkTimeInSeconds,
+        elapsedRestTimeInSeconds,
+        pausesCount,
+        sessionsCount
+      );
+      this.resetState();
+    }
+
     if (restTimeHasFinishedAndSessionIsOver) {
       const { elapsedWorkTimeInSeconds, elapsedRestTimeInSeconds } = this.state;
 
@@ -200,12 +225,6 @@ export class QuickStartPanel extends Component {
       this.resetInterval();
     }
 
-    if (itIsWorkTimeAndWorkTimeIsOnDisplay) {
-      this.setState({ userSetsRestTime: false });
-    }
-    if (itIsRestTimeAndRestTimeIsOnDisplay) {
-      this.setState({ userSetsRestTime: true });
-    }
     //==================SESSION FORM DATA PREPARATION AREA =================
     const readyToStartNewSession =
       this.state.listOfCycles.length && this.state.workMinutes === 0;
@@ -285,7 +304,7 @@ export class QuickStartPanel extends Component {
     const clocksAreNotTicking = !isItWorkTime && !isItRestTime;
 
     return (
-      <Container className={`p-3 ${styles.background}`}>
+      <Container className={`p-3 mt-1 ${styles.background}`}>
         <TimeSetContext.Consumer>
           {(context) => (
             <>
