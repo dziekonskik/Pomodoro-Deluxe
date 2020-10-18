@@ -13,7 +13,7 @@ export class HydrappView extends Component {
     const water = document.querySelector('.app__glass_total--water');
     let glassCounter = document.createElement('div');
 
-    const key = new Date().toISOString().slice(0, 10);
+    const key = `HydrApp-${new Date().toISOString().slice(0, 10)}`;
     let counter = key ? localStorage.getItem(key) : 0;
 
     const addGlassButton = document.querySelector('.app__increment--js');

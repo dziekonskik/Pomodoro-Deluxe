@@ -67,7 +67,7 @@ class App extends React.Component {
     pausesCount,
     sessionsCount
   ) => {
-    sessionsCount = sessionsCount - 1;
+    sessionsCount = sessionsCount <= 0 ? 0 : sessionsCount - 1;
     this.setState({
       title,
       elapsedWorkTimeInSeconds,

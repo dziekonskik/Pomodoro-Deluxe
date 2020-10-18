@@ -1,3 +1,5 @@
+/* HISTORY ITEM TRANSITIONS */
+
 .historyItem-enter {
   transform: rotateX(-90deg) skewX(7deg);
 }
@@ -8,17 +10,8 @@
   transition: transform 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.historyItem-enter-done {
-}
-
-.historyItem-exit {
-}
-
 .historyItem-exit-active {
   opacity: 0;
   transform: translateY(200px) translateX(-30px);
   transition: opacity 500ms, transform 500ms cubic-bezier(0.55, 0, 1, 0.45);
-}
-
-.historyItem-exit-done {
 }

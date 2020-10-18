@@ -3,7 +3,7 @@ import { Row } from 'react-bootstrap';
 import HistoryItem from './HistoryItem/HistoryItem';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { v4 as uuidv4 } from 'uuid';
-import './HistoryPanel.css';
+import '../../css/transitions.css';
 
 export class HistoryPanel extends Component {
   constructor(props) {
@@ -99,7 +99,7 @@ export class HistoryPanel extends Component {
     const ItemsToDisplay = this.state.historyItemsFromStorage;
     return (
       <>
-        <Row>
+        <Row className="mt-3">
           <div className={`mx-auto`}>
             <TransitionGroup>
               {ItemsToDisplay.length

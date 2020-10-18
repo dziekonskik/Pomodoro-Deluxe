@@ -113,7 +113,7 @@ export class SessionForm extends Component {
     const workAndRestTimeIsSet = workMinutes > 0 && restMinutes > 0;
 
     return (
-      <Container className={`p-3 my-3 ${styles.background}`}>
+      <Container className={`p-3 mt-1 mb-2 ${styles.background}`}>
         <TimeSetContext.Consumer>
           {(context) => (
             <>
