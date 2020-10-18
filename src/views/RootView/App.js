@@ -28,17 +28,17 @@ class App extends React.Component {
 
   setWorkTime = ({ target }, that) => {
     target.title === '+'
-      ? that.setState({ workMinutes: that.state.workMinutes + 0.2 })
+      ? that.setState({ workMinutes: that.state.workMinutes + 5 })
       : that.state.workMinutes > 0
-      ? that.setState({ workMinutes: that.state.workMinutes - 0.2 })
+      ? that.setState({ workMinutes: that.state.workMinutes - 5 })
       : that.setState({ workMinutes: 0 });
   };
 
   setRestTime = ({ target }, that) => {
     target.title === '+'
-      ? that.setState({ restMinutes: that.state.restMinutes + 0.1 })
+      ? that.setState({ restMinutes: that.state.restMinutes + 2 })
       : that.state.restMinutes > 0
-      ? that.setState({ restMinutes: that.state.restMinutes - 0.1 })
+      ? that.setState({ restMinutes: that.state.restMinutes - 2 })
       : that.setState({ restMinutes: 0 });
   };
 
