@@ -13,10 +13,11 @@ Your further programming lessons.
 
 ### In this working beta you can
 1. Do the full pomodoro session (Work and Break)
-2. Your times and breaks will be saved in local storage
-3. View and delete history 
+2. Do Multiple cycles session and nam  session
+3. Your times and breaks will be saved in local storage
+4. View and delete history 
+5. Bonus! - You can keep track of your hydration with Hydrapp - app I have build during WTF course
 
 ### Upcoming Changes
-1. Multiple session option with namings
-2. Stats
-3. Bonus!
+1. Stats
+
