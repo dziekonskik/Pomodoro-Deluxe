@@ -109,7 +109,7 @@ class App extends React.Component {
                       sm={12}
                       md={{ order: 2 }}
                       className="col-md-6 col-lg-9"
-                      style={{ height: '90vh' }}
+                      style={!mediaQuery.matches ? { height: '90vh' } : null}
                     >
                       <Route exact path="/">
                         <ErrorBoundry message="Błąd w QuickstartPanel">
@@ -142,7 +142,7 @@ class App extends React.Component {
                     <Col
                       sm={12}
                       className="col-md-6 col-lg-3 rounded overflow-auto"
-                      // style={{ maxHeight: '90vh' }}
+                      style={!mediaQuery.matches ? { height: '90vh' } : null}
                     >
                       <ErrorBoundry message="Błąd w HistoryPanel">
                         <HistoryPanel {...this.state} />

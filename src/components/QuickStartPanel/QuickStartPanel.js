@@ -373,7 +373,7 @@ export class QuickStartPanel extends Component {
                 )}
               </Row>
               <Row>
-                <Col xs={3} lg={4} className="p-3">
+                <Col xs={workIcon ? 6 : 0} lg={4} className="p-3">
                   {this.props.listOfCycles.length > 0 && (
                     <SessionCountCard
                       sessionsTotal={this.props.listOfCycles.length}
@@ -382,14 +382,18 @@ export class QuickStartPanel extends Component {
                     />
                   )}
                 </Col>
-                <Col xs={9} lg={8} className="mx-auto">
+                <Col
+                  xs={workIcon ? 6 : 12}
+                  lg={8}
+                  className="mx-auto text-center"
+                >
                   <ProgressArc
                     percent={
                       this.state.isItWorkTime
                         ? workprogressInPercent
                         : restprogressInPercent
                     }
-                    canvasSize={screenIsWideEnough ? 250 : 150}
+                    canvasSize={screenIsWideEnough ? 250 : workIcon ? 100 : 160}
                   />
                 </Col>
               </Row>
