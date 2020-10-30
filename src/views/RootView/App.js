@@ -7,7 +7,7 @@ import SessionsView from '../SessionsView/SessionsView';
 import StatsView from '../StatsView/StatsView';
 import HydrappView from '../HydrappView/HydrappView';
 
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import TimeSetContext from '../../TimeSetContext';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -111,33 +111,35 @@ class App extends React.Component {
                       className="col-md-6 col-lg-9"
                       style={!mediaQuery.matches ? { height: '90vh' } : null}
                     >
-                      <Route exact path="/">
-                        <ErrorBoundry message="Błąd w QuickstartPanel">
-                          <QuickStartPanel
-                            {...this.state}
-                            fetchFn={this.fetchFromQuickStartPanel}
-                          />
-                        </ErrorBoundry>
-                      </Route>
-                      <Route path="/session">
-                        <ErrorBoundry message="Błąd w Sessions">
-                          {this.state.listOfCycles.length ? (
-                            <Redirect to="/" />
-                          ) : (
-                            <SessionsView />
-                          )}
-                        </ErrorBoundry>
-                      </Route>
-                      <Route path="/stats">
-                        <ErrorBoundry message="Błąd w Stats">
-                          <StatsView />
-                        </ErrorBoundry>
-                      </Route>
-                      <Route path="/hydrapp">
-                        <ErrorBoundry message="Błąd w Hydrapp">
-                          <HydrappView />
-                        </ErrorBoundry>
-                      </Route>
+                      <Switch>
+                        <Route exact path="/">
+                          <ErrorBoundry message="Błąd w QuickstartPanel">
+                            <QuickStartPanel
+                              {...this.state}
+                              fetchFn={this.fetchFromQuickStartPanel}
+                            />
+                          </ErrorBoundry>
+                        </Route>
+                        <Route path="/session">
+                          <ErrorBoundry message="Błąd w Sessions">
+                            {this.state.listOfCycles.length ? (
+                              <Redirect to="/" />
+                            ) : (
+                              <SessionsView />
+                            )}
+                          </ErrorBoundry>
+                        </Route>
+                        <Route path="/stats">
+                          <ErrorBoundry message="Błąd w Stats">
+                            <StatsView />
+                          </ErrorBoundry>
+                        </Route>
+                        <Route path="/hydrapp">
+                          <ErrorBoundry message="Błąd w Hydrapp">
+                            <HydrappView />
+                          </ErrorBoundry>
+                        </Route>
+                      </Switch>
                     </Col>
                     <Col
                       sm={12}
