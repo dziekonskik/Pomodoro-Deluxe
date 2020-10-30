@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 import styles from './SessionListItem.module.scss';
 
@@ -12,9 +13,8 @@ const SessionListItem = ({
   return (
     <>
       <ListGroup.Item
-        className="d-flex justify-content-around"
+        className={`d-flex justify-content-around ${styles.boxShadow}`}
         onClick={handleRemove}
-        className={styles.boxShadow}
       >
         <span>
           <span style={{ fontSize: '40px' }}>{workIcon}</span> Work Time:{' '}
@@ -27,6 +27,14 @@ const SessionListItem = ({
       </ListGroup.Item>
     </>
   );
+};
+
+SessionListItem.propTypes = {
+  workMinutes: PropTypes.number.isRequired,
+  restMinutes: PropTypes.number.isRequired,
+  workIcon: PropTypes.element.isRequired,
+  restIcon: PropTypes.element.isRequired,
+  handleRemove: PropTypes.func.isRequired,
 };
 
 export default SessionListItem;

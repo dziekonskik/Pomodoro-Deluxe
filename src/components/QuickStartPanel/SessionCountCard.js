@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
 
 const SessionCountCard = ({ sessionsTotal, currentSession, icon }) => {
@@ -15,6 +16,11 @@ const SessionCountCard = ({ sessionsTotal, currentSession, icon }) => {
       </Card.Body>
     </Card>
   );
+};
+
+SessionCountCard.propTypes = {
+  sessionsTotal: PropTypes.number.isRequired,
+  currentSession: PropTypes.number.isRequired,
 };
 
 export default SessionCountCard;

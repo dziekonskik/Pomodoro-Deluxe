@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Container } from 'react-bootstrap';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import TimeUnit from '../TimeUnit/TimeUnit';
@@ -423,5 +424,16 @@ export class QuickStartPanel extends Component {
     );
   }
 }
+
+QuickStartPanel.propTypes = {
+  elapsedRestTimeInSeconds: PropTypes.number,
+  elapsedWorkTimeInSeconds: PropTypes.number,
+  listOfCycles: PropTypes.array,
+  pausesCount: PropTypes.number,
+  restTime: PropTypes.number,
+  sessionsCount: PropTypes.number,
+  title: PropTypes.string,
+  workTime: PropTypes.number,
+};
 
 export default QuickStartPanel;

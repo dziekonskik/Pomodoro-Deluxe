@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row } from 'react-bootstrap';
 import HistoryItem from './HistoryItem/HistoryItem';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
@@ -90,6 +91,7 @@ export class HistoryPanel extends Component {
     this.prepareDataForHistoryItem();
     this.sortByDate();
     console.count('HistoryPanel mount');
+    console.log(this.props);
   }
 
   componentWillUnmount() {
@@ -128,5 +130,16 @@ export class HistoryPanel extends Component {
     );
   }
 }
+
+HistoryPanel.propTypes = {
+  elapsedRestTimeInSeconds: PropTypes.number,
+  elapsedWorkTimeInSeconds: PropTypes.number,
+  listOfCycles: PropTypes.array,
+  pausesCount: PropTypes.number,
+  restTime: PropTypes.number,
+  sessionsCount: PropTypes.number,
+  title: PropTypes.string,
+  workTime: PropTypes.number,
+};
 
 export default HistoryPanel;

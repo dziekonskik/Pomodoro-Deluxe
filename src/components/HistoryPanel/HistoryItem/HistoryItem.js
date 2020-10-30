@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Toast, Col, Row } from 'react-bootstrap';
 import styles from './HistoryItem.module.scss';
 
@@ -61,6 +62,16 @@ const HistoryItem = ({
       </Toast>
     </div>
   );
+};
+
+HistoryItem.propTypes = {
+  title: PropTypes.string.isRequired,
+  date: PropTypes.object.isRequired,
+  elapsedWorkTimeInSeconds: PropTypes.number.isRequired,
+  elapsedRestTimeInSeconds: PropTypes.number.isRequired,
+  pausesCount: PropTypes.number.isRequired,
+  sessionsCount: PropTypes.number.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default HistoryItem;

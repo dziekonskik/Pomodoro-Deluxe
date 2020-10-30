@@ -56,7 +56,7 @@ TimeUnit.propTypes = {
   children: PropTypes.string.isRequired,
   setTime: PropTypes.func.isRequired,
   minutesSet: PropTypes.number.isRequired,
-  elapsedTimeInSeconds: PropTypes.number.isRequired,
+  elapsedTimeInSeconds: PropTypes.number,
 };
 
 export default TimeUnit;
