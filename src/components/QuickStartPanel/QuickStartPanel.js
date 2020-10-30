@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Container } from 'react-bootstrap';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import TimeUnit from '../TimeUnit/TimeUnit';
 import StartStopButton from '../PomodoroButtons/StartStopButton';
 import CancelButton from '../PomodoroButtons/CancelButton';
@@ -309,38 +310,52 @@ export class QuickStartPanel extends Component {
               <h2 className={`text-dark text-center my-3 ${styles.title}`}>
                 {title !== 'Quick Pomodoro' ? title : 'Quick Pomodoro'}
               </h2>
-              <Row>
-                <Col className="d-flex">
-                  {shouldDisplayWorkTimeUnit && (
-                    <TimeUnit
-                      minutesSet={workMinutes}
-                      elapsedTimeInSeconds={elapsedWorkTimeInSeconds}
-                      setTime={
-                        clocksAreNotTicking
-                          ? ({ target }) =>
-                              context.setWorkTime({ target }, this)
-                          : null
-                      }
-                    >
-                      WORK
-                    </TimeUnit>
-                  )}
-                  {shouldDisplayRestTimeUnit && (
-                    <TimeUnit
-                      minutesSet={restMinutes}
-                      elapsedTimeInSeconds={elapsedRestTimeInSeconds}
-                      setTime={
-                        clocksAreNotTicking
-                          ? ({ target }) =>
-                              context.setRestTime({ target }, this)
-                          : null
-                      }
-                    >
-                      BREAK
-                    </TimeUnit>
-                  )}
-                </Col>
-              </Row>
+              <TransitionGroup>
+                <Row>
+                  <Col className="d-flex">
+                    {shouldDisplayWorkTimeUnit && (
+                      <CSSTransition
+                        in={shouldDisplayWorkTimeUnit}
+                        timeout={700}
+                        classNames={'workTimeUnit'}
+                      >
+                        <TimeUnit
+                          minutesSet={workMinutes}
+                          elapsedTimeInSeconds={elapsedWorkTimeInSeconds}
+                          setTime={
+                            clocksAreNotTicking
+                              ? ({ target }) =>
+                                  context.setWorkTime({ target }, this)
+                              : null
+                          }
+                        >
+                          WORK
+                        </TimeUnit>
+                      </CSSTransition>
+                    )}
+                    {shouldDisplayRestTimeUnit && (
+                      <CSSTransition
+                        in={shouldDisplayRestTimeUnit}
+                        timeout={700}
+                        classNames={'restTimeUnit'}
+                      >
+                        <TimeUnit
+                          minutesSet={restMinutes}
+                          elapsedTimeInSeconds={elapsedRestTimeInSeconds}
+                          setTime={
+                            clocksAreNotTicking
+                              ? ({ target }) =>
+                                  context.setRestTime({ target }, this)
+                              : null
+                          }
+                        >
+                          BREAK
+                        </TimeUnit>
+                      </CSSTransition>
+                    )}
+                  </Col>
+                </Row>
+              </TransitionGroup>
               <Row>
                 <StartStopButton
                   handleStartStop={

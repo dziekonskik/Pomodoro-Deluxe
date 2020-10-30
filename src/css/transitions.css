@@ -15,3 +15,37 @@
   transform: translateY(200px) translateX(-30px);
   transition: opacity 500ms, transform 500ms cubic-bezier(0.55, 0, 1, 0.45);
 }
+
+/* TIME UNIT TOGGLE TRANSITIONS */
+
+.workTimeUnit-enter {
+  perspective: 100px;
+  transform: rotate3d(1, -0.3, 0.3, 0.3rad);
+}
+
+.workTimeUnit-enter-active {
+  perspective: 100px;
+  transform: rotate3d(0, 0, 0, 0);
+  transition: all 0.7s linear;
+}
+
+.workTimeUnit-exit-active {
+  perspective: 100px;
+  transform: rotate3d(1, -0.3, 0.3, 0.3rad);
+}
+
+.restTimeUnit-enter {
+  perspective: 100px;
+  transform: rotate3d(1, 0.3, -0.3, 0.3rad);
+}
+
+.restTimeUnit-enter-active {
+  perspective: 100px;
+  transform: rotate3d(0, 0, 0, 0);
+  transition: all 0.7s linear;
+}
+
+.restTimeUnit-exit-active {
+  perspective: 100px;
+  transform: rotate3d(1, 0.3, -0.3, 0.3rad);
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import TimeUnit from '../TimeUnit/TimeUnit';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import UtilityButton from '../PomodoroButtons/UtilityButton';
@@ -126,34 +127,48 @@ export class SessionForm extends Component {
                   />
                 </Col>
               </Row>
-              <Row className="d-flex justify-content-center my-3">
-                <Col xs={8} className="col-sm-7 col-lg-3">
-                  {shouldDisplayWorkTimeUnit && (
-                    <TimeUnit
-                      justMinutes
-                      setTime={({ target }) =>
-                        context.setWorkTime({ target }, this)
-                      }
-                      minutesSet={workMinutes}
-                    >
-                      Work
-                    </TimeUnit>
-                  )}
-                </Col>
-                <Col xs={8} className="col-sm-7 col-lg-3">
-                  {shouldDisplayRestTimeUnit && (
-                    <TimeUnit
-                      justMinutes
-                      setTime={({ target }) =>
-                        context.setRestTime({ target }, this)
-                      }
-                      minutesSet={restMinutes}
-                    >
-                      Break
-                    </TimeUnit>
-                  )}
-                </Col>
-              </Row>
+              <TransitionGroup>
+                <Row className="d-flex justify-content-center my-3">
+                  <Col xs={8} className="col-sm-7 col-lg-3">
+                    {shouldDisplayWorkTimeUnit && (
+                      <CSSTransition
+                        in={shouldDisplayWorkTimeUnit}
+                        timeout={700}
+                        classNames={'workTimeUnit'}
+                      >
+                        <TimeUnit
+                          justMinutes
+                          setTime={({ target }) =>
+                            context.setWorkTime({ target }, this)
+                          }
+                          minutesSet={workMinutes}
+                        >
+                          Work
+                        </TimeUnit>
+                      </CSSTransition>
+                    )}
+                  </Col>
+                  <Col xs={8} className="col-sm-7 col-lg-3">
+                    {shouldDisplayRestTimeUnit && (
+                      <CSSTransition
+                        in={shouldDisplayRestTimeUnit}
+                        timeout={700}
+                        classNames={'restTimeUnit'}
+                      >
+                        <TimeUnit
+                          justMinutes
+                          setTime={({ target }) =>
+                            context.setRestTime({ target }, this)
+                          }
+                          minutesSet={restMinutes}
+                        >
+                          Break
+                        </TimeUnit>
+                      </CSSTransition>
+                    )}
+                  </Col>
+                </Row>
+              </TransitionGroup>
               <Row className="d-flex justify-content-around align-items-center my-3">
                 <UtilityButton
                   handleClick={workAndRestTimeIsSet ? this.addItem : null}
