@@ -192,15 +192,23 @@ export class SessionForm extends Component {
                   style={{ height: '190px' }}
                 >
                   <ListGroup style={{ cursor: 'pointer' }}>
-                    {listOfCycles.map((item) => (
-                      <SessionListItem
-                        handleRemove={() => {
-                          this.removeItem(item.id);
-                        }}
-                        key={item.id}
-                        {...item}
-                      />
-                    ))}
+                    <TransitionGroup>
+                      {listOfCycles.map((item) => (
+                        <CSSTransition
+                          key={item.id}
+                          timeout={{ enter: 300, exit: 200 }}
+                          classNames={'sessionListItem'}
+                        >
+                          <SessionListItem
+                            handleRemove={() => {
+                              this.removeItem(item.id);
+                            }}
+                            key={item.id}
+                            {...item}
+                          />
+                        </CSSTransition>
+                      ))}
+                    </TransitionGroup>
                   </ListGroup>
                 </Col>
               </Row>
