@@ -35,33 +35,27 @@
 /* TIME UNIT TOGGLE TRANSITIONS */
 
 .workTimeUnit-enter {
-  perspective: 100px;
   transform: rotate3d(1, -0.3, 0.3, 0.3rad);
 }
 
 .workTimeUnit-enter-active {
-  perspective: 100px;
   transform: rotate3d(0, 0, 0, 0);
   transition: all 0.7s linear;
 }
 
 .workTimeUnit-exit-active {
-  perspective: 100px;
   transform: rotate3d(1, -0.3, 0.3, 0.3rad);
 }
 
 .restTimeUnit-enter {
-  perspective: 100px;
   transform: rotate3d(1, 0.3, -0.3, 0.3rad);
 }
 
 .restTimeUnit-enter-active {
-  perspective: 100px;
   transform: rotate3d(0, 0, 0, 0);
   transition: all 0.7s linear;
 }
 
 .restTimeUnit-exit-active {
-  perspective: 100px;
   transform: rotate3d(1, 0.3, -0.3, 0.3rad);
 }
