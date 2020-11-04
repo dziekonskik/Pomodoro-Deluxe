@@ -8,7 +8,13 @@ import CancelButton from '../PomodoroButtons/CancelButton';
 import ToggleTimeUnit from '../PomodoroButtons/ToggleTimeUnit';
 import SessionCountCard from './SessionCountCard';
 import ProgressArc from './ProgressArc';
+
 import styles from './QuickStartPanel.module.scss';
+import { Howl, Howler } from 'howler';
+import workSound from '../../sounds/peon-says-work-work.mp3';
+import breakSound from '../../sounds/on-a-break.wav';
+import finishSound from '../../sounds/_Warcraft_2_Peasant_Leave_Me_Alone.mp3';
+import startSound from '../../sounds/lets-do-this.mp3';
 
 import TimeSetContext from '../../TimeSetContext';
 
@@ -32,8 +38,16 @@ export class QuickStartPanel extends Component {
       userSetsRestTime: false,
       listOfCycles: [],
     };
+
     this.customTimerID = null;
   }
+
+  playSound = (sound) => {
+    const countdown = new Howl({
+      src: [sound],
+    });
+    countdown.play();
+  };
   //==================SESSION FORM DATA AREA =================
   handleIncommingSession = () => {
     this.setState({
@@ -71,6 +85,7 @@ export class QuickStartPanel extends Component {
 
   resetState() {
     this.setState({
+      title: 'Quick Pomodoro',
       isAppReady: false,
       isTimeRunning: false,
       isItWorkTime: false,
@@ -186,7 +201,12 @@ export class QuickStartPanel extends Component {
       this.setState({ isAppReady: true });
     }
 
+    if (timesAreSetAndAppIsReadyToLaunch && title === 'Quick Pomodoro') {
+      this.playSound(startSound);
+    }
+
     if (workTImeHasFinishedNowRestTimeBegins) {
+      this.playSound(breakSound);
       this.setState({ isItWorkTime: false, isItRestTime: true });
     }
 
@@ -199,6 +219,7 @@ export class QuickStartPanel extends Component {
         sessionsCount
       );
       this.resetState();
+      this.playSound(finishSound);
     }
 
     if (restTimeHasFinishedAndSessionIsOver) {
@@ -230,15 +251,19 @@ export class QuickStartPanel extends Component {
       this.state.listOfCycles.length && this.state.workMinutes === 0;
     const beforeBegin = this.state.sessionsCount === 0;
     const allSessionsHasFinished =
-      this.state.sessionsCount > this.props.listOfCycles.length;
+      sessionsCount > this.props.listOfCycles.length;
 
     if (readyToStartNewSession && beforeBegin) {
       this.takeFirstSessionObjectAndUseIt();
+      this.playSound(startSound);
     }
 
     if (readyToStartNewSession && !beforeBegin) {
       this.takeFirstSessionObjectAndUseIt();
       this.handleStartTimer();
+      if (sessionsCount < this.props.listOfCycles.length) {
+        this.playSound(workSound);
+      }
     }
 
     if (allSessionsHasFinished) {
@@ -251,6 +276,7 @@ export class QuickStartPanel extends Component {
       );
       this.resetState();
       this.resetInterval();
+      this.playSound(finishSound);
     }
 
     console.count(`QuickStartPanel Update`);
@@ -302,7 +328,7 @@ export class QuickStartPanel extends Component {
       screenIsWideEnough || !userWantsToDisplayWorkTime;
 
     const clocksAreNotTicking = !isItWorkTime && !isItRestTime;
-
+    Howler.volume(1);
     return (
       <Container className={`p-3 mt-1 ${styles.background}`}>
         <TimeSetContext.Consumer>
