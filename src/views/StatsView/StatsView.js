@@ -1,19 +1,10 @@
 import React from 'react';
-import { VscExclude } from 'react-icons/vsc';
+import ChartManager from '../../components/ChartManager/ChartManager';
 
 const StatsView = () => {
   return (
-    <div
-      style={{
-        fontSize: '100px',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-      }}
-    >
-      Work in progress
-      <VscExclude />
+    <div>
+      <ChartManager />
     </div>
   );
 };
