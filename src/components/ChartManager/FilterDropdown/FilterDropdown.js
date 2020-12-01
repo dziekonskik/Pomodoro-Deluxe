@@ -1,17 +1,30 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 
-const FilterDropdown = () => {
+const FilterDropdown = ({ selectCategory }) => {
   return (
     <Dropdown>
       <Dropdown.Toggle variant="dark" id="dropdown-basic">
-        Dropdown Button
+        Please Select
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-        <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+        <Dropdown.Item
+          onSelect={() => selectCategory('elapsedWorkTimeInSeconds')}
+        >
+          Work Done
+        </Dropdown.Item>
+        <Dropdown.Item
+          onSelect={() => selectCategory('elapsedRestTimeInSeconds')}
+        >
+          Rested
+        </Dropdown.Item>
+        <Dropdown.Item onSelect={() => selectCategory('pausesCount')}>
+          Total Pauses
+        </Dropdown.Item>
+        <Dropdown.Item onSelect={() => selectCategory('sessionsCount')}>
+          Total Sessions
+        </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );

@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import BarChart from './BarChart/BarChart';
+import FilterDropdown from './FilterDropdown/FilterDropdown';
+import { Row, Col } from 'react-bootstrap';
 
 export class ChartManager extends Component {
   constructor(props) {
     super(props);
     this.state = {
       pomodoroStats: [],
+      selectedCategory: 'elapsedWorkTimeInSeconds',
+      categoryArray: [],
     };
   }
 
@@ -23,19 +27,46 @@ export class ChartManager extends Component {
     }
   }
 
+  selectCategory = (selectedCategory) => this.setState({ selectedCategory });
+
+  filterByCategory = () => {
+    const { pomodoroStats, selectedCategory } = this.state;
+    const categoryArray = pomodoroStats.map((category) => {
+      const filtredObject = [
+        category.title,
+        category.date,
+        category[selectedCategory],
+      ];
+      return filtredObject;
+    });
+    console.log(categoryArray);
+  };
+
   componentDidMount() {
     this.fetchStatistics();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.pomodoroStats !== this.state.pomodoroStats ||
+      prevState.selectedCategory !== this.state.selectedCategory
+    )
+      this.filterByCategory();
   }
 
   render() {
     const { pomodoroStats } = this.state;
     return (
-      <div style={{ backgroundColor: 'rgba(255, 127, 89, .4)' }}>
-        <h3>elooaso</h3>
-        {!!pomodoroStats && (
-          <BarChart width={700} height={600} data={pomodoroStats} />
-        )}
-      </div>
+      <Row>
+        <Col xs={2}>
+          <FilterDropdown selectCategory={this.selectCategory} />
+        </Col>
+        <Col cs={10}>
+          {pomodoroStats.length > 0 && (
+            <BarChart width={700} height={600} data={pomodoroStats} />
+          )}
+        </Col>
+      </Row>
     );
   }
 }
