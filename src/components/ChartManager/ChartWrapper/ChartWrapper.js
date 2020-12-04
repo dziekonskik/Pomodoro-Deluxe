@@ -8,12 +8,12 @@ class ChartWrapper extends Component {
   }
 
   componentDidMount() {
-    this.setState({ chart: new BarChart(this.chart) });
+    this.setState({ chart: new BarChart(this.chart, this.props.data) });
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.gender !== this.props.gender) {
-      this.state.chart.update(this.props.gender);
+    if (prevProps.data !== this.props.data) {
+      this.state.chart.update(this.props.data);
     }
   }
 

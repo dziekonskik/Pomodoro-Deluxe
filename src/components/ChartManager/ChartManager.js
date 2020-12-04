@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import BarChart from './BarChart/BarChart';
+import ChartWrapper from './ChartWrapper/ChartWrapper';
 import FilterDropdown from './FilterDropdown/FilterDropdown';
 import { Row, Col } from 'react-bootstrap';
 
@@ -32,14 +32,15 @@ export class ChartManager extends Component {
   filterByCategory = () => {
     const { pomodoroStats, selectedCategory } = this.state;
     const categoryArray = pomodoroStats.map((category) => {
-      const filtredObject = [
-        category.title,
-        category.date,
-        category[selectedCategory],
-      ];
+      const filtredObject = {
+        title: category.title,
+        date: category.date,
+        selectedCategory: category[selectedCategory],
+      };
       return filtredObject;
     });
-    console.log(categoryArray);
+
+    this.setState({ categoryArray });
   };
 
   componentDidMount() {
@@ -55,18 +56,23 @@ export class ChartManager extends Component {
   }
 
   render() {
-    const { pomodoroStats } = this.state;
+    const { categoryArray } = this.state;
     return (
-      <Row>
-        <Col xs={2}>
-          <FilterDropdown selectCategory={this.selectCategory} />
-        </Col>
-        <Col cs={10}>
-          {pomodoroStats.length > 0 && (
-            <BarChart width={700} height={600} data={pomodoroStats} />
-          )}
-        </Col>
-      </Row>
+      <>
+        <Row>
+          <Col>
+            <h2 className="text-center">Your Statistics</h2>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={2}>
+            <FilterDropdown selectCategory={this.selectCategory} />
+          </Col>
+          <Col cs={10}>
+            {categoryArray.length > 0 && <ChartWrapper data={categoryArray} />}
+          </Col>
+        </Row>
+      </>
     );
   }
 }
