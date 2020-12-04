@@ -16,29 +16,6 @@ export default class BarChart {
       .append('g')
       .attr('transform', `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`);
 
-    const y = d3
-      .scaleLinear()
-      .domain([
-        d3.min(this.data, (d) => d.selectedCategory),
-        d3.max(this.data, (d) => d.selectedCategory),
-      ])
-      .range([HEIGHT, 0]);
-
-    const x = d3
-      .scaleBand()
-      .domain(this.data.map((d) => d.title))
-      .range([0, WIDTH])
-      .padding(0.3);
-
-    const xAxis = d3.axisBottom(x);
-    this.svg
-      .append('g')
-      .attr('transform', `translate(0,${HEIGHT})`)
-      .call(xAxis);
-
-    const yAxis = d3.axisLeft(y);
-    this.svg.append('g').call(yAxis);
-
     this.svg
       .append('text')
       .attr('x', WIDTH / 2)
@@ -54,17 +31,59 @@ export default class BarChart {
       .text('This will be dynamic')
       .attr('transform', 'rotate(-90)');
 
-    const rects = this.svg.selectAll('rect').data(data);
+    this.xAxisGroup = this.svg
+      .append('g')
+      .attr('transform', `translate(0,${HEIGHT})`);
+
+    this.yAxisGroup = this.svg.append('g');
+
+    this.update(this.data);
+  }
+
+  update(data) {
+    this.data = data;
+    const y = d3
+      .scaleLinear()
+      .domain([
+        d3.min(this.data, (d) => d.selectedCategory),
+        d3.max(this.data, (d) => d.selectedCategory),
+      ])
+      .range([HEIGHT, 0]);
+
+    const x = d3
+      .scaleBand()
+      .domain(this.data.map((d) => d.title))
+      .range([0, WIDTH])
+      .padding(0.3);
+
+    const xAxis = d3.axisBottom(x);
+
+    this.xAxisGroup.call(xAxis);
+
+    const yAxis = d3.axisLeft(y);
+    this.yAxisGroup.transition(700).call(yAxis);
+
+    const rects = this.svg.selectAll('rect').data(this.data);
+
+    rects.exit().transition(700).attr('y', HEIGHT).attr('height', 0).remove();
+
+    rects
+      .transition(700)
+      .attr('x', (d) => x(d.title))
+      .attr('y', (d) => y(d.selectedCategory))
+      .attr('width', x.bandwidth)
+      .attr('height', (d) => HEIGHT - y(d.selectedCategory));
 
     rects
       .enter()
       .append('rect')
       .attr('x', (d) => x(d.title))
-      .attr('y', (d) => y(d.selectedCategory))
+      .attr('y', HEIGHT)
+      .attr('height', 0)
       .attr('width', x.bandwidth)
-      .attr('height', (d) => HEIGHT - y(d.selectedCategory))
-      .attr('fill', 'tomato');
+      .attr('fill', 'tomato')
+      .transition(700)
+      .attr('y', (d) => y(d.selectedCategory))
+      .attr('height', (d) => HEIGHT - y(d.selectedCategory));
   }
-
-  update() {}
 }
